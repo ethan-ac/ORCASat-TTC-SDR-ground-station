@@ -1,0 +1,36 @@
+id: pduencode_usrp_pad
+label: Insert USRP Padding
+category: '[PDU Encode]'
+
+templates:
+  imports: import pduencode
+  make: pduencode.usrp_pad(${samples_per_symbol}, ${bits_per_symbol})
+
+
+# declareable variables for this block in grc
+parameters:
+- id: samples_per_symbol
+  label: Samples per symbol
+  dtype: int
+  default: 5
+- id: bits_per_symbol
+  label: Bits per symbol
+  dtype: int
+  default: 1
+
+# ports for this block
+inputs:
+-   domain: message
+    id: in
+outputs:
+-   domain: message
+    id: out
+
+
+# summary of this blocks purpose that will appear in the documentation tab of its properties
+documentation: |-
+    This block calculates the # padding bytes needed for usrp to transmit and inserts them to the ending of the inputted pdu.
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1

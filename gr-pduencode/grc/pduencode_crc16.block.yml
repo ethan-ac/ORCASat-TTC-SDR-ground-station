@@ -1,0 +1,25 @@
+id: pduencode_crc16
+label: Insert CRC16
+category: '[PDU Encode]'
+
+templates:
+  imports: import pduencode
+  make: pduencode.crc16()
+
+
+# ports for this block
+inputs:
+-   domain: message
+    id: in
+outputs:
+-   domain: message
+    id: out
+
+
+# summary of this blocks purpose that will appear in the documentation tab of its properties
+documentation: |-
+    This block calculates the crc16 of the inputted pdu and then inserts that value to the ending of the inputted pdu.
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1

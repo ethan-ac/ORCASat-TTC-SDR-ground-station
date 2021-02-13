@@ -1,0 +1,32 @@
+id: pduencode_bytes
+label: Insert Preamble/Access Code
+category: '[PDU Encode]'
+
+templates:
+  imports: import pduencode
+  make: pduencode.bytes(${add})
+
+
+# declareable variable for this block in grc
+parameters:
+- id: add
+  label: add
+  dtype: string
+  default: ""
+
+# ports for this block
+inputs:
+-   domain: message
+    id: in
+outputs:
+-   domain: message
+    id: out
+
+
+# summary of this blocks purpose that will appear in the documentation tab of its properties
+documentation: |-
+    This block inserts bytes from the parameter add at the beginning of the inputted pdu.
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1
