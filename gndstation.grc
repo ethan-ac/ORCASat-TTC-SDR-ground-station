@@ -32,18 +32,6 @@ options:
     state: enabled
 
 blocks:
-- name: access_code
-  id: variable
-  parameters:
-    comment: ''
-    value: '"11010011100100011101001110010001"'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [951, 10]
-    rotation: 0
-    state: enabled
 - name: bit_per_sym
   id: variable
   parameters:
@@ -147,6 +135,18 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [374, 8]
+    rotation: 0
+    state: enabled
+- name: sync_word
+  id: variable
+  parameters:
+    comment: ''
+    value: '"11010011100100011101001110010001"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [951, 10]
     rotation: 0
     state: enabled
 - name: taps
@@ -347,9 +347,10 @@ blocks:
     coordinate: [1282, 923]
     rotation: 0
     state: enabled
-- name: pduadd_add_length_0
-  id: pduadd_add_length
+- name: pduencode_bytes_0
+  id: pduencode_bytes
   parameters:
+    add: sync_word
     affinity: ''
     alias: ''
     comment: ''
@@ -359,26 +360,11 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [521, 367]
+    coordinate: [983, 362]
     rotation: 0
-    state: enabled
-- name: pduadd_crc16_0
-  id: pduadd_crc16
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [682, 367]
-    rotation: 0
-    state: enabled
-- name: pduadd_pdu_head_tail_0
-  id: pduadd_pdu_head_tail
+    state: true
+- name: pduencode_bytes_0_0
+  id: pduencode_bytes
   parameters:
     add: preamble
     affinity: ''
@@ -390,13 +376,12 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1265, 363]
+    coordinate: [1250, 362]
     rotation: 0
-    state: enabled
-- name: pduadd_pdu_head_tail_0_0
-  id: pduadd_pdu_head_tail
+    state: true
+- name: pduencode_crc16_0
+  id: pduencode_crc16
   parameters:
-    add: access_code
     affinity: ''
     alias: ''
     comment: ''
@@ -406,26 +391,41 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1003, 363]
+    coordinate: [657, 366]
     rotation: 0
-    state: enabled
-- name: pduadd_usrp_pad_0
-  id: pduadd_usrp_pad
+    state: true
+- name: pduencode_length_0
+  id: pduencode_length
   parameters:
     affinity: ''
     alias: ''
-    bits_per_symbol: bit_per_sym
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_symbol: samp_per_sym
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1485, 355]
+    coordinate: [518, 366]
     rotation: 0
-    state: enabled
+    state: true
+- name: pduencode_usrp_pad_0
+  id: pduencode_usrp_pad
+  parameters:
+    affinity: ''
+    alias: ''
+    bits_per_symbol: '1'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1480, 354]
+    rotation: 0
+    state: true
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -1155,7 +1155,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [815, 367]
+    coordinate: [795, 366]
     rotation: 0
     state: enabled
 - name: satellites_pn9_scrambler_0_0
@@ -1885,12 +1885,12 @@ connections:
 - [freq_xlating_fft_filter_ccc_0, '0', analog_quadrature_demod_cf_0, '0']
 - [low_pass_filter_0_0, '0', digital_clock_recovery_mm_xx_0, '0']
 - [low_pass_filter_0_0, '0', qtgui_time_sink_x_2_1_0, '0']
-- [pduadd_add_length_0, out, pduadd_crc16_0, in]
-- [pduadd_crc16_0, out, satellites_pn9_scrambler_0, in]
-- [pduadd_pdu_head_tail_0, out, pduadd_usrp_pad_0, in]
-- [pduadd_pdu_head_tail_0_0, out, pduadd_pdu_head_tail_0, in]
-- [pduadd_usrp_pad_0, out, blocks_message_debug_0, print_pdu]
-- [pduadd_usrp_pad_0, out, blocks_pdu_to_tagged_stream_0_0, pdus]
+- [pduencode_bytes_0, out, pduencode_bytes_0_0, in]
+- [pduencode_bytes_0_0, out, pduencode_usrp_pad_0, in]
+- [pduencode_crc16_0, out, satellites_pn9_scrambler_0, in]
+- [pduencode_length_0, out, pduencode_crc16_0, in]
+- [pduencode_usrp_pad_0, out, blocks_message_debug_0, print_pdu]
+- [pduencode_usrp_pad_0, out, blocks_pdu_to_tagged_stream_0_0, pdus]
 - [rational_resampler_xxx_0, '0', low_pass_filter_0_0, '0']
 - [rational_resampler_xxx_0_0, '0', qtgui_freq_sink_x_1, '0']
 - [rational_resampler_xxx_0_0, '0', qtgui_time_sink_x_2, '0']
@@ -1898,14 +1898,14 @@ connections:
 - [satellites_cc11xx_packet_crop_0, out, satellites_check_cc11xx_crc_0, in]
 - [satellites_check_cc11xx_crc_0, fail, satellites_print_timestamp_0, in]
 - [satellites_check_cc11xx_crc_0, ok, satellites_print_timestamp_0, in]
-- [satellites_pn9_scrambler_0, out, pduadd_pdu_head_tail_0_0, in]
+- [satellites_pn9_scrambler_0, out, pduencode_bytes_0, in]
 - [satellites_pn9_scrambler_0_0, out, satellites_cc11xx_packet_crop_0, in]
 - [satellites_print_timestamp_0, out, blocks_message_debug_0_1, print_pdu]
 - [satellites_sync_to_pdu_packed_0, out, satellites_pn9_scrambler_0_0, in]
 - [uhd_usrp_source_0, '0', freq_xlating_fft_filter_ccc_0, '0']
 - [uhd_usrp_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [uhd_usrp_source_0, '0', qtgui_time_sink_x_2_0, '0']
-- [zeromq_sub_msg_source_1, out, pduadd_add_length_0, in]
+- [zeromq_sub_msg_source_1, out, pduencode_length_0, in]
 
 metadata:
   file_format: 1
