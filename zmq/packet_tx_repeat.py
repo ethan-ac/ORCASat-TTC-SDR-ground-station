@@ -7,7 +7,9 @@ import pmt
 
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
-socket.bind("tcp://127.0.0.1:5555")
+address = "tcp://127.0.0.1:5555"
+socket.bind(address)
+print("connected to", address)
 print("running...")
 msg = "hellohellohello"
 
