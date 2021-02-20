@@ -2,6 +2,8 @@
 
 ## Table of Contents
 
+1. [Introduction](#introduction)
+1. [What You'll Need](#what-youll-need)
 1. [Variables](#variables)
 1. [Blocks](#blocks)
 1. [Install necessary parts](#install_necesarry_parts)
@@ -16,132 +18,156 @@
 
 ## Introduction
 
-This user guide aims to provide users with all of the information needed to run the GNU Radio ground station flowgraph. This guide assumes the user has some previous experience with GNU Radio Companion (GRC) and SmartRF Studio 7. Some basic tutorials for these programs exist on slides 14-15, 24-27 here. A more detailed design document of the GNU Radio ground station flowgraph with explanations of any part of it can be found here.
+This user guide aims to provide users with all of the information needed to run the GNU Radio ground station flowgraph. This guide assumes the user has some previous experience with GNU Radio Companion (GRC), GNU Radio, and SmartRF Studio 7. Some basic tutorials for [GNU Radio](https://wiki.gnuradio.org/index.php/Tutorials) and for [SmartRF](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing), or on slides 14-15, 24-27 [here](https://docs.google.com/presentation/d/145syBke3wD0GXqM9OnpUmSf0r15e0uf7wZKPRpoonRI/edit?usp=sharing). A more detailed design document of the GNU Radio ground station flowgraph with explanations of any part of it can be found [here](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing).
+
+## What You'll Need
+
+These are the parts needed to run the GNU Radio ground station flowgraph.
+
+* Computer running Windows that can run SmartRF Studio 7
+* Computer running Linux that can run GNU Radio 3.8.
+* USRP B210 with antenna
+* CC1110 on a functioning board (ie TT&C breakout board) with antenna
+* CC Debugger with ribbon cable that comes with it
+* USB A to USB B cable
+* USB A to USB mini-B cable
 
 ## Variables
 
-**Options --- Settings for the flowgraph including id, title, author, output language (language the flowgraph is generated in)**
+These are the variable style blocks that control the parameters of the signal processing blocks in the flowgraph.
 
-**Variable blocks --- Variable with an id that can be given to blocks to make changing values used in multiple blocks when the flowgraph is not running easier**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| freq | real | Frequency for USRPs to transmit and receive at |
-| samp_rate | int | Sample rate for most of the flowgraph in samples per second |
-| samp_rate_usrp | int | Sample rate for the USRPs and adjacent blocks in samples per second |
-| samp_per_sym | int | # samples per symbol for signals transmitted/received |
-| bit_per_sym | int | # bits per symbol for signals transmitted/received |
-| preamble | string | 16 bit preamble of packet being encoded |
-| access_code | string | 32 bit access code of packet being encoded |
-| pre_tx | int | Time to keep pin toggled after data is sent in milliseconds |
-| post_tx | int | Time to toggle pin before data is sent in milliseconds |
+**Variable blocks --- Variable with an id that can be given to blocks to make changing values used in multiple blocks when the flowgraph is not running easier**
+| Block Name | Block Type | Block Unit | Block Description |
+| - | - | - | - |
+| freq | Real | Hertz | Frequency for USRPs to transmit and receive at |
+| samp_rate | Int | Samples/second | Sample rate for most of the flowgraph |
+| samp_rate_usrp | Int | Samples/second | Sample rate for the USRPs and adjacent blocks |
+| samp_per_sym | Int | Samples/symbol | # samples per symbol for signals transmitted/received |
+| bit_per_sym | Int | Bits/symbol | # bits per symbol for signals transmitted/received |
+| preamble | String | N/A | 16 bit preamble of packet being encoded |
+| access_code | String | N/A | 32 bit access code of packet being encoded |
+| pre_tx | Int | Milliseconds | Time to keep pin toggled after data is sent |
+| post_tx | Int | Milliseconds | Time to toggle pin before data is sent |
 
-**QT GUI Range blocks --- Variable with an id that can be given to blocks to allow changing values used in multiple blocks when the flowgraph is running**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| tgain | float | Gain of USRP transmitting antenna in decibels |
-| rgain | float | Gain of USRP receiving antenna in decibels |
+**QT GUI Range blocks --- Variable with an id that can be given to blocks to allow changing values used in multiple blocks when the flowgraph is running**
+| Block Name | Block Type | Block Unit | Block Description |
+| - | - | - | - |
+| tgain | Float | Decibels | Gain of USRP transmitting antenna |
+| rgain | Float | Decidels | Gain of USRP receiving antenna |
 
-**QT GUI Check Box block --- Variable with an id that can be given to blocks to allow changing values used in multiple blocks when the flowgraph is running**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| toggle | bool | Create check box while flowgraph is running to allow for toggling the mute block, when unchecked it is False, when checked it is True |
+**QT GUI Check Box block --- Variable with an id that can be given to blocks to allow changing values used in multiple blocks when the flowgraph is running**
+| Block Name | Block Type | Block Unit | Block Description |
+| - | - | - | - |
+| toggle | Bool | N/A | Create check box while flowgraph is running to allow for toggling the mute block, when unchecked it is False, when checked it is True |
 
 ## Blocks
 
-**ZMQ SUB Message Source --- Gets PDU input from ZMQ socket**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Address | string | ZeroMQ socket address the block will connect to |
-| Timeout (msec) | float | Receive timeout in milliseconds |
+These are the blocks used in the flowgraph along with their parameters that concern the SDR ground station.
 
-**Encoder --- Encodes PDU into packet format**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Access Code | string | 32 bit access code of packet being encoded |
-| Bits per Symbol | int | # bits per symbol for signals transmitted/received |
-| Samples per Symbol | int | # samples per symbol for signals transmitted/received |
-| Preamble | string | 16 bit preamble of packet being encoded |
+**Options --- Settings for the flowgraph including id, title, author, output language (language the flowgraph is generated in)**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Title | String | N/A | Name of the flowgraph |
+| Author | String | N/A | Author of the flowgraph |
+| Output Language | Drop down menu | N/A | Language (Python/C++) the flowgraph will be generated in |
+| Generate Options | Drop down menu | N/A | Type of flowgraph that is generated (Graphical/Non-graphical/Hier) |
+
+**ZMQ SUB Message Source --- Gets PDU input from ZMQ socket**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Address | String | N/A | ZeroMQ socket address the block will connect to |
+| Timeout | Float | Milliseconds | Data receive timeout |
+
+**Encoder --- Encodes PDU into packet format**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Access Code | String | N/A | 32 bit access code of packet being encoded |
+| Bits per Symbol | Int | Bits/symbol | # bits per symbol for signals transmitted/received |
+| Samples per Symbol | Int | Samples/symbol | # samples per symbol for signals transmitted/received |
+| Preamble | String | N/A | 16 bit preamble of packet being encoded |
 
 **Message Debug --- Prints PDU**
 
-**Modulator --- Converts PDU to tagged stream and GFSK modulates signal**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Samples per Symbol | int | # samples per symbol for signals transmitted/received |
-| Decimation | int | Input port sample rate in samples per second |
-| Interpolation | int | Output port sample rate in samples per second |
+**Modulator --- Converts PDU to tagged stream and GFSK modulates signal**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Samples per Symbol | Int | Samples/symbol | # samples per symbol for signals transmitted/received |
+| Decimation | Int | Samples/second | Input port sample rate |
+| Interpolation | Int | Samples/second | Output port sample rate |
 
-**Mute --- Connects/Disconnects data stream, enabling/disabling samples passing through this block**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Mute | bool | Connects if false, disconnects if true |
+**Mute --- Connects/Disconnects data stream, enabling/disabling samples passing through this block**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Mute | Bool | N/A | Connects if false, disconnects if true |
 
-**Amp Key --- Toggles rts# pin of USB/serial converter**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Post Tx Delay (ms) | int | Time to keep pin toggled after data is sent in milliseconds |
-| Pre Tx Delay (ms) | int | Time to toggle pin before data is sent in milliseconds |
-| Sample Rate | int | Sample rate of this hier block in samples per second |
+**Amp Key --- Toggles Parameter# pin of USB/serial converter**
+| Parameter Name | Variable Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Post Tx Delay | Int | Milliseconds | Time to keep pin toggled after data is sent |
+| Pre Tx Delay | Int | Milliseconds | Time to toggle pin before data is sent |
+| Sample Rate | Int | Samples/second | Sample rate of this hier block |
 
-**QT GUI Frequency Sink --- Displays transmitted signal on a graph of Relative Gain (dB) vs Frequency (MHz)**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Name | string | Name of the graph |
-| FFT Size | int | Scope of the displayed graph, higher means more is visible |
-| Center Frequency (Hz) | real | Center frequency of the signal in hertz |
-| Bandwidth (Hz) | real | Bandwidth of the signal in hertz |
+**QT GUI Frequency Sink --- Displays transmitted signal on a graph of Relative Gain (dB) vs Frequency (MHz)**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Name | String | N/A | Name of the graph |
+| FFT Size | Int | Samples | Scope of the displayed graph, higher means more is visible |
+| Center Frequency | Real | Hertz | Center frequency of the signal |
+| Bandwidth | Real | Hertz | Bandwidth of the signal |
 
-**QT GUI Time Sink --- Displays transmitted signal on a graph of Amplitude (0-1) vs Time (ms)**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Name | string | Name of the graph |
-| Number of Points | int | Scope of the displayed graph, higher means more is visible |
-| Sample Rate | float | Sample rate of the signal in samples per second |
-| Autoscale | drop down menu | Enable/Disable graph from automatically scaling to have whole signal visible |
+**QT GUI Time Sink --- Displays transmitted signal on a graph of Amplitude (0-1) vs Time (ms)**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Name | String | N/A | Name of the graph |
+| Number of Points | Int | Samples | Scope of the displayed graph, higher means more is visible |
+| Sample Rate | Float | Samples/second | Sample rate of the signal |
+| Autoscale | Drop down menu | N/A | Enable/Disable graph from automatically scaling to have whole signal visible |
 
-**UHD: USRP Sink --- Transmits signal**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Device Address | string | Serial # of transmitting USRP |
-| Sync | drop down menu | Device the USRP should sync its clock to |
-| Samp rate (Sps) | real | Sample rate of USRP in samples per second |
-| Ch0: Center Freq (Hz) | real | Frequency USRP transmits at in hertz |
-| Ch0: Gain Value | real | Gain of USRP transmitting antenna in decibels |
-| Ch0: Gain Type | string | Option of absolute gain in decibels or normalized gain |
-| Ch0: Antenna | string | Antenna USRP will transmit with |
-| Ch0: Bandwidth (Hz) | real | Bandwidth of USRP anti-aliasing filter in hertz |
+**UHD: USRP Sink --- Transmits signal**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Device Address | String | N/A | Serial # of transmitting USRP |
+| Sync | Drop down menu | N/A Device the USRP should sync its clock to |
+| Samp rate | Real | Samples/second | Sample rate of USRP |
+| Ch0: Center Freq | Real | Hertz | Frequency USRP transmits at |
+| Ch0: Gain Value | Real | Decibels | Gain of USRP transmitting antenna |
+| Ch0: Gain Type | String | N/A | Option of absolute gain in decibels or normalized gain |
+| Ch0: Antenna | String | N/A | Antenna USRP will transmit with |
+| Ch0: Bandwidth | Real | Hertz | Bandwidth of USRP anti-aliasing filter |
 
-**UHD: USRP Source --- Receives signal**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Device Address | string | Serial # of transmitting USRP |
-| Sync | drop down menu | Device the USRP should sync its clock to |
-| Samp rate (Sps) | real | Sample rate of USRP in samples per second |
-| Ch0: Center Freq (Hz) | real | Frequency USRP receives at in hertz |
-| Ch0: AGC | string | Enable/Disable automatic gain control of the USRP |
-| Ch0: Gain Value | real | Gain of USRP receiving antenna in decibels |
-| Ch0: Gain Type | string | Option of absolute gain in decibels or normalized gain |
-| Ch0: Antenna | string | Antenna USRP will receive with |
-| Ch0: Bandwidth (Hz) | real | Bandwidth of USRP anti-aliasing filter in hertz |
+**UHD: USRP Source --- Receives signal**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Device Address | String | N/A | Serial # of transmitting USRP |
+| Sync | Drop down menu | N/A | Device the USRP should sync its clock to |
+| Samp rate | Real | Samples/second | Sample rate of USRP |
+| Ch0: Center Freq | Real | Hertz | Frequency USRP receives at |
+| Ch0: AGC | String | N/A | Enable/Disable automatic gain control of the USRP |
+| Ch0: Gain Value | Real | Decibels | Gain of USRP receiving antenna |
+| Ch0: Gain Type | String | N/A | Option of absolute gain in decibels or normalized gain |
+| Ch0: Antenna | String | N/A | Antenna USRP will receive with |
+| Ch0: Bandwidth | Real | Hertz | Bandwidth of USRP anti-aliasing filter |
 
-**Demodulator --- Demodulates GFSK modulated signal**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Sample Rate Low Pass | real | Sample rate of the Low Pass Filter in this hier block in samples per second |
-| Sample Rate Xlating | real | Sample rate of the Frequency Xlating FFT Filter in samples per second |
+**Demodulator --- Demodulates GFSK modulated signal**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Sample Rate Low Pass | Real | Samples/second | Sample rate of the Low Pass Filter in this hier block |
+| Sample Rate Xlating | Real | Samples/second | Sample rate of the Frequency Xlating FFT Filter |
 
-**Decoder --- Converts tagged stream to PDU, decodes the packet and trims to only the length and data fields**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Access Code | string | 32 bit access code of packet being decoded |
+**Decoder --- Converts tagged stream to PDU, decodes the packet and trims to only the length and data fields**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Access Code | String | N/A | 32 bit access code of packet being decoded |
 
-**Print Timestamp --- Prints year-month-day hour:minute:second:millisecond at GMT timezone**  
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| Format | string | Time units to print (hours/seconds/etc) |
-| Packet counter | bool | Counts # of bytes in PDUs sent through this block |
+**Print Timestamp --- Prints year-month-day hour:minute:second:millisecond at GMT timezone**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Format | String | Year-month-day hour:minute:second:millisecond | Time units to print |
+| Packet counter | Bool | # PDUs | Counts # of PDUs sent through this block |
 
 ## Install necessary parts
+
+These are links to all of the necessary programs and resources for the SDR ground station along with instructions on how to install them.
 
 ### SmartRF Studio 7
 
@@ -187,6 +213,8 @@ $ sudo ldconfig
 Updating a module can be done manually by running the last 4 commands from the build directory in a terminal.
 
 # How to view/use
+
+These are instructions on how to use ZeroMQ, how to view the running flowgraph's graphs effectively, and how to view GRC's terminal outputs.
 
 ## Running ZeroMQ
 
@@ -244,6 +272,8 @@ Some blocks in the flowgraph will output to the GRC terminal directly below the 
 1. The "Print timestamp" block prints the date and time of packets that pass through it and the number of packets that have been sent through it since startup.
 
 ## Transmission modes
+
+These are decriptions of the SDR ground stations transmission modes and how to start each of them.
 
 For CC1110 to USRP transmission, start SmartRF in "Packet TX" mode. Then in GRC make sure that the transmission section of the flowgraph is disabled and the reception section is enabled. Start the flowgraph and observe the packets in the GRC terminal as they arrive.
 
