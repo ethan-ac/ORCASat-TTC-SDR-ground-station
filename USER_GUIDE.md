@@ -171,9 +171,9 @@ These are links to all of the necessary programs and resources for the SDR groun
 
 ### SmartRF Studio 7
 
-https://www.ti.com/tool/SMARTRFTM-STUDIO
+Download link [here](https://www.ti.com/tool/SMARTRFTM-STUDIO).
 
-The xml file in the gitlab repo can be installed alongside SmartRF and opened in a SmartRF control panel so the exact setting used during development can be recreated later.
+The xml file in the gitlab repo should be downloaded alongside SmartRF and opened in a SmartRF control panel so the exact setting used during development can be recreated later.
 
 ### GNU Radio
 
