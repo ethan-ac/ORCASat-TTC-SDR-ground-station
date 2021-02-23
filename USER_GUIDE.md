@@ -6,12 +6,12 @@
 1. [What You'll Need](#what-youll-need)
 1. [Variables](#variables)
 1. [Blocks](#blocks)
-1. [Install necessary parts](#install_necesarry_parts)
+1. [Install necessary parts](#install-necessary-parts)
     * [SmartRF Studio 7](#smartrf-studio-7)
     * [GNU Radio](#gnu-radio)
     * [OOT Modules](#oot-modules)
-1. [How to view/use](#how-to-use/view)
-    * [Using ZeroMQ](#using-zeromq)
+1. [How to view and use](#how-to-view-and-use)
+    * [Running ZeroMQ](#running-zeromq)
     * [Viewing running flowgraph](#viewing-running-flowgraph)
     * [Reading GRC terminal](#reading-grc-terminal)
 1. [Transmission modes](#transmission-modes)
@@ -212,7 +212,7 @@ $ sudo ldconfig
 ```
 Updating a module can be done manually by running the last 4 commands from the build directory in a terminal.
 
-# How to view/use
+# How to view and use
 
 These are instructions on how to use ZeroMQ, how to view the running flowgraph's graphs effectively, and how to view GRC's terminal outputs.
 
