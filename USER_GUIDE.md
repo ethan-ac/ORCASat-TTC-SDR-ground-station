@@ -49,12 +49,9 @@ Install command for GNU Radio and GNU Radio Companion (GRC)
 ```
 $ sudo apt install gnuradio
 ```
+
 ### OOT Modules
 
-Install command for gr-ampkey
-```
-$ git clone https://github.com/whateverthislinkendsupbeing/gr-ampkey.git
-```
 Install command for gr-pduencode
 ```
 $ git clone https://github.com/whateverthislinkendsupbeing/gr-pduencode.git
@@ -63,13 +60,13 @@ Install command for gr-satellites
 ```
 $ git clone https://github.com/daniestevez/gr-satellites.git
 ```
-Each OOT module must be installed into GNU Radio initially. They must also be updated if any edits are made to them. These are both done from a terminal that is in the desired OOT module's directory.
+Each OOT module must be installed into GNU Radio initially. They must also be updated if any edits are made to them. These are both done from a terminal in the desired OOT module's directory.
 
-Both the installing and updating can be done with a custom shell script after copying it into the OOT modules directory and using the following commands.
+Both the installing and updating can be done with a custom shell script (after copying it into the OOT module's directory for gr-satellites) using the following commands.
 ```
-$ sudo ./build.sh
+$ ./build.sh
 ```
-Installing can be done manually using the following commands.
+Installing can be done manually using the following commands from the desired OOT module's directory.
 ```
 $ mkdir build
 $ cd build
@@ -82,7 +79,11 @@ Updating a module can be done manually by running the last 4 commands from the b
 
 ### Hier blocks
 
-To get the hier blocks used in gndstation_hier.grc, in GRC open each of the .grc files in the "hier-block" folder and click the "Generate the flor graph" button. Then open gndstation_hier.grc and the hier block should be present. If not try click the "Reload Blocks" button.
+To make hier blocks of the gr-pduencode OOT module available, in GRC open each of the .grc files in the /gr-pduencode/examples directory and click the "Generate the flow graph" button. Then open gndstation_hier.grc and the hier block should be present. If not try click the "Reload Blocks" button.
+
+The hier blocks should be in the "GRC Hier Blocks" tab on the right side of GRC.
+
+To view the blocks that compose a hier block, right click on the hier block and go More > Open Hier.
 
 # How to view and use
 
@@ -139,7 +140,7 @@ Some blocks in the flowgraph will output to the GRC terminal directly below the 
 
 1. The "Message Debug" block prints the number of bytes and bytes as hexadecimal of a received packet. In the ground station flowgraph this block does so with the fully encoded packet and the decoded packet after it has been transmitted and received. For the packet that has been transmitted and received it also outputs a message that details the operating frequency, sample rate, and reception time of the USRP used to receive it.
 
-1. The  "Decoder" hier block, or more specifically the "Check CC11xx CTC-16" in the "Decoder" hier block, prints whether or not the CRC16 check for the packet succeeds.
+1. The "Decoder" hier block, or more specifically the "Check CC11xx CTC-16" in the "Decoder" hier block, prints whether or not the CRC16 check for the packet succeeds.
 
 1. The "Print timestamp" block prints the date and time of packets that pass through it and the number of packets that have been sent through it since startup.
 
