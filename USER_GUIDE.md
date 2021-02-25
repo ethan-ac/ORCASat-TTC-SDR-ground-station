@@ -10,6 +10,7 @@
     * [SmartRF Studio 7](#smartrf-studio-7)
     * [GNU Radio](#gnu-radio)
     * [OOT Modules](#oot-modules)
+    * [Hier Blocks](#hier-blocks)
 1. [How to view and use](#how-to-view-and-use)
     * [Running ZeroMQ](#running-zeromq)
     * [Viewing running flowgraph](#viewing-running-flowgraph)
@@ -211,6 +212,10 @@ $ sudo make install
 $ sudo ldconfig
 ```
 Updating a module can be done manually by running the last 4 commands from the build directory in a terminal.
+
+### Hier blocks
+
+To get the hier blocks used in the GNU Radio flowgraph, in GRC open each of the .grc files in the "hier-block" folder and click the "Generate the flor graph" button. Then open gndstation_hier.grc and the hier block should be present. If not try click the "Reload Blocks" button.
 
 # How to view and use
 
