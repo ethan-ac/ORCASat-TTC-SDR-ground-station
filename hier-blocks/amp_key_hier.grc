@@ -5,7 +5,8 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: ''
+    description: This block flips the state of RTS# pin of a USB/serial converter
+      before, during, and after the Tx USRP transmits.
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: hb

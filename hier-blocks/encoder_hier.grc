@@ -5,7 +5,8 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: ''
+    description: This block encodes a message of type PDU into a CC1110 structured
+      packet of type PDU.
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: hb

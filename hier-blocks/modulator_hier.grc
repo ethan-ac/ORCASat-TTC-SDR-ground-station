@@ -5,7 +5,8 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: ''
+    description: This block GFSK modulates a packet of type PDU to be transmitted
+      by the Tx USRP.
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: hb

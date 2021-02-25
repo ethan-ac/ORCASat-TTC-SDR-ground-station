@@ -5,7 +5,8 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: ''
+    description: This block decodes a CC1110 structured packet to be only the length
+      field and data field, it also checks the crc16.
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: hb

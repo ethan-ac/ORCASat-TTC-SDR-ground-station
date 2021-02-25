@@ -5,7 +5,8 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: ''
+    description: This block demodulates GFSK signals using the standard expansion
+      of the "GFSK Demod" block.
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: hb
@@ -46,7 +47,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [9, 120]
+    coordinate: [9, 139]
     rotation: 0
     state: enabled
 - name: analog_quadrature_demod_cf_0
