@@ -26,7 +26,7 @@ This user guide aims to provide users with all of the information needed to run 
 These are the parts needed to run the GNU Radio ground station flowgraph.
 
 * Computer running Windows that can run SmartRF Studio 7
-* Computer running Linux that can run GNU Radio 3.8.
+* Computer running Linux that can run GNU Radio 3.8.2.0.
 * USRP B210 with antenna
 * CC1110 on a functioning board (ie TT&C breakout board) with antenna
 * CC Debugger with ribbon cable that comes with it
