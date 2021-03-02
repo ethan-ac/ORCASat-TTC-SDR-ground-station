@@ -72,7 +72,7 @@ $ uhd_find_devices
 ```
 <div align="center">
 
-![](/images/uhd_find_device_output.png)
+![](/images/uhd_find_devices_output.png)
 
 Correst output of "uhd_find_devices"
 
