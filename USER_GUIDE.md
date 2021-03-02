@@ -6,8 +6,9 @@
 1. [What You'll Need](#what-youll-need)
 1. [Install necessary parts](#install-necessary-parts)
     * [SmartRF Studio 7](#smartrf-studio-7)
+    * [Univerisal Software Radio Peripheral (USRP) B210](#usrp-b210)
     * [GNU Radio](#gnu-radio)
-    * [OOT Modules](#oot-modules)
+    * [Out-of-Tree (OOT) Modules](#oot-modules)
     * [Hier Blocks](#hier-blocks)
 1. [How to view and use](#how-to-view-and-use)
     * [Running ZeroMQ](#running-zeromq)
@@ -43,6 +44,48 @@ Download link [here](https://www.ti.com/tool/SMARTRFTM-STUDIO).
 
 The xml file in the gitlab repo should be downloaded alongside SmartRF and opened in a SmartRF control panel so the exact setting used during development can be recreated later.
 
+### Univerisal Software Radio Peripheral (USRP) B210
+
+Install commands for the USRP B210 being used in the ground station.
+
+USRP B210 Dependecies.
+```
+$ sudo apt-get install libboost-all-dev libusb-1.0-0-dev doxygen python3-docutils python3-mako python3-numpy python3-requests python3-ruamel.yaml python3-setuptools cmake build-essential
+```
+Installing USRP Hardware Driver (UHD).
+```
+$ sudo apt-get install libuhd-dev
+```
+Installing UHD from Personal Package Archives (PPA). (Optional if previous UHD install method fails)
+```
+$ sudo add-apt-repository ppa:ettusresearch/uhd
+$ sudo apt-get update
+$ sudo apt-get install libuhd-dev
+```
+Downloading B210's FPGA image.
+```
+$ sudo /usr/local/lib/uhd/utils/uhd_images_downloader.py
+```
+Can check if USRP B210 is installed correctly with the following command.
+```
+$ uhd_find_devices
+```
+<div align="center">
+
+![](/images/uhd_find_device_output.png)
+
+Correst output of "uhd_find_devices"
+
+<div align="left">
+
+If no device is found and the error message suggests running "uhd_images_downloader.py" at some location, do as the errror message asks with "sudo" before.
+
+Some additional resources on how to install a USRP.
+
+https://files.ettus.com/manual/page_install.html
+
+https://files.ettus.com/manual/page_build_guide.html
+
 ### GNU Radio
 
 Install command for GNU Radio and GNU Radio Companion (GRC)
@@ -50,7 +93,7 @@ Install command for GNU Radio and GNU Radio Companion (GRC)
 $ sudo apt install gnuradio
 ```
 
-### OOT Modules
+### Out-of-Tree (OOT) Modules
 
 Install command for gr-pduencode
 ```
