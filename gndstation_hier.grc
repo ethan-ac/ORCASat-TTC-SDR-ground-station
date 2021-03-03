@@ -232,24 +232,6 @@ blocks:
     coordinate: [8, 469]
     rotation: 0
     state: true
-- name: amp_key_0
-  id: amp_key
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    post_tx: post_tx
-    pre_tx: pre_tx
-    samp_rate_usrp: samp_rate_usrp
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1225, 326]
-    rotation: 0
-    state: enabled
 - name: analog_sig_source_x_0
   id: analog_sig_source_x
   parameters:
@@ -269,7 +251,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 399]
+    coordinate: [766, 399]
     rotation: 0
     state: disabled
 - name: blocks_message_debug_0
@@ -348,7 +330,7 @@ blocks:
     bus_structure: null
     coordinate: [564, 940]
     rotation: 0
-    state: true
+    state: enabled
 - name: encode_hier_0
   id: encode_hier
   parameters:
@@ -543,7 +525,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1492, 346]
+    coordinate: [1280, 346]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2
@@ -640,7 +622,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1492, 450]
+    coordinate: [1280, 450]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2_0
@@ -1030,7 +1012,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1492, 185]
+    coordinate: [1280, 185]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1404,22 +1386,6 @@ blocks:
     coordinate: [283, 884]
     rotation: 0
     state: enabled
-- name: zeromq_pub_msg_sink_0
-  id: zeromq_pub_msg_sink
-  parameters:
-    address: tcp://127.0.0.1:44444
-    affinity: ''
-    alias: ''
-    bind: ''
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1447, 992]
-    rotation: 0
-    state: disabled
 - name: zeromq_sub_msg_source_1
   id: zeromq_sub_msg_source
   parameters:
@@ -1440,19 +1406,16 @@ blocks:
     state: enabled
 
 connections:
-- [amp_key_0, '0', qtgui_freq_sink_x_1, '0']
-- [amp_key_0, '0', qtgui_time_sink_x_2, '0']
-- [amp_key_0, '0', uhd_usrp_sink_0, '0']
 - [analog_sig_source_x_0, '0', blocks_mute_xx_0, '0']
-- [blocks_mute_xx_0, '0', amp_key_0, '0']
+- [blocks_mute_xx_0, '0', qtgui_freq_sink_x_1, '0']
+- [blocks_mute_xx_0, '0', qtgui_time_sink_x_2, '0']
+- [blocks_mute_xx_0, '0', uhd_usrp_sink_0, '0']
 - [decoder_hier_0, fail, satellites_print_timestamp_0, in]
 - [decoder_hier_0, ok, satellites_print_timestamp_0, in]
 - [demodulator_hier_1, '0', decoder_hier_0, '0']
-- [encode_hier_0, out, blocks_message_debug_0, print_pdu]
 - [encode_hier_0, out, modulator_hier_0, in]
 - [modulator_hier_0, '0', blocks_mute_xx_0, '0']
 - [satellites_print_timestamp_0, out, blocks_message_debug_0_1, print_pdu]
-- [satellites_print_timestamp_0, out, zeromq_pub_msg_sink_0, in]
 - [uhd_usrp_source_0, '0', demodulator_hier_1, '0']
 - [uhd_usrp_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [uhd_usrp_source_0, '0', qtgui_time_sink_x_2_0, '0']

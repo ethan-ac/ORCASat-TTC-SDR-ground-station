@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode_swig.i
+gnuradio.i
+/home/ethan/sdr-ground-station/gr-pduencode/swig/gnuradio.i
+pduencode_swig_doc.i
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode_swig_doc.i
+pduencode/length.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/length.h
+pduencode/crc16.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/crc16.h
+pduencode/usrp_pad.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/usrp_pad.h
+pduencode/bytes.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/bytes.h
+pduencode/length.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/length.h
+pduencode/crc16.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/crc16.h
+pduencode/usrp_pad.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/usrp_pad.h
+pduencode/bytes.h
+/home/ethan/sdr-ground-station/gr-pduencode/swig/pduencode/bytes.h
+

@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/ethan/sdr-ground-station/gr-pduencode/build/lib",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_pduencode_EXPORTS -I/home/ethan/sdr-ground-station/gr-pduencode/lib/../include  -O3 -DNDEBUG -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-pduencode.dir/length_impl.cc.o -c /home/ethan/sdr-ground-station/gr-pduencode/lib/length_impl.cc",
+  "file": "/home/ethan/sdr-ground-station/gr-pduencode/lib/length_impl.cc"
+},
+{
+  "directory": "/home/ethan/sdr-ground-station/gr-pduencode/build/lib",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_pduencode_EXPORTS -I/home/ethan/sdr-ground-station/gr-pduencode/lib/../include  -O3 -DNDEBUG -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-pduencode.dir/crc16_impl.cc.o -c /home/ethan/sdr-ground-station/gr-pduencode/lib/crc16_impl.cc",
+  "file": "/home/ethan/sdr-ground-station/gr-pduencode/lib/crc16_impl.cc"
+},
+{
+  "directory": "/home/ethan/sdr-ground-station/gr-pduencode/build/lib",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_pduencode_EXPORTS -I/home/ethan/sdr-ground-station/gr-pduencode/lib/../include  -O3 -DNDEBUG -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-pduencode.dir/usrp_pad_impl.cc.o -c /home/ethan/sdr-ground-station/gr-pduencode/lib/usrp_pad_impl.cc",
+  "file": "/home/ethan/sdr-ground-station/gr-pduencode/lib/usrp_pad_impl.cc"
+},
+{
+  "directory": "/home/ethan/sdr-ground-station/gr-pduencode/build/lib",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_pduencode_EXPORTS -I/home/ethan/sdr-ground-station/gr-pduencode/lib/../include  -O3 -DNDEBUG -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-pduencode.dir/bytes_impl.cc.o -c /home/ethan/sdr-ground-station/gr-pduencode/lib/bytes_impl.cc",
+  "file": "/home/ethan/sdr-ground-station/gr-pduencode/lib/bytes_impl.cc"
+},
+{
+  "directory": "/home/ethan/sdr-ground-station/gr-pduencode/build/swig",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dpduencode_swig_EXPORTS -I/home/ethan/sdr-ground-station/gr-pduencode/build/swig -I/home/ethan/sdr-ground-station/gr-pduencode/swig -I/usr/include/gnuradio/swig -I/home/ethan/sdr-ground-station/gr-pduencode/lib/../include -isystem /usr/include/python3.8  -O3 -DNDEBUG -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/pduencode_swig.dir/CMakeFiles/pduencode_swig.dir/pduencode_swigPYTHON_wrap.cxx.o -c /home/ethan/sdr-ground-station/gr-pduencode/build/swig/CMakeFiles/pduencode_swig.dir/pduencode_swigPYTHON_wrap.cxx",
+  "file": "/home/ethan/sdr-ground-station/gr-pduencode/build/swig/CMakeFiles/pduencode_swig.dir/pduencode_swigPYTHON_wrap.cxx"
+}
+]
