@@ -60,9 +60,15 @@ Unplug and then replug the USRP B210 being used and run the following command.
 ```
 $ uhd_find_devices
 ```
+<div align="center">
+
 It should result in an error that will ask you to run "~/uhd_images_downloader.py" to download FPGA images for the B210 USRP, do so with a "sudo" in front of it.
 
-ADD IMAGE OF ERROR
+![](/images/uhd_find_devices_error.png)
+
+Error from uhd_find_devices asking to run the FPGA downloader.
+
+<div align="left">
 
 Downloading B210's FPGA image.
 ```
@@ -124,18 +130,23 @@ Check if the correct version is installed.
 ```
 apt-cache policy gnuradio
 ```
+Some additional resources on how to install GNU Radio and fix errors
+
+https://wiki.gnuradio.org/index.php/InstallingGR
+
+https://wiki.gnuradio.org/index.php/ModuleNotFoundError#B._Finding_the_Python_library
 
 ### Out-of-Tree (OOT) Modules
 
-Install gr-satellites dependecies
+Install gr-satellites dependecies.
 ```
 pip3 install --user --upgrade construct requests
 ```
-Install gr-satellites
+Install gr-satellites.
 ```
 $ git clone https://github.com/daniestevez/gr-satellites.git --branch maint-3.8
 ```
-Install gr-pduencode
+Install gr-pduencode.
 ```
 $ git clone https://github.com/whateverthislinkendsupbeing/gr-pduencode.git
 ```
