@@ -48,7 +48,7 @@ The xml file in the gitlab repo should be downloaded alongside SmartRF and opene
 
 Install commands for the USRP B210 being used in the ground station.
 
-USRP B210 Dependecies.
+Installing USRP B210 dependecies.
 ```
 $ sudo apt-get install libboost-all-dev libusb-1.0-0-dev doxygen python3-docutils python3-mako python3-numpy python3-requests python3-ruamel.yaml python3-setuptools cmake build-essential
 ```
@@ -56,17 +56,19 @@ Installing USRP Hardware Driver (UHD).
 ```
 $ sudo apt-get install libuhd-dev
 ```
-Installing UHD from Personal Package Archives (PPA). (Optional if previous UHD install method fails)
+Unplug and then replug the USRP B210 being used and run the following command. 
 ```
-$ sudo add-apt-repository ppa:ettusresearch/uhd
-$ sudo apt-get update
-$ sudo apt-get install libuhd-dev
+$ uhd_find_devices
 ```
+It should result in an error that will ask you to run "~/uhd_images_downloader.py" to download FPGA images for the B210 USRP, do so with a "sudo" in front of it.
+
+ADD IMAGE OF ERROR
+
 Downloading B210's FPGA image.
 ```
-$ sudo /usr/local/lib/uhd/utils/uhd_images_downloader.py
+$ sudo /usr/lib/uhd/utils/uhd_images_downloader.py
 ```
-Can check if USRP B210 is installed correctly with the following command.
+Can check if USRP B210 is installed correctly with the following command again.
 ```
 $ uhd_find_devices
 ```
@@ -88,20 +90,54 @@ https://files.ettus.com/manual/page_build_guide.html
 
 ### GNU Radio
 
-Install command for GNU Radio and GNU Radio Companion (GRC)
+Install dependencies for GNU Radio.
 ```
-$ sudo apt install gnuradio
+sudo apt-get install liborc-0.4
+sudo apt install swig
+```
+Set PYTHONPATH so OOT modules will be found by GNU Radio.
+
+Determine the GNU Radio install prefix, output of the following command is \{your-prefix}.
+```
+gnuradio-config-info --prefix
+```
+Finding the Python version being used, "python#" in output of the following command is \{Py-version}
+```
+find {your-prefix} -name gnuradio | grep "packages"
+```
+In ~/.basrc and ~/.profile of home directory add following 2 lines at ending.
+```
+export PYTHONPATH={your-prefix}/lib/{Py-version}/dist-packages:$PYTHONPATH
+export LD_LIBRARY_PATH={your-prefix}/lib:$LD_LIBRARY_PATH
+```
+Restart and open terminals after ~/.basrc and ~/.profile have been saved and check if the PYTHONPATH is saved.
+```
+echo $PYTHONPATH
+```
+Install GNU Radio from the maint-3.8 personal package archive (PPA).
+```
+sudo add-apt-repository ppa:gnuradio/gnuradio-releases-3.8
+sudo apt-get update
+sudo apt install gnuradio
+```
+Check if the correct version is installed.
+```
+apt-cache policy gnuradio
 ```
 
 ### Out-of-Tree (OOT) Modules
 
-Install command for gr-pduencode
+Install gr-satellites dependecies
+```
+pip3 install --user --upgrade construct requests
+```
+Install gr-satellites
+```
+$ git clone https://github.com/daniestevez/gr-satellites.git --branch maint-3.8
+```
+Install gr-pduencode
 ```
 $ git clone https://github.com/whateverthislinkendsupbeing/gr-pduencode.git
-```
-Install command for gr-satellites
-```
-$ git clone https://github.com/daniestevez/gr-satellites.git
 ```
 Each OOT module must be installed into GNU Radio initially. They must also be updated if any edits are made to them. These are both done from a terminal in the desired OOT module's directory.
 
