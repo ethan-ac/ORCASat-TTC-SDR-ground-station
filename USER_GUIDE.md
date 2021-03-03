@@ -27,7 +27,7 @@ This user guide aims to provide users with all of the information needed to run 
 These are the parts needed to run the GNU Radio ground station flowgraph.
 
 * Computer running Windows that can run SmartRF Studio 7
-* Computer running Linux that can run GNU Radio 3.8.2.0
+* Computer running Linux that can run GNU Radio 3.8.2
 * USRP B210 with antenna
 * CC1110 on a functioning board (ie TT&C breakout board) with antenna
 * CC Debugger with ribbon cable that comes with it
@@ -82,7 +82,7 @@ $ uhd_find_devices
 
 ![](/images/uhd_find_devices_output.png)
 
-Correst output of "uhd_find_devices"
+Correct output of "uhd_find_devices"
 
 <div align="left">
 
@@ -98,37 +98,37 @@ https://files.ettus.com/manual/page_build_guide.html
 
 Install dependencies for GNU Radio.
 ```
-sudo apt-get install liborc-0.4
-sudo apt install swig
+$ sudo apt-get install liborc-0.4
+$ sudo apt install swig
 ```
 Set PYTHONPATH so OOT modules will be found by GNU Radio.
 
 Determine the GNU Radio install prefix, output of the following command is \{your-prefix}.
 ```
-gnuradio-config-info --prefix
+$ gnuradio-config-info --prefix
 ```
 Finding the Python version being used, "python#" in output of the following command is \{Py-version}
 ```
-find {your-prefix} -name gnuradio | grep "packages"
+$ find {your-prefix} -name gnuradio | grep "packages"
 ```
 In ~/.basrc and ~/.profile of home directory add following 2 lines at ending.
 ```
-export PYTHONPATH={your-prefix}/lib/{Py-version}/dist-packages:$PYTHONPATH
-export LD_LIBRARY_PATH={your-prefix}/lib:$LD_LIBRARY_PATH
+$ export PYTHONPATH={your-prefix}/lib/{Py-version}/dist-packages:$PYTHONPATH
+$ export LD_LIBRARY_PATH={your-prefix}/lib:$LD_LIBRARY_PATH
 ```
 Restart and open terminals after ~/.basrc and ~/.profile have been saved and check if the PYTHONPATH is saved.
 ```
-echo $PYTHONPATH
+$ echo $PYTHONPATH
 ```
 Install GNU Radio from the maint-3.8 personal package archive (PPA).
 ```
-sudo add-apt-repository ppa:gnuradio/gnuradio-releases-3.8
-sudo apt-get update
-sudo apt install gnuradio
+$ sudo add-apt-repository ppa:gnuradio/gnuradio-releases-3.8
+$ sudo apt-get update
+$ sudo apt install gnuradio
 ```
 Check if the correct version is installed.
 ```
-apt-cache policy gnuradio
+$ apt-cache policy gnuradio
 ```
 Some additional resources on how to install GNU Radio and fix errors
 
@@ -138,12 +138,9 @@ https://wiki.gnuradio.org/index.php/ModuleNotFoundError#B._Finding_the_Python_li
 
 ### Out-of-Tree (OOT) Modules
 
-Install gr-satellites dependecies.
+Install gr-satellites and dependencies.
 ```
-pip3 install --user --upgrade construct requests
-```
-Install gr-satellites.
-```
+$ pip3 install --user --upgrade construct requests
 $ git clone https://github.com/daniestevez/gr-satellites.git --branch maint-3.8
 ```
 Install gr-pduencode along with all of the other SDR ground station resources. If you plan on making changes to the repository it is recommended that you copy the gr-pduencode directory to another location and do editing and building there, then delete the build directory and copy the gr-pduencode directory back into the sdr-ground-station directory. Mainly so your build directory isnt accidentally uploaded to the repository.
@@ -156,7 +153,7 @@ Both the installing and updating can be done with a custom shell script (after c
 ```
 $ ./build.sh
 ```
-Installing can be done manually using the following commands from the desired OOT module's directory.
+Installing can also be done manually using the following commands from the desired OOT module's directory.
 ```
 $ mkdir build
 $ cd build
