@@ -146,9 +146,9 @@ Install gr-satellites.
 ```
 $ git clone https://github.com/daniestevez/gr-satellites.git --branch maint-3.8
 ```
-Install gr-pduencode.
+Install gr-pduencode along with all of the other SDR ground station resources. If you plan on making changes to the repository it is recommended that you copy the gr-pduencode directory to another location and do editing and building there, then delete the build directory and copy the gr-pduencode directory back into the sdr-ground-station directory. Mainly so your build directory isnt accidentally uploaded to the repository.
 ```
-$ git clone https://github.com/whateverthislinkendsupbeing/gr-pduencode.git
+$ git clone https://gitlab.com/ORCASat/ttc/sdr-ground-station.git
 ```
 Each OOT module must be installed into GNU Radio initially. They must also be updated if any edits are made to them. These are both done from a terminal in the desired OOT module's directory.
 
