@@ -5,9 +5,9 @@ import zmq
 import time
 import pmt
 
+address = "tcp://127.0.0.1:5555"
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
-address = "tcp://127.0.0.1:5555"
 socket.bind(address)
 print("connected to", address)
 print("running...")
@@ -15,7 +15,7 @@ print("running...")
 while True:
     try:
     	msg = input()
-    	pdu = pmt.cons(pmt.make_dict(), pmt.init_u8vector(len(msg), msg.encode()))
+    	pdu = pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(msg), msg.encode()))
     	socket.send(pmt.serialize_str(pdu))
     	print(f"sending '{msg}'...")
     	time.sleep(1)

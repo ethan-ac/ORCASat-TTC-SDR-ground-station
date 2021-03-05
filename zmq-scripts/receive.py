@@ -14,8 +14,8 @@ import zmq
 
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
-address = "tcp://127.0.0.1:5555"
-socket.connect(addresss)   
+address = "tcp://127.0.0.1:55555"
+socket.connect(address)   
 socket.setsockopt_string(zmq.SUBSCRIBE, "")
 print("connected to", address)
 print("running...")
