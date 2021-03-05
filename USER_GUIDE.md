@@ -10,6 +10,7 @@
     * [GNU Radio](#gnu-radio)
     * [Out-of-Tree (OOT) Modules](#oot-modules)
     * [Hier Blocks](#hier-blocks)
+    * [Open-lst Python Tools](#open-lst-python-tools)
 1. [How to view and use](#how-to-view-and-use)
     * [Running ZeroMQ](#running-zeromq)
     * [Viewing running flowgraph](#viewing-running-flowgraph)
@@ -173,6 +174,51 @@ To make hier blocks of the gr-pduencode OOT module available, in GRC open each o
 The hier blocks should be in the "GRC Hier Blocks" tab on the right side of GRC.
 
 To view the blocks that compose a hier block, right click on the hier block and go More > Open Hier.
+
+### Open-lst Python Tools
+
+This is an OPTIONAL part of the SDR ground station currently as it is still being worked on.
+
+Open-lst's Python tools can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZMQ.
+
+Open-lst's Python tools were written using Python2 so pip must be installed
+```
+$ curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
+$ sudo python2 get-pip.py
+```
+Check if pip is installed.
+```
+$ pip2 --version
+```
+The latest version of TT&C's version of Open-lst can be downloaded from the Transceiver PoC Firmware repository.
+```
+$ git clone https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware.git
+```
+Navigate to the /transceiver-poc/firmware/open-lst directory and install the Python tools.
+```
+$ pip isntall -e tools
+```
+Then restart your computer to finish the installation.
+
+To test if the installation was successful connect to Open-lst's radio_terminal using ZMQ as tx-socket and rx-socket from the transceiver-poc-firmware/open-lst directory.
+```
+$ radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0102 --raw
+```
+Messages can be sent into radio_terminal and displayed as hexadecimal character by typing into the terminal of a running RX_Radio_terminal.py Python script in the sdr-ground-station/zmq-scripts directory.
+```
+$ python3 RX_Radio_terminal.py
+```
+Messages can be sent from radio_terminal using any of its valid commands.
+```
+> lst get_telem
+or
+> lst ascii hello_there
+```
+These commands outputs can be displayed in the terminal of a running TX_Radio_terminal.py Python script in the sdr-ground-station/zmq-scripts directory.
+```
+$ python3 TX_radio_terminal
+```
+ONCE gr-pduzmq WORKING WILL ADD/CHANGE THIS PART TO HOW TO USE CUSTOM ZMQ BLOCKS RATHER THAN PYTHON SCRIPTS.
 
 # How to view and use
 
