@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/ethan/gr-pduzmq/build/lib",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dgnuradio_pduzmq_EXPORTS -I/home/ethan/gr-pduzmq/lib/../include  -O3 -DNDEBUG -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/gnuradio-pduzmq.dir/newzmq_impl.cc.o -c /home/ethan/gr-pduzmq/lib/newzmq_impl.cc",
+  "file": "/home/ethan/gr-pduzmq/lib/newzmq_impl.cc"
+},
+{
+  "directory": "/home/ethan/gr-pduzmq/build/swig",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK -DGR_CTRLPORT -Dpduzmq_swig_EXPORTS -I/home/ethan/gr-pduzmq/build/swig -I/home/ethan/gr-pduzmq/swig -I/usr/include/gnuradio/swig -I/home/ethan/gr-pduzmq/lib/../include -isystem /usr/include/python3.8  -O3 -DNDEBUG -fPIC   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/pduzmq_swig.dir/CMakeFiles/pduzmq_swig.dir/pduzmq_swigPYTHON_wrap.cxx.o -c /home/ethan/gr-pduzmq/build/swig/CMakeFiles/pduzmq_swig.dir/pduzmq_swigPYTHON_wrap.cxx",
+  "file": "/home/ethan/gr-pduzmq/build/swig/CMakeFiles/pduzmq_swig.dir/pduzmq_swigPYTHON_wrap.cxx"
+},
+{
+  "directory": "/home/ethan/gr-pduzmq/build/swig",
+  "command": "/usr/bin/c++    -O3 -DNDEBUG   -fvisibility=hidden -std=gnu++11 -o CMakeFiles/_pduzmq_swig_doc_tag.dir/_pduzmq_swig_doc_tag.cpp.o -c /home/ethan/gr-pduzmq/build/swig/_pduzmq_swig_doc_tag.cpp",
+  "file": "/home/ethan/gr-pduzmq/build/swig/_pduzmq_swig_doc_tag.cpp"
+}
+]

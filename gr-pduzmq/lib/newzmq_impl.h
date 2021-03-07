@@ -40,8 +40,8 @@ namespace gr {
       
       int d_timeout; // microseconds, -1 is blocking
       bool d_bind;
-      zmq::socket_t *d_socket;
-      
+      zmq::socket_t d_socket;
+      zmq::context_t d_context;
 
      public:
       newzmq_impl(char* address, int timeout, bool bind);
@@ -50,11 +50,6 @@ namespace gr {
       void run();
       bool start() override;
       bool stop() override;
-      
-      int general_work(int noutput_items,
-           gr_vector_int &ninput_items,
-           gr_vector_const_void_star &input_items,
-           gr_vector_void_star &output_items);
 
     };
 

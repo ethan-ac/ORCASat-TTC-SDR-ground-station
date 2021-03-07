@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ethan/gr-pduzmq/swig/pduzmq_swig.i
+gnuradio.i
+/home/ethan/gr-pduzmq/swig/gnuradio.i
+pduzmq_swig_doc.i
+/home/ethan/gr-pduzmq/swig/pduzmq_swig_doc.i
+pduzmq/newzmq.h
+/home/ethan/gr-pduzmq/swig/pduzmq/newzmq.h
+pduzmq/newzmq.h
+/home/ethan/gr-pduzmq/swig/pduzmq/newzmq.h
+

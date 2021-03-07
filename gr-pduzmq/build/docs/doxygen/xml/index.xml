@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.17">
+  <compound refid="classgr_1_1pduzmq_1_1newzmq" kind="class"><name>gr::pduzmq::newzmq</name>
+    <member refid="classgr_1_1pduzmq_1_1newzmq_1a9751d2f702c8651ce43c558f8f684b0b" kind="typedef"><name>sptr</name></member>
+    <member refid="classgr_1_1pduzmq_1_1newzmq_1a3dd919a2fe9a699a71cd769a13780861" kind="function"><name>make</name></member>
+  </compound>
+  <compound refid="classgr_1_1pduzmq_1_1newzmq__impl" kind="class"><name>gr::pduzmq::newzmq_impl</name>
+    <member refid="classgr_1_1pduzmq_1_1newzmq__impl_1aa08b418cd3af78c7e2e1b85d5932e65c" kind="function"><name>newzmq_impl</name></member>
+    <member refid="classgr_1_1pduzmq_1_1newzmq__impl_1ab2a35ffeb6031b703bce8a59f69cc21f" kind="function"><name>~newzmq_impl</name></member>
+    <member refid="classgr_1_1pduzmq_1_1newzmq__impl_1a7c857f102fa05005421c270e27a46391" kind="function"><name>forecast</name></member>
+    <member refid="classgr_1_1pduzmq_1_1newzmq__impl_1a992b594b0dd27610970bdbf078edcb23" kind="function"><name>general_work</name></member>
+  </compound>
+  <compound refid="namespacegr" kind="namespace"><name>gr</name>
+  </compound>
+  <compound refid="namespacegr_1_1pduzmq" kind="namespace"><name>gr::pduzmq</name>
+  </compound>
+  <compound refid="namespacestd" kind="namespace"><name>std</name>
+  </compound>
+  <compound refid="api_8h" kind="file"><name>api.h</name>
+    <member refid="api_8h_1afe7e416827de1a2e0e35e68d4574c3fd" kind="define"><name>PDUZMQ_API</name></member>
+  </compound>
+  <compound refid="group__defs_8dox" kind="file"><name>group_defs.dox</name>
+  </compound>
+  <compound refid="main__page_8dox" kind="file"><name>main_page.dox</name>
+  </compound>
+  <compound refid="newzmq_8h" kind="file"><name>newzmq.h</name>
+  </compound>
+  <compound refid="newzmq__impl_8h" kind="file"><name>newzmq_impl.h</name>
+  </compound>
+  <compound refid="group__block" kind="group"><name>block</name>
+  </compound>
+  <compound refid="dir_49e56c817e5e54854c35e136979f97ca" kind="dir"><name>docs</name>
+  </compound>
+  <compound refid="dir_359d2bec989c9a8deeeb9aee335c1c76" kind="dir"><name>doxygen</name>
+  </compound>
+  <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>include</name>
+  </compound>
+  <compound refid="dir_97aefd0d527b934f1d99a682da8fe6a9" kind="dir"><name>lib</name>
+  </compound>
+  <compound refid="dir_f2cd86917185299abf5a1f0679072f3c" kind="dir"><name>other</name>
+  </compound>
+  <compound refid="dir_c2430bcf94a6a0eecce7fedc3c38b9b5" kind="dir"><name>pduzmq</name>
+  </compound>
+  <compound refid="indexpage" kind="page"><name>index</name>
+  </compound>
+</doxygenindex>

@@ -52,7 +52,7 @@ namespace gr {
                 gr::io_signature::make(0, 0, 0)),
                 d_timeout(timeout)
     {
-    /*
+    
     	    int major, minor, patch;
 	    zmq::version(&major, &minor, &patch);
 
@@ -68,9 +68,7 @@ namespace gr {
 	    } else {
 		d_socket.connect(address);
 	    }
-	    // sets up ports to be of type pdu
-    	    //message_port_register_out(pmt::mp("out"));
-    	    */
+    	    
     }
 
     /*
@@ -116,24 +114,10 @@ namespace gr {
             		return;
         	}
         	
-        	//zmq::message_t zmsg;
-        	//socket.recv(zmsg, zmq::recv_flags::none);
-        	//std::cout << zmsg << std::endl;
-        	//std::cout << "zmsg" << std::endl;
-        	
-    	// outputs new pdu
-    	//message_port_pub(
-        //	pmt::mp("out"),
-        //	pmt::cons(pmt::car(zmsg), pmt::init_u8vector(zmsg.size(), zmsg)));
+        	zmq::message_t zmsg;
+        	d_socket.recv(zmsg, zmq::recv_flags::none);
+        	std::cout << zmsg << std::endl;
     	}
-    }
-    
-    int newzmq_impl::general_work (int noutput_items,
-                       gr_vector_int &ninput_items,
-                       gr_vector_const_void_star &input_items,
-                       gr_vector_void_star &output_items)
-    {
-    	return 0;
     }
     
   } /* namespace pduzmq */

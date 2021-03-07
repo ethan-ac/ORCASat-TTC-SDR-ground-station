@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="dir_c2430bcf94a6a0eecce7fedc3c38b9b5" kind="dir">
+    <compoundname>pduzmq</compoundname>
+    <innerfile refid="api_8h">api.h</innerfile>
+    <innerfile refid="newzmq_8h">newzmq.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/ethan/gr-pduzmq/include/pduzmq/"/>
+  </compounddef>
+</doxygen>

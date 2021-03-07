@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -DNDEBUG   CMakeFiles/_pduzmq_swig_doc_tag.dir/_pduzmq_swig_doc_tag.cpp.o  -o _pduzmq_swig_doc_tag 
