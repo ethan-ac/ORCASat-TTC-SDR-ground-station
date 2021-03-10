@@ -49,23 +49,23 @@ The xml file in the gitlab repo should be downloaded alongside SmartRF and opene
 
 ### Univerisal Software Radio Peripheral (USRP) B210
 
-Install commands for the USRP B210 being used in the ground station.
+Install commands for the USRP B210s software. It is important to install this software before GNU Radio or else the USRP blocks will not be installed. If GNU Radio is installed first, rebuild GNU Radio.
 
-Installing USRP B210 dependecies.
+Install USRP B210 dependecies.
 ```
-$ sudo apt-get install libboost-all-dev libusb-1.0-0-dev doxygen python3-docutils python3-mako python3-numpy python3-requests python3-ruamel.yaml python3-setuptools cmake build-essential
+sudo apt-get install libboost-all-dev libusb-1.0-0-dev doxygen python3-docutils python3-mako python3-numpy python3-requests python3-ruamel.yaml python3-setuptools cmake build-essential
 ```
-Installing USRP Hardware Driver (UHD).
+Install USRP Hardware Driver (UHD).
 ```
-$ sudo apt-get install libuhd-dev
+sudo apt-get install libuhd-dev
 ```
-Unplug and then replug the USRP B210 being used and run the following command. 
+Plug in the USRP B210 being used now and run the following command. 
 ```
-$ uhd_find_devices
+uhd_find_devices
 ```
-<div align="center">
-
 It should result in an error that will ask you to run "~/uhd_images_downloader.py" to download FPGA images for the B210 USRP, do so with a "sudo" in front of it.
+
+<div align="center">
 
 ![](/images/uhd_find_devices_error.png)
 
@@ -73,13 +73,13 @@ Error from uhd_find_devices asking to run the FPGA downloader.
 
 <div align="left">
 
-Downloading B210's FPGA image.
+Download USRP FPGA images.
 ```
-$ sudo /usr/lib/uhd/utils/uhd_images_downloader.py
+sudo /usr/lib/uhd/utils/uhd_images_downloader.py
 ```
-Can check if USRP B210 is installed correctly with the following command again.
+Can check if USRP B210 is installed.
 ```
-$ uhd_find_devices
+uhd_find_devices
 ```
 <div align="center">
 
@@ -89,9 +89,7 @@ Correct output of "uhd_find_devices"
 
 <div align="left">
 
-If no device is found and the error message suggests running "uhd_images_downloader.py" at some location, do as the errror message asks with "sudo" before.
-
-Some additional resources on how to install a USRP.
+Some additional resources on how to install the software for the USRP B210 if it is need:
 
 https://files.ettus.com/manual/page_install.html
 
@@ -101,39 +99,53 @@ https://files.ettus.com/manual/page_build_guide.html
 
 Install dependencies for GNU Radio.
 ```
-$ sudo apt-get install liborc-0.4
-$ sudo apt install swig
+sudo apt install git cmake g++ libboost-all-dev libgmp-dev swig python3-numpy \
+python3-mako python3-sphinx python3-lxml doxygen libfftw3-dev \
+libsdl1.2-dev libgsl-dev libqwt-qt5-dev libqt5opengl5-dev python3-pyqt5 \
+liblog4cpp5-dev libzmq3-dev python3-yaml python3-click python3-click-plugins \
+python3-zmq python3-scipy python3-gi python3-gi-cairo gobject-introspection gir1.2-gtk-3.0
 ```
-Set PYTHONPATH so OOT modules will be found by GNU Radio.
+Download GNU Radio source code from github repository.
+```
+git clone https://github.com/gnuradio/gnuradio.git
+```
+Switch to the maint-3.8 branch of GNU Radio so GNU Radio 3.8 is installed.
+```
+cd gnuradio
+git checkout maint-3.8
+git submodule update --init --recursive
+```
+Build GNU Radio from source. May take upward of 20 minutes.
+```
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=/usr/bin/python3 ../
+make -j4 (this takes ~20 minutes)
+sudo make install
+sudo ldconfig
+```
+Set environmental variables for Python so OOT Modules can be installed.
 
-Determine the GNU Radio install prefix, output of the following command is \{your-prefix}.
+Find \{your-prefix} which is output of the following command. This is the prefix of where GNU Radio installs OOT Modules.
 ```
-$ gnuradio-config-info --prefix
+gnuradio-config-info --prefix
 ```
-Finding the Python version being used, "python#" in output of the following command is \{Py-version}
+Find \{Py-version} which is the "python#" in output of the following command. This is the Python version being used by GNU Radio to install OOT Modules.
 ```
-$ find {your-prefix} -name gnuradio | grep "packages"
+find {your-prefix} -name gnuradio | grep "packages"
 ```
-In ~/.basrc and ~/.profile of home directory add following 2 lines at ending.
+In ~/.basrc and ~/.profile at the home directory, add the following 2 lines at ending.
 ```
-$ export PYTHONPATH={your-prefix}/lib/{Py-version}/dist-packages:$PYTHONPATH
-$ export LD_LIBRARY_PATH={your-prefix}/lib:$LD_LIBRARY_PATH
+export PYTHONPATH={your-prefix}/lib/{Py-version}/dist-packages:$PYTHONPATH
+export LD_LIBRARY_PATH={your-prefix}/lib:$LD_LIBRARY_PATH
 ```
-Restart and open terminals after ~/.basrc and ~/.profile have been saved and check if the PYTHONPATH is saved.
+Open another terminal in the ~/gnuradio/build directory and refresh Linux libraries.
 ```
-$ echo $PYTHONPATH
+sudo ldconfig
 ```
-Install GNU Radio from the maint-3.8 personal package archive (PPA).
-```
-$ sudo add-apt-repository ppa:gnuradio/gnuradio-releases-3.8
-$ sudo apt-get update
-$ sudo apt install gnuradio
-```
-Check if the correct version is installed.
-```
-$ apt-cache policy gnuradio
-```
-Some additional resources on how to install GNU Radio and fix errors
+Restart your computer to apply the changes made.
+
+Some additional resources on how to install GNU Radio and fix errors if it is needed:
 
 https://wiki.gnuradio.org/index.php/InstallingGR
 
@@ -196,7 +208,7 @@ $ git clone https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware.git
 ```
 Navigate to the /transceiver-poc/firmware/open-lst directory and install the Python tools.
 ```
-$ pip isntall -e tools
+$ pip install -e tools
 ```
 Then restart your computer to finish the installation.
 
