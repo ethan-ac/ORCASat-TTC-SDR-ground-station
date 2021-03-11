@@ -206,7 +206,7 @@ This is an OPTIONAL part of the SDR ground station currently as it is still bein
 
 Open-lst's Python tools can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZMQ.
 
-Open-lst's Python tools were written using Python 2.7 so pip must be installed
+Open-lst's Python tools were written using Python 2.7 so pip must be installed.
 ```
 sudo apt install curl python
 curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
@@ -217,14 +217,14 @@ Install dependencies for later. The second command fixes an error where pycrypto
 python -m pip install --upgrade setuptools wheel
 sudo apt-get install build-essential libssl-dev libffi-dev python-dev
 ```
-Install the Python tools package
+Install the Python tools package.
 ```
 cd transceiver-poc-firmware/open-lst
 python -m pip install -e tools
 ```
 Restart your computer to apply the installations.
 
-To test if the installation was successful connect to Open-lst's radio_terminal using Zero MQ as its tx-socket and rx-socket.
+To test if the installation was successful connect to open-lst's radio_terminal using Zero MQ as its tx-socket and rx-socket.
 ```
 cd transceiver-poc-firmware/open-lst
 radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0102 --raw
