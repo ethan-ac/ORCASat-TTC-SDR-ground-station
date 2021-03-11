@@ -155,7 +155,7 @@ https://wiki.gnuradio.org/index.php/ModuleNotFoundError#B._Finding_the_Python_li
 
 ### Out-of-Tree (OOT) Modules
 
-Install commands for all of the OOT modules used in the creation of the SDR ground station. If you make changes to the OOT modules in this repository, make sure you delete the ~/build directory from the OOT module before pushing to this repository.This is because this directory is specific to your computer and won't work on another persons computer.
+Install commands for all of the OOT modules used in the creation of the SDR ground station. If you make changes to the OOT modules in this repository, make sure you delete the ~/build directory from the OOT module before pushing to this repository. This is because this directory is specific to your computer and won't work on another persons computer.
 
 Install SDR ground station resources.
 ```
