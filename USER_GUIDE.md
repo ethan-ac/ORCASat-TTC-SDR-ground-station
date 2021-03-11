@@ -122,7 +122,7 @@ Build GNU Radio from source. May take upward of 20 minutes.
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=/usr/bin/python3 ../
-make -j4 (this takes ~20 minutes)
+make -j4
 sudo make install
 sudo ldconfig
 ```
