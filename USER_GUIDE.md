@@ -97,6 +97,8 @@ https://files.ettus.com/manual/page_build_guide.html
 
 ### GNU Radio
 
+Commands for installing GNU Radio 3.8 from the maint-3.8 source branch on GNU Radio's Github page. Keep in mind, during the making of this user guide additional difficulties were encountered during the installation process of GNU Radio 3.8 if other versions or other install methods of GNU Radio previously existed on the computer being used.
+
 Install dependencies for GNU Radio.
 ```
 sudo apt install git cmake g++ libboost-all-dev libgmp-dev swig python3-numpy \
@@ -153,39 +155,50 @@ https://wiki.gnuradio.org/index.php/ModuleNotFoundError#B._Finding_the_Python_li
 
 ### Out-of-Tree (OOT) Modules
 
+Install commands for all of the OOT modules used in the creation of the SDR ground station. If you make changes to the OOT modules in this repository, make sure you delete the ~/build directory from the OOT module before pushing to this repository.This is because this directory is specific to your computer and won't work on another persons computer.
+
+Install SDR ground station resources.
+```
+git clone https://gitlab.com/ORCASat/ttc/sdr-ground-station.git
+```
 Install gr-satellites and dependencies.
 ```
-$ pip3 install --user --upgrade construct requests
-$ git clone https://github.com/daniestevez/gr-satellites.git --branch maint-3.8
+sudo apt install python3-pip
+pip3 install --user --upgrade construct requests
+git clone https://github.com/daniestevez/gr-satellites.git --branch maint-3.8
 ```
-Install gr-pduencode along with all of the other SDR ground station resources. If you plan on making changes to the repository it is recommended that you copy the gr-pduencode directory to another location and do editing and building there, then delete the build directory and copy the gr-pduencode directory back into the sdr-ground-station directory. Mainly so your build directory isnt accidentally uploaded to the repository.
-```
-$ git clone https://gitlab.com/ORCASat/ttc/sdr-ground-station.git
-```
-Each OOT module must be installed into GNU Radio initially. They must also be updated if any edits are made to them. These are both done from a terminal in the desired OOT module's directory.
+Then copy/paste "build.sh" from ~/sdr-ground-station/gr-pduencode or ~/sdr-ground-station/gr-pduzmq into ~/gr-satellites.
 
-Both the installing and updating can be done with a custom shell script (after copying it into the OOT module's directory for gr-satellites) using the following commands.
+Each OOT module must be installed into GNU Radio. They must also be updated if any edits are made to them. These are both done from a terminal located at the desired OOT module's directory. After editing and updating an OOT module, GRC must be restarted to apply the changes made.
+
+Both the installing and updating can be done with a custom shell script using the following commands in the desired OOT module's directoy.
 ```
-$ ./build.sh
+./build.sh
 ```
 Installing can also be done manually using the following commands from the desired OOT module's directory.
 ```
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make
-$ sudo make install
-$ sudo ldconfig
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+sudo ldconfig
 ```
-Updating a module can be done manually by running the last 4 commands from the build directory in a terminal.
+Updating a module can be done manually using the following commands from the ~/build directory of the desired OOT module.
+```
+cmake ..
+make
+sudo make install
+sudo ldconfig
+```
 
 ### Hier blocks
 
-To make hier blocks of the gr-pduencode OOT module available, in GRC open each of the .grc files in the /gr-pduencode/examples directory and click the "Generate the flow graph" button. Then open gndstation_hier.grc and the hier block should be present. If not try click the "Reload Blocks" button.
+To make the hier blocks of the SDR ground station available, in GRC open each of the .grc files in ~/sdr-ground-station/gr-pduencode/examples and click the "Generate the flow graph" button on the toolbar. Then open gndstation_hier.grc and the hier block should be present. If not try click the "Reload Blocks" button on the toolbar.
 
-The hier blocks should be in the "GRC Hier Blocks" tab on the right side of GRC.
+The hier blocks should be available in the "GRC Hier Blocks" tab on the right side of GRC.
 
-To view the blocks that compose a hier block, right click on the hier block and go More > Open Hier.
+To view the flowgraph of a hier block, right click on the hier block and go More > Open Hier.
 
 ### Open-lst Python Tools
 
@@ -193,42 +206,42 @@ This is an OPTIONAL part of the SDR ground station currently as it is still bein
 
 Open-lst's Python tools can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZMQ.
 
-Open-lst's Python tools were written using Python2 so pip must be installed
+Open-lst's Python tools were written using Python 2.7 so pip must be installed
 ```
-$ curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
-$ sudo python2 get-pip.py
+sudo apt install curl python
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+sudo python get-pip.py
 ```
-Check if pip is installed.
+Install dependencies for later. The second command fixes an error where pycrypto does not install and results in an error.
 ```
-$ pip2 --version
+python -m pip install --upgrade setuptools wheel
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev
 ```
-The latest version of TT&C's version of Open-lst can be downloaded from the Transceiver PoC Firmware repository.
+Install the Python tools package
 ```
-$ git clone https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware.git
+cd transceiver-poc-firmware/open-lst
+python -m pip install -e tools
 ```
-Navigate to the /transceiver-poc/firmware/open-lst directory and install the Python tools.
-```
-$ pip install -e tools
-```
-Then restart your computer to finish the installation.
+Restart your computer to apply the installations.
 
-To test if the installation was successful connect to Open-lst's radio_terminal using ZMQ as tx-socket and rx-socket from the transceiver-poc-firmware/open-lst directory.
+To test if the installation was successful connect to Open-lst's radio_terminal using Zero MQ as its tx-socket and rx-socket.
 ```
-$ radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0102 --raw
+cd transceiver-poc-firmware/open-lst
+radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0102 --raw
 ```
-Messages can be sent into radio_terminal and displayed as hexadecimal character by typing into the terminal of a running RX_Radio_terminal.py Python script in the sdr-ground-station/zmq-scripts directory.
+Messages can be sent into radio_terminal and displayed as hexadecimal character by typing into the terminal of a running RX_Radio_terminal.py Python script in ~/sdr-ground-station/zmq-scripts.
 ```
-$ python3 RX_Radio_terminal.py
+python3 RX_Radio_terminal.py
+```
+Commands outputs from radio_terminal can be displayed in the terminal of a running TX_Radio_terminal.py Python script in the ~/sdr-ground-station/zmq-scripts directory.
+```
+$ python3 TX_radio_terminal
 ```
 Messages can be sent from radio_terminal using any of its valid commands.
 ```
-> lst get_telem
+lst get_telem
 or
-> lst ascii hello_there
-```
-These commands outputs can be displayed in the terminal of a running TX_Radio_terminal.py Python script in the sdr-ground-station/zmq-scripts directory.
-```
-$ python3 TX_radio_terminal
+lst ascii hello_there
 ```
 ONCE gr-pduzmq WORKING WILL ADD/CHANGE THIS PART TO HOW TO USE CUSTOM ZMQ BLOCKS RATHER THAN PYTHON SCRIPTS.
 
