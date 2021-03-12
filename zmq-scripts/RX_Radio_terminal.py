@@ -11,15 +11,34 @@
 import zmq
 import time
 import pmt
-path = "tcp://127.0.0.1:55555"
+
+address = "tcp://127.0.0.1:55555"
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
-socket.bind(path)
-print("socket bind success")
+socket.bind(address)
+print("connected to", address)
+print("running...")
+
 while True:
-    in_str = input()
-    print("send", in_str)
-    socket.send_string(in_str)
+    try:
+    	# send msg with .send_string()
+    	# .send_string() takes a string type as input
+    	msg = input()
+    	socket.send_string(msg)
+    	
+    	# send msg with .send()
+    	# .send() takes a message_t type as input
+    	#msg = input().encode();
+    	#socket.send(msg)
+    	
+    	print(f"sending '{msg}'...")
+    	time.sleep(1)
+    except KeyboardInterrupt:
+    	print ("interrupt received. shutting down.")
+    	# clean up
+    	socket.close()
+    	context.term()
+    	exit()
     # or
     # socket.send(bytes(in_str, 'UTF-8'))		#send data to radio_terminal program 
 #after running this script, it will say "socket bind success", then press type in the command line, then press enter, it will get muxed to the radio terminal
