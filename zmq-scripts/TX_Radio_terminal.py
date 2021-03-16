@@ -13,7 +13,7 @@
  #!/usr/bin/env python
 import zmq
 import time
-address = "tcp://127.0.0.1:44444"
+address = "tcp://127.0.0.1:77777"
 context = zmq.Context()
 socket = context.socket(zmq.PULL)
 socket.bind(address)

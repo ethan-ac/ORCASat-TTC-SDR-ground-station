@@ -23,7 +23,9 @@
 
 #include <zpdu/pub_push_test.h>
 #include <iostream>
+#include <thread>
 #include <string>
+// include for zmq
 #include <zmq.hpp>
 
 namespace gr {
@@ -33,6 +35,8 @@ namespace gr {
     {
      private:
       int d_timeout; // microseconds, -1 is blocking
+      
+      // setup for zmq socket
       zmq::context_t d_context;
       zmq::socket_t d_socket;
 
@@ -41,7 +45,7 @@ namespace gr {
       ~pub_push_test_impl();
 
       // runs when pdu is received
-      // add bytes (preamble/access code) to beginning of pdu
+      // send received pdu to zmq socket
       void msg_handler(pmt::pmt_t msg);
 
     };

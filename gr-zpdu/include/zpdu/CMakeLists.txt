@@ -23,8 +23,6 @@
 ########################################################################
 install(FILES
     api.h
-    newmq.h
-    newzmqtoo.h
     sub_pull_test.h
     pub_push_test.h DESTINATION include/zpdu
 )

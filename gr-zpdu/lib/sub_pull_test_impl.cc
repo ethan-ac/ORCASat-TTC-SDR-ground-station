@@ -24,14 +24,15 @@
 
 #include <gnuradio/io_signature.h>
 #include "sub_pull_test_impl.h"
-// includes for clock
+// includes for continuously running function
+#include <atomic>
 #include <chrono>
 #include <iostream>
 #include <sys/time.h>
 #include <ctime>
 #include <vector>
 #include <string>
-// includes for zmq
+// include for zmq
 #include <zmq.hpp>
 
 namespace gr {
@@ -61,10 +62,11 @@ namespace gr {
 	if (major < 3) {
 		d_timeout = timeout * 1000;
 	}
-    	// sets up port to be of type pdu
+	
+    	// sets up output port to be of type pdu
     	message_port_register_out(pmt::mp("out"));
     	
-    	// sets up socket to be SUB/PULL
+    	// sets up socket to be SUB or PULL
     	if (socket == ZMQ_SUB) {
     		d_socket.setsockopt(ZMQ_SUBSCRIBE, "", 0);
     		std::cout << "SUB socket ";
@@ -92,7 +94,7 @@ namespace gr {
     {
     }
     
-    // starts continuously running function that is used for clock
+    // starts continuously running function
     bool sub_pull_test_impl::start()
     {
     	d_finished = false;
@@ -112,8 +114,8 @@ namespace gr {
     	return block::stop();
     }
     
-    // this is the clock
-    // a continuously running function that runs until all current_millis have reached their target_millis
+    // continuously running function
+    // receives data from zmq socket
     void sub_pull_test_impl::run()
     {
     	// static_cast<long>(#) sets how often the clock updates in milliseconds
@@ -124,7 +126,8 @@ namespace gr {
         	if (d_finished) {
             		return;
         	}
-        	// prevents clock from getting stuck on .recv() function so flowgraph can be shut down smoothly
+        	// prevents function from getting stuck on .recv() function so flowgraph can be shut down smoothly
+        	// otherwise after clicking "stop" button must send another message to shutdown
         	zmq::pollitem_t items[] = { { static_cast<void*>(d_socket), 0, ZMQ_POLLIN, 0 } };
         	zmq::poll(&items[0], 1, d_timeout);
         	if (items[0].revents & ZMQ_POLLIN) {
@@ -143,9 +146,10 @@ namespace gr {
     }
     
     // runs when pdu is received
-    // inserts bytes (preamble/access code) to beginning of pdu
+    // send received zmq data to output port as pdu
     void sub_pull_test_impl::msg_handler(std::string msg)
     {
+    	// converts string to uint8_t vector
     	std::vector<uint8_t> vec(msg.begin(), msg.end());
     	// makes and outputs new pdu
     	message_port_pub(

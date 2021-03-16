@@ -22,10 +22,7 @@
 # Setup library
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
-
 list(APPEND zpdu_sources
-    newmq_impl.cc
-    newzmqtoo_impl.cc
     sub_pull_test_impl.cc
     pub_push_test_impl.cc
 )

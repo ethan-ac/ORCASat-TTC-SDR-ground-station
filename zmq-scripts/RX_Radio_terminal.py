@@ -12,7 +12,7 @@ import zmq
 import time
 import pmt
 
-address = "tcp://127.0.0.1:55555"
+address = "tcp://127.0.0.1:66666"
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
 socket.bind(address)

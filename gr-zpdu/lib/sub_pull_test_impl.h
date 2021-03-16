@@ -22,10 +22,15 @@
 #define INCLUDED_ZPDU_SUB_PULL_TEST_IMPL_H
 
 #include <zpdu/sub_pull_test.h>
-#include <iostream>
-#include <string>
-#include <thread>
+// includes for continuously running function
 #include <atomic>
+#include <chrono>
+#include <iostream>
+#include <sys/time.h>
+#include <ctime>
+#include <vector>
+#include <string>
+// include for zmq
 #include <zmq.hpp>
 
 namespace gr {
@@ -39,6 +44,8 @@ namespace gr {
       std::atomic<bool> d_finished;
       
       int d_timeout; // microseconds, -1 is blocking
+      
+      // setup for zmq socket
       zmq::context_t d_context;
       zmq::socket_t d_socket;
 
@@ -47,10 +54,11 @@ namespace gr {
       ~sub_pull_test_impl();
 
       // runs when pdu is received
-      // add bytes (preamble/access code) to beginning of pdu
+      // send received zmq data to output port as pdu
       void msg_handler(std::string msg);
       
-      // continuously running functions where clock runs
+      // continuously running function
+      // receives data from zmq socket
       void run();
       bool start() override;
       bool stop() override;

@@ -297,7 +297,7 @@ blocks:
     bus_structure: null
     coordinate: [1447, 886]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_mute_xx_0
   id: blocks_mute_xx
   parameters:
@@ -330,7 +330,7 @@ blocks:
     bus_structure: null
     coordinate: [827, 936]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: demodulator_hier_1
   id: demodulator_hier
   parameters:
@@ -348,7 +348,7 @@ blocks:
     bus_structure: null
     coordinate: [564, 940]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: encode_hier_0
   id: encode_hier
   parameters:
@@ -465,7 +465,7 @@ blocks:
     bus_structure: null
     coordinate: [565, 739]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: qtgui_freq_sink_x_1
   id: qtgui_freq_sink_x
   parameters:
@@ -739,7 +739,7 @@ blocks:
     bus_structure: null
     coordinate: [565, 843]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: satellites_print_timestamp_0
   id: satellites_print_timestamp
   parameters:
@@ -756,7 +756,7 @@ blocks:
     bus_structure: null
     coordinate: [1116, 938]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: uhd_usrp_sink_0
   id: uhd_usrp_sink
   parameters:
@@ -1033,7 +1033,7 @@ blocks:
     bus_structure: null
     coordinate: [1544, 188.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -1405,7 +1405,7 @@ blocks:
     bus_structure: null
     coordinate: [283, 884]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: zeromq_sub_msg_source_1
   id: zeromq_sub_msg_source
   parameters:
@@ -1427,27 +1427,46 @@ blocks:
 - name: zpdu_pub_push_test_0
   id: zpdu_pub_push_test
   parameters:
-    address: tcp://127.0.0.1:44444
+    address: tcp://127.0.0.1:55555
     affinity: ''
     alias: ''
-    comment: ''
-    connection: 'False'
-    socket: 'False'
+    comment: pub binds to radio_terminal
+    connection: 'True'
+    socket: '1'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [512, 412.0]
+    coordinate: [736, 532.0]
     rotation: 0
     state: true
 - name: zpdu_sub_pull_test_0
   id: zpdu_sub_pull_test
   parameters:
-    address: tcp://127.0.0.1:55555
+    address: tcp://127.0.0.1:44444
     affinity: ''
     alias: ''
-    comment: ''
+    comment: pull binds to radio_terminal
+    connection: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    socket: '7'
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [240, 196.0]
+    rotation: 0
+    state: enabled
+- name: zpdu_sub_pull_test_0_0
+  id: zpdu_sub_pull_test
+  parameters:
+    address: tcp://127.0.0.1:66666
+    affinity: ''
+    alias: ''
+    comment: sub connects to RX_Radio_terminal
     connection: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -1457,7 +1476,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [240, 412.0]
+    coordinate: [240, 396.0]
     rotation: 0
     state: enabled
 
@@ -1482,7 +1501,9 @@ connections:
 - [zeromq_sub_msg_source_1, out, zpdu_pub_push_test_0, in]
 - [zpdu_sub_pull_test_0, out, blocks_message_debug_0, print_pdu]
 - [zpdu_sub_pull_test_0, out, encode_hier_0, in]
-- [zpdu_sub_pull_test_0, out, zpdu_pub_push_test_0, in]
+- [zpdu_sub_pull_test_0_0, out, blocks_message_debug_0, print_pdu]
+- [zpdu_sub_pull_test_0_0, out, encode_hier_0, in]
+- [zpdu_sub_pull_test_0_0, out, zpdu_pub_push_test_0, in]
 
 metadata:
   file_format: 1

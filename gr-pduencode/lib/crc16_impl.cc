@@ -58,16 +58,6 @@ namespace gr {
     {
     }
     
-    // runs when sample is received
-    // useless for this block
-    int crc16_impl::general_work (int noutput_items,
-                       gr_vector_int &ninput_items,
-                       gr_vector_const_void_star &input_items,
-                       gr_vector_void_star &output_items)
-    {
-      return 0;
-    }
-    
     // runs when called
     // calculates 1 cycle of crc16 based on data/length fields of packet
     // based on code example found here: https://www.ti.com/lit/an/swra111e/swra111e.pdf?ts=1613001791620&ref_url=https%253A%252F%252Fwww.google.com%252F

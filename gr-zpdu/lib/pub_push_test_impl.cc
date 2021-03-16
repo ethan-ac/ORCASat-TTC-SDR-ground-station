@@ -27,7 +27,7 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
-// includes for zmq
+// include for zmq
 #include <zmq.hpp>
 
 namespace gr {
@@ -57,11 +57,11 @@ namespace gr {
 		d_timeout = timeout * 1000;
 	}
     	
-    	// sets up port to be of type pdu
+    	// sets up input port to be of type pdu
     	message_port_register_in(pmt::mp("in"));
     	set_msg_handler(pmt::mp("in"), [this](pmt::pmt_t msg) { this->msg_handler(msg); });
     	
-    	// sets up socket to be PUB/PUSH
+    	// sets up socket to be PUB or PUSH
     	int time = 0;
 	d_socket.setsockopt(ZMQ_LINGER, &time, sizeof(time));
     	if (socket == ZMQ_PUB) {
@@ -71,7 +71,7 @@ namespace gr {
 		std::cout << "PUSH socket ";
 	}
     	
-    	// connect/bind address to zmq socket and print info about it to grc terminal
+    	// connect or bind address to zmq socket and print info about it to grc terminal
       	if (connection) {
         	d_socket.bind(address);
         	std::cout << "bind to " << address << std::endl << "running..." << std::endl;
@@ -89,7 +89,7 @@ namespace gr {
     }
     
     // runs when pdu is received
-    // inserts bytes (preamble/access code) to beginning of pdu
+    // send received pdu to zmq socket
     void pub_push_test_impl::msg_handler(pmt::pmt_t msg)
     {
     	// convert from pmt::pmt_t to std::vector<uint8_t>

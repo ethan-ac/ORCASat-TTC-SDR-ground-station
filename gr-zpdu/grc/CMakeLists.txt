@@ -17,10 +17,7 @@
 # along with GNU Radio; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
-
 install(FILES
-    zpdu_newmq.block.yml
-    zpdu_newzmqtoo.block.yml
     zpdu_sub_pull_test.block.yml
     zpdu_pub_push_test.block.yml DESTINATION share/gnuradio/grc/blocks
 )

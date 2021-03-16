@@ -62,16 +62,6 @@ namespace gr {
     {
     }
     
-    // runs when sample is received
-    // useless for this block
-    int usrp_pad_impl::general_work (int noutput_items,
-                       gr_vector_int &ninput_items,
-                       gr_vector_const_void_star &input_items,
-                       gr_vector_void_star &output_items)
-    {
-      return 0;
-    }
-    
     // runs when called
     // calculates lowest common multiple of a and b
     int usrp_pad_impl::lcm(int a, int b)
