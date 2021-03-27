@@ -18,55 +18,39 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ZPDU_SUB_PULL_TEST_IMPL_H
-#define INCLUDED_ZPDU_SUB_PULL_TEST_IMPL_H
+#ifndef INCLUDED_ZPDU_PUB_PUSH_SOCKET_IMPL_H
+#define INCLUDED_ZPDU_PUB_PUSH_SOCKET_IMPL_H
 
-#include <zpdu/sub_pull_test.h>
-// includes for continuously running function
-#include <atomic>
-#include <chrono>
-#include <iostream>
-#include <sys/time.h>
-#include <ctime>
-#include <vector>
-#include <string>
+#include <zpdu/pub_push_socket.h>
+
 // include for zmq
 #include <zmq.hpp>
 
 namespace gr {
   namespace zpdu {
 
-    class sub_pull_test_impl : public sub_pull_test
+    class pub_push_socket_impl : public pub_push_socket
     {
      private:
-      // for continuously running function
-      gr::thread::thread d_thread;
-      std::atomic<bool> d_finished;
-      
-      int d_timeout; // microseconds, -1 is blocking
+      // microseconds before .recv() stops listening, -1 is blocking
+      int d_timeout;
       
       // setup for zmq socket
       zmq::context_t d_context;
       zmq::socket_t d_socket;
 
      public:
-      sub_pull_test_impl(char* address, int socket, bool connection, int timeout);
-      ~sub_pull_test_impl();
+      pub_push_socket_impl(char* address, int socket, bool link, int timeout);
+      ~pub_push_socket_impl();
 
       // runs when pdu is received
-      // send received zmq data to output port as pdu
-      void msg_handler(std::string msg);
+      // send received pdu from input port to zmq socket as zmq message
+      void msg_handler(pmt::pmt_t msg);
       
-      // continuously running function
-      // receives data from zmq socket
-      void run();
-      bool start() override;
-      bool stop() override;
-
     };
 
   } // namespace zpdu
 } // namespace gr
 
-#endif /* INCLUDED_ZPDU_SUB_PULL_TEST_IMPL_H */
+#endif /* INCLUDED_ZPDU_PUB_PUSH_SOCKET_IMPL_H */
 

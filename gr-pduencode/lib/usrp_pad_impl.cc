@@ -24,10 +24,6 @@
 
 #include <gnuradio/io_signature.h>
 #include "usrp_pad_impl.h"
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <cmath>
 
 namespace gr {
   namespace pduencode {
@@ -81,7 +77,7 @@ namespace gr {
     }
     
     // runs when called
-    // calculates # padding bytes needed for usrp to transmit
+    // calculates # necessary usrp padding bytes to transmit
     int usrp_pad_impl::npadding_bytes(int pkt_byte_len, int samples_per_symbol, int bits_per_symbol)
     {
     	int modulus = 128;
@@ -94,27 +90,24 @@ namespace gr {
     }
     
     // runs when pdu is received
-    // adds usrp padding to ending of pdu
+    // adds usrp padding to tail of pdu and outputs
     void usrp_pad_impl::msg_handler(pmt::pmt_t pmt_msg)
     {
-    	// convert received pdu to type that can be manipulated
+    	// convert received pdu from pdu to std::vector<uint8_t>
     	std::vector<uint8_t> msg = pmt::u8vector_elements(pmt::cdr(pmt_msg));
-    	std::vector<uint8_t> cut_msg = std::vector<uint8_t>(msg.begin(), msg.end());
     	
-    	// makes these variables available in this function
-    	auto samples_per_symbol = d_samples_per_symbol;
-    	auto bits_per_symbol = d_bits_per_symbol;
-    	// calculates # padding bytes needed for usrp to transmit
-    	int num_bytes = npadding_bytes(cut_msg.size(), d_samples_per_symbol, d_bits_per_symbol);
-    	// inserts usrp padding bytes at ending of pdu
+    	// calculates # necessary usrp padding bytes to transmit
+    	int num_bytes = npadding_bytes(msg.size(), d_samples_per_symbol, d_bits_per_symbol);
+    	
+    	// inserts usrp padding bytes at tail of pdu
     	for(int i = 0; i < num_bytes; i++) {
-        	cut_msg.push_back(0x55);
+        	msg.push_back(0x55);
         }
     
     	// outputs new pdu
     	message_port_pub(
         	pmt::mp("out"),
-        	pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(cut_msg.size(), cut_msg)));
+        	pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(msg.size(), msg)));
     }
 
   } /* namespace pduencode */

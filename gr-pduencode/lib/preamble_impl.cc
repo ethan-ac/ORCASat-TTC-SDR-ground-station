@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,28 +23,26 @@
 #endif
 
 #include <gnuradio/io_signature.h>
-#include "bytes_impl.h"
-#include <algorithm>
+#include "preamble_impl.h"
 #include <vector>
-#include <string>
 
 namespace gr {
   namespace pduencode {
 
-    bytes::sptr bytes::make(std::string add)
+    preamble::sptr preamble::make(int num_bytes)
     {
-    	return gnuradio::get_initial_sptr (new bytes_impl(add));
+      return gnuradio::get_initial_sptr (new preamble_impl(num_bytes));
     }
 
 
     /*
      * The private constructor
      */
-    bytes_impl::bytes_impl(std::string add)
-      : gr::block("bytes",
+    preamble_impl::preamble_impl(int num_bytes)
+      : gr::block("preamble",
               gr::io_signature::make(0, 0, 0),	// 0's so input can be of type pdu 
               gr::io_signature::make(0, 0, 0)),	// 0's so output can be of type pdu
-              d_add(add)	// string to be added to pdu
+              d_num_bytes(num_bytes)
     {
     	// sets up ports to be of type pdu
     	message_port_register_out(pmt::mp("out"));
@@ -55,45 +53,28 @@ namespace gr {
     /*
      * Our virtual destructor.
      */
-    bytes_impl::~bytes_impl()
+    preamble_impl::~preamble_impl()
     {
     }
-    
+
     // runs when pdu is received
-    // inserts bytes (preamble/access code) to beginning of pdu
-    void bytes_impl::msg_handler(pmt::pmt_t pmt_msg)
+    // inserts preamble bytes to head of pdu and outputs
+    void preamble_impl::msg_handler(pmt::pmt_t pmt_msg)
     {
-    	// convert received pdu to type that can be manipulated
+    	// convert received pdu from pdu to std::vector<uint8_t>
     	std::vector<uint8_t> msg = pmt::u8vector_elements(pmt::cdr(pmt_msg));
-    	std::vector<uint8_t> cut_msg = std::vector<uint8_t>(msg.begin(), msg.end());
     	
-    	auto add = d_add;	// makes bytes to be added available in this function
-    	while(add.length()){
-    		// takes last 8 bits from add and puts them in a temporary string
-    		std::string temp_add = add.substr(add.length()-8, 8);
-    		add.erase(add.length()-8, add.length());
-    		// counvert 8 bits from string to int
-    		int int_add = std::stoi(temp_add);
-    		// convert 8 bits from binary to decimal
-    		int dec_value = 0;
-    		int base = 1;
-    		while (int_add) {
-   			int last_digit = int_add % 10;
-        		int_add = int_add / 10;
-        		dec_value += last_digit * base;
-        		base = base * 2;
-    		}
-    		// inserts decimal version of original string into beginning of pdu
-    		// which can then convert from decimal to hexadecimal
-    		// (cant do binary to hexadecimal which is why that must be done manually)
-    		cut_msg.insert(cut_msg.begin(), dec_value);
-    	}
+    	// insert d_num_bytes preamble bytes to head of pdu
+    	for(int i = 0; i < d_num_bytes; i++) {
+        	msg.insert(msg.begin(), 0xaa);
+        }
     	
     	// outputs new pdu
     	message_port_pub(
         	pmt::mp("out"),
-        	pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(cut_msg.size(), cut_msg)));
+        	pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(msg.size(), msg)));
     }
 
   } /* namespace pduencode */
 } /* namespace gr */
+

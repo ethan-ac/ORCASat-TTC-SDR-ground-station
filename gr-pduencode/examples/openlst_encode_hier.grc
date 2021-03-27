@@ -5,13 +5,12 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: This block encodes a message of type PDU into a CC1110 structured
-      packet of type PDU.
+    description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: hb
     hier_block_src_path: '.:'
-    id: encode_hier
+    id: openlst_encode_hier
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,18 +21,18 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: Encoder
-    window_size: ''
+    title: OpenLST Encoder
+    window_size: (1000,1000)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [8, 12.0]
     rotation: 0
     state: enabled
 
 blocks:
-- name: bits_per_sym
+- name: bit_per_sym
   id: parameter
   parameters:
     alias: ''
@@ -47,9 +46,22 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [689, 8]
+    coordinate: [712, 12.0]
     rotation: 0
     state: true
+- name: blocks_message_debug_0
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [384, 432.0]
+    rotation: 0
+    state: enabled
 - name: pad_sink_0
   id: pad_sink
   parameters:
@@ -65,7 +77,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1543, 258]
+    coordinate: [1056, 364.0]
     rotation: 0
     state: true
 - name: pad_source_0
@@ -85,39 +97,41 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 258]
+    coordinate: [64, 220.0]
     rotation: 0
     state: true
-- name: pduencode_bytes_0
-  id: pduencode_bytes
+- name: pduencode_add_length_0
+  id: pduencode_add_length
   parameters:
-    add: sync_word
     affinity: ''
     alias: ''
     comment: ''
+    crc16_present: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [727, 258]
+    coordinate: [624, 220.0]
     rotation: 0
     state: true
-- name: pduencode_bytes_0_0
-  id: pduencode_bytes
+- name: pduencode_byte_flip_0
+  id: pduencode_byte_flip
   parameters:
-    add: preamble
     affinity: ''
     alias: ''
     comment: ''
+    crc16: 'True'
+    hwid: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
+    seqnum: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1020, 258]
+    coordinate: [1072, 204.0]
     rotation: 0
     state: true
 - name: pduencode_crc16_0
@@ -132,11 +146,45 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [374, 262]
+    coordinate: [912, 224.0]
     rotation: 0
     state: true
-- name: pduencode_length_0
-  id: pduencode_length
+- name: pduencode_custom_hex_0
+  id: pduencode_custom_hex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: adds system field for openlst style rf packet
+    head_tail: 'True'
+    hex_str: system
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 212.0]
+    rotation: 0
+    state: enabled
+- name: pduencode_custom_hex_1
+  id: pduencode_custom_hex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: add extra byte so crc16 doesnt get flipped randomly
+    head_tail: 'False'
+    hex_str: '00'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1272, 212.0]
+    rotation: 0
+    state: enabled
+- name: pduencode_hwid_mover_0
+  id: pduencode_hwid_mover
   parameters:
     affinity: ''
     alias: ''
@@ -147,15 +195,47 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [205, 262]
+    coordinate: [232, 224.0]
     rotation: 0
     state: true
+- name: pduencode_preamble_0
+  id: pduencode_preamble
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_bytes: preamble_bytes
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [800, 364.0]
+    rotation: 0
+    state: true
+- name: pduencode_syncword_0
+  id: pduencode_syncword
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    syncword_str: sync_word
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 364.0]
+    rotation: 0
+    state: enabled
 - name: pduencode_usrp_pad_0
   id: pduencode_usrp_pad
   parameters:
     affinity: ''
     alias: ''
-    bits_per_symbol: bits_per_sym
+    bits_per_symbol: bit_per_sym
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -164,24 +244,24 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1316, 250]
+    coordinate: [112, 356.0]
     rotation: 0
-    state: true
-- name: preamble
+    state: enabled
+- name: preamble_bytes
   id: parameter
   parameters:
     alias: ''
     comment: ''
     hide: none
-    label: Preamble
+    label: Number of preamble bytes
     short_id: ''
-    type: str
-    value: '"1010101010101010"'
+    type: intx
+    value: '2'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 8]
+    coordinate: [192, 12.0]
     rotation: 0
     state: true
 - name: samp_per_sym
@@ -198,7 +278,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [529, 8]
+    coordinate: [552, 12.0]
     rotation: 0
     state: true
 - name: satellites_pn9_scrambler_0
@@ -213,9 +293,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [545, 262]
+    coordinate: [336, 368.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: sync_word
   id: parameter
   parameters:
@@ -225,23 +305,45 @@ blocks:
     label: Syncword
     short_id: ''
     type: str
-    value: '"11010011100100011101001110010001"'
+    value: '11010011100100011101001110010001'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [344, 8]
+    coordinate: [368, 12.0]
+    rotation: 0
+    state: true
+- name: system
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: System
+    short_id: ''
+    type: str
+    value: '40'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 12.0]
     rotation: 0
     state: true
 
 connections:
-- [pad_source_0, out, pduencode_length_0, in]
-- [pduencode_bytes_0, out, pduencode_bytes_0_0, in]
-- [pduencode_bytes_0_0, out, pduencode_usrp_pad_0, in]
-- [pduencode_crc16_0, out, satellites_pn9_scrambler_0, in]
-- [pduencode_length_0, out, pduencode_crc16_0, in]
-- [pduencode_usrp_pad_0, out, pad_sink_0, in]
-- [satellites_pn9_scrambler_0, out, pduencode_bytes_0, in]
+- [pad_source_0, out, pduencode_hwid_mover_0, in]
+- [pduencode_add_length_0, out, pduencode_crc16_0, in]
+- [pduencode_byte_flip_0, out, pduencode_custom_hex_1, in]
+- [pduencode_crc16_0, out, pduencode_byte_flip_0, in]
+- [pduencode_custom_hex_0, out, pduencode_add_length_0, in]
+- [pduencode_custom_hex_1, out, pduencode_usrp_pad_0, in]
+- [pduencode_hwid_mover_0, out, pduencode_custom_hex_0, in]
+- [pduencode_preamble_0, out, pad_sink_0, in]
+- [pduencode_syncword_0, out, pduencode_preamble_0, in]
+- [pduencode_usrp_pad_0, out, blocks_message_debug_0, print_pdu]
+- [pduencode_usrp_pad_0, out, satellites_pn9_scrambler_0, in]
+- [satellites_pn9_scrambler_0, out, pduencode_syncword_0, in]
 
 metadata:
   file_format: 1

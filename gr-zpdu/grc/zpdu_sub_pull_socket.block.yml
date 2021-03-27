@@ -1,10 +1,10 @@
-id: pduencode_usrp_pad
-label: USRP Padding
-category: '[pduencode]'
+id: zpdu_sub_pull_socket
+label: ZMQ SUB/PULL Message Source
+category: '[zpdu]'
 
 templates:
-  imports: import pduencode
-  make: pduencode.usrp_pad(${samples_per_symbol}, ${bits_per_symbol})
+  imports: import zpdu
+  make: zpdu.sub_pull_socket(${address}, ${socket}, ${link}, ${timeout})
 
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
@@ -13,16 +13,27 @@ templates:
 #     * label (label shown in the GUI)
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 parameters:
-- id: samples_per_symbol
-  label: Samples per symbol
-  dtype: int
-  default: 5
-- id: bits_per_symbol
-  label: Bits per symbol
-  dtype: int
-  default: 1
+-   id: address
+    label: Address
+    dtype: string
+-   id: socket
+    label: Socket type
+    dtype: int
+    default: 2
+    options: ['2', '7']
+    option_labels: [SUB, PULL]
+-   id: link
+    label: Link type
+    dtype: bool
+    default: True
+    options: ['True', 'False']
+    option_labels: [Bind, Connect]
+-   id: timeout
+    label: Timeout (msec)
+    dtype: float
+    default: 100
 
-
+    
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
 #      * label (an identifier for the GUI)
@@ -30,9 +41,6 @@ parameters:
 #      * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
-inputs:
--   domain: message
-    id: in
 outputs:
 -   domain: message
     id: out
@@ -40,7 +48,7 @@ outputs:
 
 # summary of this blocks purpose that will appear in the documentation tab of its properties
 documentation: |-
-    This block calculates the # padding bytes needed for usrp to transmit and inserts them to the tail of the inputted pdu.
+    This block receives unserialized zmq data from a socket and sends it as a pdu to the output port.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

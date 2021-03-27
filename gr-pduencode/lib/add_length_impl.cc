@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,24 +23,25 @@
 #endif
 
 #include <gnuradio/io_signature.h>
-#include "crc16_impl.h"
+#include "add_length_impl.h"
 
 namespace gr {
   namespace pduencode {
 
-    crc16::sptr crc16::make()
+    add_length::sptr add_length::make(bool crc16_present)
     {
-      return gnuradio::get_initial_sptr (new crc16_impl());
+      return gnuradio::get_initial_sptr (new add_length_impl(crc16_present));
     }
 
 
     /*
      * The private constructor
      */
-    crc16_impl::crc16_impl()
-      : gr::block("crc16",
+    add_length_impl::add_length_impl(bool crc16_present)
+      : gr::block("add_length",
               gr::io_signature::make(0, 0, 0),	// 0's so input can be of type pdu 
-              gr::io_signature::make(0, 0, 0))	// 0's so output can be of type pdu
+              gr::io_signature::make(0, 0, 0)),	// 0's so output can be of type pdu
+              d_crc16_present(crc16_present)
     {
     	// sets up ports to be of type pdu
     	message_port_register_out(pmt::mp("out"));
@@ -51,50 +52,26 @@ namespace gr {
     /*
      * Our virtual destructor.
      */
-    crc16_impl::~crc16_impl()
+    add_length_impl::~add_length_impl()
     {
     }
-    
-    // runs when called
-    // calculates 1 cycle of crc16 based on data/length fields of packet
-    // based on code example found here: https://www.ti.com/lit/an/swra111e/swra111e.pdf?ts=1613001791620&ref_url=https%253A%252F%252Fwww.google.com%252F
-    uint16_t crc16_impl::culCalcCRC(unsigned char crcData, uint16_t crcReg)
-    {
-        uint8_t i;
-    	for (i = 0; i < 8; i++) {
-        	if (((crcReg & 0x8000) >> 8) ^ (crcData & 0x80)) {
-            		crcReg = (crcReg << 1) ^ CRC16_POLY;
-            	}
-        	else {
-            		crcReg = (crcReg << 1);
-            	}
-        	crcData <<= 1;
-        }
-    	return crcReg;
-    }
-    
+
     // runs when pdu is received
-    // calculates and then adds crc16 to tail of pdu and outputs
-    void crc16_impl::msg_handler(pmt::pmt_t pmt_msg)
+    // calculates then inserts length field to head of pdu and outputs
+    void add_length_impl::msg_handler(pmt::pmt_t pmt_msg)
     {
     	// convert received pdu from pdu to std::vector<uint8_t>
     	std::vector<uint8_t> msg = pmt::u8vector_elements(pmt::cdr(pmt_msg));
     	
-    	// iteratively calculates crc16
-    	// more code from link found before crc16_impl::culCalcCRC function
-    	uint16_t checksum;
-    	uint8_t i;
-    	checksum = CRC_INIT; // Init value for CRC calculation
-    	for (i = 0; i < msg.size(); i++) {
-        	checksum = culCalcCRC(msg[i], checksum);
-        }
-        
-        // inserts crc16 into tail of pdu
-    	for (int i = sizeof(checksum)-1; i >= 0; i--) {
-        	msg.push_back((checksum >> i*8) & 0xff);
-        }
-        
-        // outputs new pdu
+    	// calculates then inserts length field into head of pdu
+    	// if crc16 isnt added yet but needs to be included in the length field add 2 to length
+    	if (d_crc16_present) {
+	    	msg.insert(msg.begin(), msg.size()+2);
+    	} else {
+	    	msg.insert(msg.begin(), msg.size());
+    	}
+    
+    	// outputs new pdu to output port
     	message_port_pub(
         	pmt::mp("out"),
         	pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(msg.size(), msg)));
@@ -102,4 +79,3 @@ namespace gr {
 
   } /* namespace pduencode */
 } /* namespace gr */
-

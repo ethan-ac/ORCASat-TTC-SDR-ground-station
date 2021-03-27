@@ -23,6 +23,6 @@
 ########################################################################
 install(FILES
     api.h
-    sub_pull_test.h
-    pub_push_test.h DESTINATION include/zpdu
+    sub_pull_socket.h
+    pub_push_socket.h DESTINATION include/zpdu
 )

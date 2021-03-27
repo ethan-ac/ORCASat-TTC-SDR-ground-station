@@ -1,26 +1,10 @@
-id: pduencode_usrp_pad
-label: USRP Padding
+id: pduencode_autoswitch
+label: Autoswitch
 category: '[pduencode]'
 
 templates:
   imports: import pduencode
-  make: pduencode.usrp_pad(${samples_per_symbol}, ${bits_per_symbol})
-
-
-#  Make one 'parameters' list entry for every parameter you want settable from the GUI.
-#     Keys include:
-#     * id (makes the value accessible as \$keyname, e.g. in the make entry)
-#     * label (label shown in the GUI)
-#     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
-parameters:
-- id: samples_per_symbol
-  label: Samples per symbol
-  dtype: int
-  default: 5
-- id: bits_per_symbol
-  label: Bits per symbol
-  dtype: int
-  default: 1
+  make: pduencode.autoswitch()
 
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
@@ -35,12 +19,14 @@ inputs:
     id: in
 outputs:
 -   domain: message
-    id: out
+    id: zmq
+-   domain: message
+    id: openlst
 
 
 # summary of this blocks purpose that will appear in the documentation tab of its properties
 documentation: |-
-    This block calculates the # padding bytes needed for usrp to transmit and inserts them to the tail of the inputted pdu.
+    This block takes an inputted pdu message, outputs from the zmq port if the message originated from zmq, outputs to openlst port if message originated from a board running openlst.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

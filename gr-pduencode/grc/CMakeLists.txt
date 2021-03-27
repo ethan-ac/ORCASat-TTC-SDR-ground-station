@@ -18,8 +18,14 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 install(FILES
-    pduencode_length.block.yml
     pduencode_crc16.block.yml
     pduencode_usrp_pad.block.yml
-    pduencode_bytes.block.yml DESTINATION share/gnuradio/grc/blocks
+    pduencode_selector_test.block.yml
+    pduencode_preamble.block.yml
+    pduencode_autoswitch.block.yml
+    pduencode_add_length.block.yml
+    pduencode_custom_hex.block.yml
+    pduencode_syncword.block.yml
+    pduencode_hwid_mover.block.yml
+    pduencode_byte_flip.block.yml DESTINATION share/gnuradio/grc/blocks
 )

@@ -1,10 +1,11 @@
-id: zpdu_sub_pull_test
-label: sub_pull_test
+id: zpdu_pub_push_socket
+label: ZMQ PUB/PUSH Message Sink
 category: '[zpdu]'
 
 templates:
   imports: import zpdu
-  make: zpdu.sub_pull_test(${address}, ${socket}, ${connection}, ${timeout})
+  make: zpdu.pub_push_socket(${address}, ${socket}, ${link}, ${timeout})
+
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -16,23 +17,23 @@ parameters:
     label: Address
     dtype: string
 -   id: socket
-    label: Socket
+    label: Socket type
     dtype: int
-    default: 2
-    options: [2, 7]
-    option_labels: ['SUB', 'PULL']
--   id: connection
-    label: Connection
+    default: 1
+    options: ['1', '8']
+    option_labels: [PUB, PUSH]
+-   id: link
+    label: Link type
     dtype: bool
-    default: 'False'
+    default: True
     options: ['True', 'False']
-    option_labels: ['Bind', 'Connect']
+    option_labels: [Bind, Connect]
 -   id: timeout
     label: Timeout (msec)
     dtype: float
-    default: '100'
-
+    default: 100
     
+
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
 #      * label (an identifier for the GUI)
@@ -40,10 +41,14 @@ parameters:
 #      * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
-outputs:
+inputs:
 -   domain: message
-    id: out
-    optional: true
+    id: in
+    
+    
+# summary of this blocks purpose that will appear in the documentation tab of its properties
+documentation: |-
+    This block receives a pdu from the input port and sends it as unserialized data to a zmq socket.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

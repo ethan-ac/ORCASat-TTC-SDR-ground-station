@@ -1,10 +1,10 @@
-id: pduencode_usrp_pad
-label: USRP Padding
+id: pduencode_selector_test
+label: Port Switch
 category: '[pduencode]'
 
 templates:
   imports: import pduencode
-  make: pduencode.usrp_pad(${samples_per_symbol}, ${bits_per_symbol})
+  make: pduencode.selector_test(${state})
 
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
@@ -12,16 +12,12 @@ templates:
 #     * id (makes the value accessible as \$keyname, e.g. in the make entry)
 #     * label (label shown in the GUI)
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+# declareable variable for this block in grc
 parameters:
-- id: samples_per_symbol
-  label: Samples per symbol
-  dtype: int
-  default: 5
-- id: bits_per_symbol
-  label: Bits per symbol
-  dtype: int
-  default: 1
-
+- id: state
+  label: state
+  dtype: bool
+  default: 'True'
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
@@ -30,17 +26,20 @@ parameters:
 #      * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
+# ports for this block
 inputs:
 -   domain: message
     id: in
 outputs:
 -   domain: message
-    id: out
-
-
+    id: true
+-   domain: message
+    id: false
+    
+    
 # summary of this blocks purpose that will appear in the documentation tab of its properties
 documentation: |-
-    This block calculates the # padding bytes needed for usrp to transmit and inserts them to the tail of the inputted pdu.
+    This block outputs a inputted pdu to a port depending on the state of a boolean parameter.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

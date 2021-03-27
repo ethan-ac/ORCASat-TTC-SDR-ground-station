@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,25 +23,22 @@
 #endif
 
 #include <gnuradio/io_signature.h>
-#include "length_impl.h"
-#include <algorithm>
-#include <vector>
-#include <string>
+#include "hwid_mover_impl.h"
 
 namespace gr {
   namespace pduencode {
 
-    length::sptr length::make()
+    hwid_mover::sptr hwid_mover::make()
     {
-      return gnuradio::get_initial_sptr (new length_impl());
+      return gnuradio::get_initial_sptr (new hwid_mover_impl());
     }
 
 
     /*
      * The private constructor
      */
-    length_impl::length_impl()
-      : gr::block("length",
+    hwid_mover_impl::hwid_mover_impl()
+      : gr::block("hwid_mover",
               gr::io_signature::make(0, 0, 0),	// 0's so input can be of type pdu 
               gr::io_signature::make(0, 0, 0))	// 0's so output can be of type pdu
     {
@@ -50,29 +47,30 @@ namespace gr {
     	message_port_register_in(pmt::mp("in"));
     	set_msg_handler(pmt::mp("in"), [this](pmt::pmt_t msg) { this->msg_handler(msg); });
     }
-
     /*
      * Our virtual destructor.
      */
-    length_impl::~length_impl()
+    hwid_mover_impl::~hwid_mover_impl()
     {
     }
-    
+
     // runs when pdu is received
-    // calculates then adds length field to beginning of pdu
-    void length_impl::msg_handler(pmt::pmt_t pmt_msg)
+    // moves hwid (1st 2 bytes) from head of pdu to tail and outputs
+    void hwid_mover_impl::msg_handler(pmt::pmt_t pmt_msg)
     {
-    	// convert received pdu to type that can be manipulated
+    	// convert received pdu from pdu to std::vector<uint8_t>
     	std::vector<uint8_t> msg = pmt::u8vector_elements(pmt::cdr(pmt_msg));
-    	std::vector<uint8_t> cut_msg = std::vector<uint8_t>(msg.begin(), msg.end());
     	
-    	// inserts length field into beginning of pdu
-    	cut_msg.insert(cut_msg.begin(), cut_msg.size());
-    
+    	// moves 1st 2 bytes from head of pdu to tail
+    	for (int i = 0; i < 2; i++) {
+    		msg.push_back(msg[0]);
+    		msg.erase(msg.begin());
+    	}
+    	
     	// outputs new pdu
     	message_port_pub(
         	pmt::mp("out"),
-        	pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(cut_msg.size(), cut_msg)));
+        	pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(msg.size(), msg)));
     }
 
   } /* namespace pduencode */

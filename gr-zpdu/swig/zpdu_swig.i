@@ -8,11 +8,11 @@
 %include "zpdu_swig_doc.i"
 
 %{
-#include "zpdu/sub_pull_test.h"
-#include "zpdu/pub_push_test.h"
+#include "zpdu/sub_pull_socket.h"
+#include "zpdu/pub_push_socket.h"
 %}
 
-%include "zpdu/sub_pull_test.h"
-GR_SWIG_BLOCK_MAGIC2(zpdu, sub_pull_test);
-%include "zpdu/pub_push_test.h"
-GR_SWIG_BLOCK_MAGIC2(zpdu, pub_push_test);
+%include "zpdu/sub_pull_socket.h"
+GR_SWIG_BLOCK_MAGIC2(zpdu, sub_pull_socket);
+%include "zpdu/pub_push_socket.h"
+GR_SWIG_BLOCK_MAGIC2(zpdu, pub_push_socket);

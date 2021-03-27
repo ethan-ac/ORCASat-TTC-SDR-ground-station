@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_PDUENCODE_LENGTH_IMPL_H
-#define INCLUDED_PDUENCODE_LENGTH_IMPL_H
+#ifndef INCLUDED_PDUENCODE_BYTE_FLIP_IMPL_H
+#define INCLUDED_PDUENCODE_BYTE_FLIP_IMPL_H
 
-#include <pduencode/length.h>
+#include <pduencode/byte_flip.h>
+
+// minimum length of an openlst rf packet with no data in it
+#define MIN_LENGTH 9
 
 namespace gr {
   namespace pduencode {
 
-    class length_impl : public length
+    class byte_flip_impl : public byte_flip
     {
      private:
-      // Nothing to declare in this block.
-
+      // determines if seqnum bytes should be flipped
+      bool d_seqnum;
+      
+      // determines if hwid bytes should be flipped
+      bool d_hwid;
+      
+      // determines if crc16 bytes should be flipped
+      bool d_crc16;
 
      public:
-      length_impl();
-      ~length_impl();
+      byte_flip_impl(bool seqnum, bool hwid, bool crc16);
+      ~byte_flip_impl();
 
       // runs when pdu is received
-      // calculates then adds length field to beginning of pdu
+      // flips the bytes of the seqnum, hwid, or crc16 bytes of a openlst rf packet if enabled and outputs
       void msg_handler(pmt::pmt_t pmt_msg);
 
     };
@@ -45,5 +54,5 @@ namespace gr {
   } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_PDUENCODE_LENGTH_IMPL_H */
+#endif /* INCLUDED_PDUENCODE_BYTE_FLIP_IMPL_H */
 

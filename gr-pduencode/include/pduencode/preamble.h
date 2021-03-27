@@ -18,38 +18,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ZPDU_PUB_PUSH_TEST_H
-#define INCLUDED_ZPDU_PUB_PUSH_TEST_H
+#ifndef INCLUDED_PDUENCODE_PREAMBLE_H
+#define INCLUDED_PDUENCODE_PREAMBLE_H
 
-#include <zpdu/api.h>
+#include <pduencode/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {
-  namespace zpdu {
+  namespace pduencode {
 
     /*!
      * \brief <+description of block+>
-     * \ingroup zpdu
+     * \ingroup pduencode
      *
      */
-    class ZPDU_API pub_push_test : virtual public gr::block
+    class PDUENCODE_API preamble : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<pub_push_test> sptr;
+      typedef boost::shared_ptr<preamble> sptr;
 
       /*!
-       * \brief Return a shared_ptr to a new instance of zpdu::pub_push_test.
+       * \brief Return a shared_ptr to a new instance of pduencode::preamble.
        *
-       * To avoid accidental use of raw pointers, zpdu::pub_push_test's
+       * To avoid accidental use of raw pointers, pduencode::preamble's
        * constructor is in a private implementation
-       * class. zpdu::pub_push_test::make is the public interface for
+       * class. pduencode::preamble::make is the public interface for
        * creating new instances.
        */
-      static sptr make(char* address, int socket, bool connection, int timeout);
+      static sptr make(int num_bytes);
     };
 
-  } // namespace zpdu
+  } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_ZPDU_PUB_PUSH_TEST_H */
+#endif /* INCLUDED_PDUENCODE_PREAMBLE_H */
 

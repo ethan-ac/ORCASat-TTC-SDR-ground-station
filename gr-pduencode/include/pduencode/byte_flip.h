@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +18,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_PDUENCODE_CRC16_IMPL_H
-#define INCLUDED_PDUENCODE_CRC16_IMPL_H
+#ifndef INCLUDED_PDUENCODE_BYTE_FLIP_H
+#define INCLUDED_PDUENCODE_BYTE_FLIP_H
 
-#include <pduencode/crc16.h>
-
-// constants for crc16 calculation
-#define CRC16_POLY 0x8005;
-#define CRC_INIT 0xFFFF
+#include <pduencode/api.h>
+#include <gnuradio/block.h>
 
 namespace gr {
   namespace pduencode {
 
-    class crc16_impl : public crc16
+    /*!
+     * \brief <+description of block+>
+     * \ingroup pduencode
+     *
+     */
+    class PDUENCODE_API byte_flip : virtual public gr::block
     {
-     private:
-
      public:
-      crc16_impl();
-      ~crc16_impl();
-      
-      // runs when called
-      // calculates 1 cycle of crc16 based on data/length fields of packet
-      uint16_t culCalcCRC(unsigned char crcData, uint16_t crcReg);
-      
-      // runs when pdu is received
-      // calculates and then adds crc16 to tail of pdu and outputs
-      void msg_handler(pmt::pmt_t pmt_msg);
+      typedef boost::shared_ptr<byte_flip> sptr;
 
+      /*!
+       * \brief Return a shared_ptr to a new instance of pduencode::byte_flip.
+       *
+       * To avoid accidental use of raw pointers, pduencode::byte_flip's
+       * constructor is in a private implementation
+       * class. pduencode::byte_flip::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(bool seqnum, bool hwid, bool crc16);
     };
 
   } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_PDUENCODE_CRC16_IMPL_H */
+#endif /* INCLUDED_PDUENCODE_BYTE_FLIP_H */
 

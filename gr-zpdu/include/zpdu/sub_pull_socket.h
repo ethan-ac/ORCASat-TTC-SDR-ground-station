@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +18,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_PDUENCODE_LENGTH_H
-#define INCLUDED_PDUENCODE_LENGTH_H
+#ifndef INCLUDED_ZPDU_SUB_PULL_SOCKET_H
+#define INCLUDED_ZPDU_SUB_PULL_SOCKET_H
 
-#include <pduencode/api.h>
+#include <zpdu/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {
-  namespace pduencode {
+  namespace zpdu {
 
     /*!
      * \brief <+description of block+>
-     * \ingroup pduencode
+     * \ingroup zpdu
      *
      */
-    class PDUENCODE_API length : virtual public gr::block
+    class ZPDU_API sub_pull_socket : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<length> sptr;
+      typedef boost::shared_ptr<sub_pull_socket> sptr;
 
       /*!
-       * \brief Return a shared_ptr to a new instance of pduencode::length.
+       * \brief Return a shared_ptr to a new instance of zpdu::sub_pull_socket.
        *
-       * To avoid accidental use of raw pointers, pduencode::length's
+       * To avoid accidental use of raw pointers, zpdu::sub_pull_socket's
        * constructor is in a private implementation
-       * class. pduencode::length::make is the public interface for
+       * class. zpdu::sub_pull_socket::make is the public interface for
        * creating new instances.
        */
-      static sptr make();
+      static sptr make(char* address, int socket, bool link, int timeout);
     };
 
-  } // namespace pduencode
+  } // namespace zpdu
 } // namespace gr
 
-#endif /* INCLUDED_PDUENCODE_LENGTH_H */
+#endif /* INCLUDED_ZPDU_SUB_PULL_SOCKET_H */
 

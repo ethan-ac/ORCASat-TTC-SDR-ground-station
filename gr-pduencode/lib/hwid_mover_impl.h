@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +18,30 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_PDUENCODE_BYTES_H
-#define INCLUDED_PDUENCODE_BYTES_H
+#ifndef INCLUDED_PDUENCODE_HWID_MOVER_IMPL_H
+#define INCLUDED_PDUENCODE_HWID_MOVER_IMPL_H
 
-#include <pduencode/api.h>
-#include <gnuradio/block.h>
+#include <pduencode/hwid_mover.h>
 
 namespace gr {
   namespace pduencode {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup pduencode
-     *
-     */
-    class PDUENCODE_API bytes : virtual public gr::block
+    class hwid_mover_impl : public hwid_mover
     {
-     public:
-      typedef boost::shared_ptr<bytes> sptr;
+     private:
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of pduencode::bytes.
-       *
-       * To avoid accidental use of raw pointers, pduencode::bytes's
-       * constructor is in a private implementation
-       * class. pduencode::bytes::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(std::string add);
+     public:
+      hwid_mover_impl();
+      ~hwid_mover_impl();
+
+      // runs when pdu is received
+      // moves hwid (1st 2 bytes) from head of pdu to tail and outputs
+      void msg_handler(pmt::pmt_t pmt_msg);
+
     };
 
   } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_PDUENCODE_BYTES_H */
+#endif /* INCLUDED_PDUENCODE_HWID_MOVER_IMPL_H */
 

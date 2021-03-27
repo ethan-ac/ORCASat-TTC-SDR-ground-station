@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,36 +18,25 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_PDUENCODE_USRP_PAD_IMPL_H
-#define INCLUDED_PDUENCODE_USRP_PAD_IMPL_H
+#ifndef INCLUDED_PDUENCODE_ADD_LENGTH_IMPL_H
+#define INCLUDED_PDUENCODE_ADD_LENGTH_IMPL_H
 
-#include <pduencode/usrp_pad.h>
+#include <pduencode/add_length.h>
 
 namespace gr {
   namespace pduencode {
 
-    class usrp_pad_impl : public usrp_pad
+    class add_length_impl : public add_length
     {
      private:
-      // parameters needed to calculate # necessary usrp padding bytes to transmit
-      int d_samples_per_symbol;
-      int d_bits_per_symbol;
-
+      bool d_crc16_present;
 
      public:
-      usrp_pad_impl(int samples_per_symbol, int bits_per_symbol);
-      ~usrp_pad_impl();
+      add_length_impl(bool crc16_present);
+      ~add_length_impl();
 
-      // runs when called
-      // calculates lowest common multiple of a and b
-      int lcm(int a, int b);
-      
-      // runs when called
-      // calculates # necessary usrp padding bytes to transmit
-      int npadding_bytes(int pkt_byte_len, int samples_per_symbol, int bits_per_symbol);
-      
       // runs when pdu is received
-      // adds usrp padding to tail of pdu and outputs
+      // calculates then adds length field to head of pdu and outputs
       void msg_handler(pmt::pmt_t pmt_msg);
 
     };
@@ -55,5 +44,5 @@ namespace gr {
   } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_PDUENCODE_USRP_PAD_IMPL_H */
+#endif /* INCLUDED_PDUENCODE_ADD_LENGTH_IMPL_H */
 

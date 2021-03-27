@@ -18,40 +18,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ZPDU_PUB_PUSH_TEST_IMPL_H
-#define INCLUDED_ZPDU_PUB_PUSH_TEST_IMPL_H
+#ifndef INCLUDED_ZPDU_PUB_PUSH_SOCKET_H
+#define INCLUDED_ZPDU_PUB_PUSH_SOCKET_H
 
-#include <zpdu/pub_push_test.h>
-#include <iostream>
-#include <thread>
-#include <string>
-// include for zmq
-#include <zmq.hpp>
+#include <zpdu/api.h>
+#include <gnuradio/block.h>
 
 namespace gr {
   namespace zpdu {
 
-    class pub_push_test_impl : public pub_push_test
+    /*!
+     * \brief <+description of block+>
+     * \ingroup zpdu
+     *
+     */
+    class ZPDU_API pub_push_socket : virtual public gr::block
     {
-     private:
-      int d_timeout; // microseconds, -1 is blocking
-      
-      // setup for zmq socket
-      zmq::context_t d_context;
-      zmq::socket_t d_socket;
-
      public:
-      pub_push_test_impl(char* address, int socket, bool connection, int timeout);
-      ~pub_push_test_impl();
+      typedef boost::shared_ptr<pub_push_socket> sptr;
 
-      // runs when pdu is received
-      // send received pdu to zmq socket
-      void msg_handler(pmt::pmt_t msg);
-
+      /*!
+       * \brief Return a shared_ptr to a new instance of zpdu::pub_push_socket.
+       *
+       * To avoid accidental use of raw pointers, zpdu::pub_push_socket's
+       * constructor is in a private implementation
+       * class. zpdu::pub_push_socket::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(char* address, int socket, bool link, int timeout);
     };
 
   } // namespace zpdu
 } // namespace gr
 
-#endif /* INCLUDED_ZPDU_PUB_PUSH_TEST_IMPL_H */
+#endif /* INCLUDED_ZPDU_PUB_PUSH_SOCKET_H */
 

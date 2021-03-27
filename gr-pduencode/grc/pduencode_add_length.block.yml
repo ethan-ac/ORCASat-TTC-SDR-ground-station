@@ -1,10 +1,10 @@
-id: pduencode_usrp_pad
-label: USRP Padding
+id: pduencode_add_length
+label: Add Length
 category: '[pduencode]'
 
 templates:
   imports: import pduencode
-  make: pduencode.usrp_pad(${samples_per_symbol}, ${bits_per_symbol})
+  make: pduencode.add_length(${crc16_present})
 
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
@@ -13,14 +13,11 @@ templates:
 #     * label (label shown in the GUI)
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 parameters:
-- id: samples_per_symbol
-  label: Samples per symbol
-  dtype: int
-  default: 5
-- id: bits_per_symbol
-  label: Bits per symbol
-  dtype: int
-  default: 1
+- id: crc16_present
+  label: CRC16 included in length field
+  dtype: bool
+  default: True
+  options: ['True', 'False']
 
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
@@ -40,7 +37,7 @@ outputs:
 
 # summary of this blocks purpose that will appear in the documentation tab of its properties
 documentation: |-
-    This block calculates the # padding bytes needed for usrp to transmit and inserts them to the tail of the inputted pdu.
+    This block calculates the length of the inputted pdu and then inserts that value to the head of the inputted pdu.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

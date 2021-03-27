@@ -1,0 +1,283 @@
+options:
+  parameters:
+    author: ethan
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: This block encodes a message of type PDU into a CC1110 structured
+      packet of type PDU.
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: hb
+    hier_block_src_path: '.:'
+    id: zmq_encode_hier
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: ZMQ Encoder
+    window_size: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 12.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: bit_per_sym
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Bits per symbol
+    short_id: ''
+    type: intx
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [632, 12.0]
+    rotation: 0
+    state: true
+- name: crc16_in_len
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: CRC16 in length
+    short_id: ''
+    type: ''
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [768, 12.0]
+    rotation: 0
+    state: true
+- name: pad_sink_0
+  id: pad_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    label: out
+    num_streams: '1'
+    optional: 'False'
+    type: message
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1672, 220.0]
+    rotation: 0
+    state: true
+- name: pad_source_0
+  id: pad_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    label: in
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_streams: '1'
+    optional: 'False'
+    type: message
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 220.0]
+    rotation: 0
+    state: true
+- name: pduencode_add_length_0
+  id: pduencode_add_length
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    crc16_present: crc16_in_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 220.0]
+    rotation: 0
+    state: true
+- name: pduencode_crc16_0
+  id: pduencode_crc16
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [464, 224.0]
+    rotation: 0
+    state: true
+- name: pduencode_custom_hex_1
+  id: pduencode_custom_hex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: add extra byte so crc16 doesnt get flipped randomly
+    head_tail: 'False'
+    hex_str: '00'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1248, 212.0]
+    rotation: 0
+    state: enabled
+- name: pduencode_preamble_0
+  id: pduencode_preamble
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_bytes: preamble_bytes
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [992, 220.0]
+    rotation: 0
+    state: true
+- name: pduencode_syncword_0
+  id: pduencode_syncword
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    syncword_str: sync_word
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 220.0]
+    rotation: 0
+    state: true
+- name: pduencode_usrp_pad_0
+  id: pduencode_usrp_pad
+  parameters:
+    affinity: ''
+    alias: ''
+    bits_per_symbol: bit_per_sym
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: samp_per_sym
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1456, 212.0]
+    rotation: 0
+    state: true
+- name: preamble_bytes
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Number of preamble bytes
+    short_id: ''
+    type: intx
+    value: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 12.0]
+    rotation: 0
+    state: true
+- name: samp_per_sym
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Samples per symbol
+    short_id: ''
+    type: intx
+    value: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 12.0]
+    rotation: 0
+    state: true
+- name: satellites_pn9_scrambler_0
+  id: satellites_pn9_scrambler
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [592, 224.0]
+    rotation: 0
+    state: enabled
+- name: sync_word
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Syncword
+    short_id: ''
+    type: str
+    value: d391d391
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 12.0]
+    rotation: 0
+    state: true
+
+connections:
+- [pad_source_0, out, pduencode_add_length_0, in]
+- [pduencode_add_length_0, out, pduencode_crc16_0, in]
+- [pduencode_crc16_0, out, satellites_pn9_scrambler_0, in]
+- [pduencode_custom_hex_1, out, pduencode_usrp_pad_0, in]
+- [pduencode_preamble_0, out, pduencode_custom_hex_1, in]
+- [pduencode_syncword_0, out, pduencode_preamble_0, in]
+- [pduencode_usrp_pad_0, out, pad_sink_0, in]
+- [satellites_pn9_scrambler_0, out, pduencode_syncword_0, in]
+
+metadata:
+  file_format: 1

@@ -17,7 +17,7 @@ address = "tcp://127.0.0.1:77777"
 context = zmq.Context()
 socket = context.socket(zmq.PULL)
 socket.bind(address)
-print("connected to", address)
+print("binded to", address)
 print("running...")
 while True:
     recv = socket.recv()		#print the data radio_terminal sent here

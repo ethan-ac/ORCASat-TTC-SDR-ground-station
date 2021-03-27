@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [8, 12.0]
     rotation: 0
     state: enabled
 
@@ -41,19 +41,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [605, 10]
+    coordinate: [600, 12.0]
+    rotation: 0
+    state: enabled
+- name: cable_file
+  id: variable
+  parameters:
+    comment: ''
+    value: '"/dev/ptt"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1240, 12.0]
     rotation: 0
     state: enabled
 - name: freq
   id: variable
   parameters:
     comment: ''
-    value: '437025000'
+    value: '437002500'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [175, 9]
+    coordinate: [176, 12.0]
     rotation: 0
     state: enabled
 - name: gain_mu
@@ -65,7 +77,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [710, 10]
+    coordinate: [704, 12.0]
     rotation: 0
     state: enabled
 - name: post_tx
@@ -77,7 +89,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1203, 11]
+    coordinate: [1168, 12.0]
     rotation: 0
     state: true
 - name: pre_tx
@@ -93,108 +105,22 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1132, 11]
+    coordinate: [1096, 12.0]
     rotation: 0
     state: true
-- name: preamble
+- name: preamble_bytes
   id: variable
   parameters:
     comment: ''
-    value: '"1010101010101010"'
+    value: '2'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [797, 10]
+    coordinate: [792, 12.0]
     rotation: 0
     state: enabled
 - name: rgain
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: ''
-    label: ''
-    min_len: '200'
-    orient: Qt.Horizontal
-    rangeType: float
-    start: '0'
-    step: '1'
-    stop: '100'
-    value: '50'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 358]
-    rotation: 0
-    state: true
-- name: samp_per_sym
-  id: variable
-  parameters:
-    comment: ''
-    value: '5'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [493, 9]
-    rotation: 0
-    state: enabled
-- name: samp_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: '48000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [282, 9]
-    rotation: 0
-    state: enabled
-- name: samp_rate_usrp
-  id: variable
-  parameters:
-    comment: ''
-    value: '2000000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [372, 9]
-    rotation: 0
-    state: enabled
-- name: sync_word
-  id: variable
-  parameters:
-    comment: ''
-    value: '"11010011100100011101001110010001"'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [949, 11]
-    rotation: 0
-    state: enabled
-- name: taps
-  id: variable_low_pass_filter_taps
-  parameters:
-    beta: '6.76'
-    comment: ''
-    cutoff_freq: '20000'
-    gain: '5.0'
-    samp_rate: samp_rate
-    width: '2000'
-    win: firdes.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 103]
-    rotation: 0
-    state: enabled
-- name: tgain
   id: variable_qtgui_range
   parameters:
     comment: ''
@@ -212,7 +138,93 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 246]
+    coordinate: [8, 364.0]
+    rotation: 0
+    state: true
+- name: samp_per_sym
+  id: variable
+  parameters:
+    comment: ''
+    value: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [488, 12.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '48000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 12.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate_usrp
+  id: variable
+  parameters:
+    comment: ''
+    value: '2000000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 12.0]
+    rotation: 0
+    state: enabled
+- name: sync_word
+  id: variable
+  parameters:
+    comment: ''
+    value: '"11010011100100011101001110010001"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [912, 12.0]
+    rotation: 0
+    state: enabled
+- name: taps
+  id: variable_low_pass_filter_taps
+  parameters:
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '20000'
+    gain: '5.0'
+    samp_rate: samp_rate
+    width: '2000'
+    win: firdes.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 108.0]
+    rotation: 0
+    state: enabled
+- name: tgain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '100'
+    value: '50'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 252.0]
     rotation: 0
     state: true
 - name: toggle
@@ -221,7 +233,7 @@ blocks:
     comment: ''
     'false': 'False'
     gui_hint: ''
-    label: ''
+    label: Mute
     'true': 'True'
     type: bool
     value: 'False'
@@ -229,25 +241,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 469]
-    rotation: 0
-    state: true
-- name: amp_key_0
-  id: amp_key
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    post_tx: '50'
-    pre_tx: '50'
-    samp_rate_usrp: '2000000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1232, 324.0]
+    coordinate: [8, 476.0]
     rotation: 0
     state: enabled
 - name: analog_sig_source_x_0
@@ -269,7 +263,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [736, 396.0]
+    coordinate: [840, 380.0]
     rotation: 0
     state: disabled
 - name: blocks_message_debug_0
@@ -282,7 +276,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 200.0]
+    coordinate: [888, 144.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0_1
@@ -295,7 +289,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1447, 886]
+    coordinate: [1432, 632.0]
     rotation: 0
     state: enabled
 - name: blocks_mute_xx_0
@@ -312,7 +306,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1068, 330]
+    coordinate: [1144, 320.0]
     rotation: 0
     state: enabled
 - name: decoder_hier_0
@@ -323,12 +317,12 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    sync_word: '"11010011100100011101001110010001"'
+    sync_word: sync_word
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [827, 936]
+    coordinate: [792, 720.0]
     rotation: 0
     state: enabled
 - name: demodulator_hier_1
@@ -346,26 +340,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [564, 940]
-    rotation: 0
-    state: enabled
-- name: encode_hier_0
-  id: encode_hier
-  parameters:
-    affinity: ''
-    alias: ''
-    bits_per_sym: '1'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    preamble: '"1010101010101010"'
-    samp_per_sym: '5'
-    sync_word: '"11010011100100011101001110010001"'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [497, 302]
+    coordinate: [528, 724.0]
     rotation: 0
     state: enabled
 - name: modulator_hier_0
@@ -383,7 +358,46 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [784, 308.0]
+    coordinate: [848, 300.0]
+    rotation: 0
+    state: enabled
+- name: openlst_encode_hier_0
+  id: openlst_encode_hier
+  parameters:
+    affinity: ''
+    alias: ''
+    bit_per_sym: bit_per_sym
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    preamble_bytes: preamble_bytes
+    samp_per_sym: samp_per_sym
+    sync_word: sync_word
+    system: '40'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 172.0]
+    rotation: 0
+    state: enabled
+- name: ptt_hier_0
+  id: ptt_hier
+  parameters:
+    affinity: ''
+    alias: ''
+    cable_file: cable_file
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    post_tx: post_tx
+    pre_tx: pre_tx
+    samp_rate_usrp: samp_rate_usrp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 228.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -404,7 +418,7 @@ blocks:
     autoscale: 'False'
     average: '0.2'
     axislabels: 'True'
-    bw: samp_rate
+    bw: samp_rate_usrp
     color1: '"blue"'
     color10: '"dark blue"'
     color2: '"red"'
@@ -417,7 +431,7 @@ blocks:
     color9: '"dark green"'
     comment: ''
     ctrlpanel: 'True'
-    fc: '0'
+    fc: freq
     fftsize: '1024'
     freqhalf: 'True'
     grid: 'False'
@@ -463,7 +477,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [565, 739]
+    coordinate: [528, 528.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_1
@@ -484,7 +498,7 @@ blocks:
     autoscale: 'False'
     average: '1.0'
     axislabels: 'True'
-    bw: samp_rate
+    bw: samp_rate_usrp
     color1: '"blue"'
     color10: '"dark blue"'
     color2: '"red"'
@@ -543,7 +557,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 344.0]
+    coordinate: [1384, 336.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2
@@ -602,7 +616,7 @@ blocks:
     name: '"send"'
     nconnections: '1'
     size: '262144'
-    srate: samp_rate
+    srate: samp_rate_usrp
     stemplot: 'False'
     style1: '1'
     style10: '1'
@@ -640,7 +654,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 452.0]
+    coordinate: [1384, 436.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2_0
@@ -699,7 +713,7 @@ blocks:
     name: '"receive"'
     nconnections: '1'
     size: '262144'
-    srate: samp_rate
+    srate: samp_rate_usrp
     stemplot: 'False'
     style1: '1'
     style10: '1'
@@ -737,7 +751,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [565, 843]
+    coordinate: [528, 628.0]
     rotation: 0
     state: enabled
 - name: satellites_print_timestamp_0
@@ -754,7 +768,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1116, 938]
+    coordinate: [1104, 684.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_sink_0
@@ -1031,7 +1045,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 188.0]
+    coordinate: [1384, 180.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1403,71 +1417,54 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [283, 884]
+    coordinate: [248, 668.0]
     rotation: 0
     state: enabled
-- name: zeromq_sub_msg_source_1
-  id: zeromq_sub_msg_source
+- name: zmq_encode_hier_0
+  id: zmq_encode_hier
   parameters:
-    address: tcp://127.0.0.1:5555
     affinity: ''
     alias: ''
-    bind: ''
+    bit_per_sym: bit_per_sym
     comment: ''
+    crc16_in_len: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
-    timeout: '100'
+    preamble_bytes: preamble_bytes
+    samp_per_sym: samp_per_sym
+    sync_word: sync_word
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 318]
+    coordinate: [536, 284.0]
     rotation: 0
-    state: disabled
-- name: zpdu_pub_push_test_0
-  id: zpdu_pub_push_test
+    state: enabled
+- name: zpdu_pub_push_socket_0
+  id: zpdu_pub_push_socket
   parameters:
     address: tcp://127.0.0.1:55555
     affinity: ''
     alias: ''
     comment: pub binds to radio_terminal
-    connection: 'True'
+    link: 'False'
     socket: '1'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [736, 532.0]
-    rotation: 0
-    state: true
-- name: zpdu_sub_pull_test_0
-  id: zpdu_sub_pull_test
-  parameters:
-    address: tcp://127.0.0.1:44444
-    affinity: ''
-    alias: ''
-    comment: pull binds to radio_terminal
-    connection: 'True'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    socket: '7'
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [240, 196.0]
+    coordinate: [1104, 748.0]
     rotation: 0
     state: enabled
-- name: zpdu_sub_pull_test_0_0
-  id: zpdu_sub_pull_test
+- name: zpdu_sub_pull_socket_0
+  id: zpdu_sub_pull_socket
   parameters:
     address: tcp://127.0.0.1:66666
     affinity: ''
     alias: ''
     comment: sub connects to RX_Radio_terminal
-    connection: 'False'
+    link: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
     socket: '2'
@@ -1476,34 +1473,51 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [240, 396.0]
+    coordinate: [264, 292.0]
+    rotation: 0
+    state: enabled
+- name: zpdu_sub_pull_socket_0_0
+  id: zpdu_sub_pull_socket
+  parameters:
+    address: tcp://127.0.0.1:44444
+    affinity: ''
+    alias: ''
+    comment: pull binds to radio_terminal
+    link: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    socket: '7'
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 180.0]
     rotation: 0
     state: enabled
 
 connections:
-- [amp_key_0, '0', qtgui_freq_sink_x_1, '0']
-- [amp_key_0, '0', qtgui_time_sink_x_2, '0']
-- [amp_key_0, '0', uhd_usrp_sink_0, '0']
 - [analog_sig_source_x_0, '0', blocks_mute_xx_0, '0']
-- [blocks_mute_xx_0, '0', amp_key_0, '0']
+- [blocks_mute_xx_0, '0', ptt_hier_0, '0']
 - [decoder_hier_0, fail, satellites_print_timestamp_0, in]
+- [decoder_hier_0, fail, zpdu_pub_push_socket_0, in]
 - [decoder_hier_0, ok, satellites_print_timestamp_0, in]
+- [decoder_hier_0, ok, zpdu_pub_push_socket_0, in]
 - [demodulator_hier_1, '0', decoder_hier_0, '0']
-- [encode_hier_0, out, blocks_message_debug_0, print_pdu]
-- [encode_hier_0, out, modulator_hier_0, in]
 - [modulator_hier_0, '0', blocks_mute_xx_0, '0']
+- [openlst_encode_hier_0, out, blocks_message_debug_0, print_pdu]
+- [openlst_encode_hier_0, out, modulator_hier_0, in]
+- [ptt_hier_0, '0', qtgui_freq_sink_x_1, '0']
+- [ptt_hier_0, '0', qtgui_time_sink_x_2, '0']
+- [ptt_hier_0, '0', uhd_usrp_sink_0, '0']
 - [satellites_print_timestamp_0, out, blocks_message_debug_0_1, print_pdu]
 - [uhd_usrp_source_0, '0', demodulator_hier_1, '0']
 - [uhd_usrp_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [uhd_usrp_source_0, '0', qtgui_time_sink_x_2_0, '0']
-- [zeromq_sub_msg_source_1, out, blocks_message_debug_0, print_pdu]
-- [zeromq_sub_msg_source_1, out, encode_hier_0, in]
-- [zeromq_sub_msg_source_1, out, zpdu_pub_push_test_0, in]
-- [zpdu_sub_pull_test_0, out, blocks_message_debug_0, print_pdu]
-- [zpdu_sub_pull_test_0, out, encode_hier_0, in]
-- [zpdu_sub_pull_test_0_0, out, blocks_message_debug_0, print_pdu]
-- [zpdu_sub_pull_test_0_0, out, encode_hier_0, in]
-- [zpdu_sub_pull_test_0_0, out, zpdu_pub_push_test_0, in]
+- [zmq_encode_hier_0, out, blocks_message_debug_0, print_pdu]
+- [zmq_encode_hier_0, out, modulator_hier_0, in]
+- [zpdu_sub_pull_socket_0, out, zmq_encode_hier_0, in]
+- [zpdu_sub_pull_socket_0_0, out, openlst_encode_hier_0, in]
 
 metadata:
   file_format: 1

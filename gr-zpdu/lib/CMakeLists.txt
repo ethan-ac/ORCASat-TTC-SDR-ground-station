@@ -23,8 +23,8 @@
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 list(APPEND zpdu_sources
-    sub_pull_test_impl.cc
-    pub_push_test_impl.cc
+    sub_pull_socket_impl.cc
+    pub_push_socket_impl.cc
 )
 
 set(zpdu_sources "${zpdu_sources}" PARENT_SCOPE)

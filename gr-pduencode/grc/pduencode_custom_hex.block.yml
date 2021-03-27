@@ -1,10 +1,11 @@
-id: zpdu_pub_push_test
-label: pub_push_test
-category: '[zpdu]'
+id: pduencode_custom_hex
+label: Add Hex Values
+category: '[pduencode]'
 
 templates:
-  imports: import zpdu
-  make: zpdu.pub_push_test(${address}, ${socket}, ${connection}, ${timeout})
+  imports: import pduencode
+  make: pduencode.custom_hex(${head_tail}, ${hex_str})
+
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -12,26 +13,16 @@ templates:
 #     * label (label shown in the GUI)
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 parameters:
--   id: address
-    label: Address
-    dtype: string
--   id: socket
-    label: Socket
-    dtype: int
-    default: 8
-    options: [1, 8]
-    option_labels: ['PUB', 'PUSH']
--   id: connection
-    label: Connection
-    dtype: bool
-    default: 'False'
-    options: ['True', 'False']
-    option_labels: ['Bind', 'Connect']
--   id: timeout
-    label: Timeout (msec)
-    dtype: float
-    default: '100'
-    
+- id: head_tail
+  label: Add hex value at
+  dtype: bool
+  default: True
+  options: ['True', 'False']
+  option_labels: [Head, Tail]
+- id: hex_str
+  label: Hex value
+  dtype: string
+
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
@@ -43,7 +34,14 @@ parameters:
 inputs:
 -   domain: message
     id: in
-    optional: true
+outputs:
+-   domain: message
+    id: out
+
+
+# summary of this blocks purpose that will appear in the documentation tab of its properties
+documentation: |-
+    This block inserts hex values at the head or tail of a pdu.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

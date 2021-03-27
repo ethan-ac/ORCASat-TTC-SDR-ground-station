@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,33 +18,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_PDUENCODE_BYTES_IMPL_H
-#define INCLUDED_PDUENCODE_BYTES_IMPL_H
+#ifndef INCLUDED_PDUENCODE_SYNCWORD_H
+#define INCLUDED_PDUENCODE_SYNCWORD_H
 
-#include <pduencode/bytes.h>
+#include <pduencode/api.h>
+#include <gnuradio/block.h>
 
 namespace gr {
   namespace pduencode {
 
-    class bytes_impl : public bytes
+    /*!
+     * \brief <+description of block+>
+     * \ingroup pduencode
+     *
+     */
+    class PDUENCODE_API syncword : virtual public gr::block
     {
-     private:
-      // string to be added to pdu
-      std::string d_add;
-
-
      public:
-      bytes_impl(std::string add);
-      ~bytes_impl();
+      typedef boost::shared_ptr<syncword> sptr;
 
-      // runs when pdu is received
-      // add bytes (preamble/access code) to beginning of pdu
-      void msg_handler(pmt::pmt_t pmt_msg);
-
+      /*!
+       * \brief Return a shared_ptr to a new instance of pduencode::syncword.
+       *
+       * To avoid accidental use of raw pointers, pduencode::syncword's
+       * constructor is in a private implementation
+       * class. pduencode::syncword::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(std::string syncword_str);
     };
 
   } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_PDUENCODE_BYTES_IMPL_H */
+#endif /* INCLUDED_PDUENCODE_SYNCWORD_H */
 

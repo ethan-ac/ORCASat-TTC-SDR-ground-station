@@ -1,10 +1,10 @@
-id: pduencode_usrp_pad
-label: USRP Padding
+id: pduencode_byte_flip
+label: Byte Flip
 category: '[pduencode]'
 
 templates:
   imports: import pduencode
-  make: pduencode.usrp_pad(${samples_per_symbol}, ${bits_per_symbol})
+  make: pduencode.byte_flip(${seqnum}, ${hwid}, ${crc16})
 
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
@@ -13,14 +13,24 @@ templates:
 #     * label (label shown in the GUI)
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 parameters:
-- id: samples_per_symbol
-  label: Samples per symbol
-  dtype: int
-  default: 5
-- id: bits_per_symbol
-  label: Bits per symbol
-  dtype: int
-  default: 1
+- id: seqnum
+  label: Seqnum bytes
+  dtype: bool
+  default: True
+  options: ['True', 'False']
+  option_labels: [Flip, No flip]
+- id: hwid
+  label: HWID bytes
+  dtype: bool
+  default: True
+  options: ['True', 'False']
+  option_labels: [Flip, No flip]
+- id: crc16
+  label: CRC16 bytes
+  dtype: bool
+  default: True
+  options: ['True', 'False']
+  option_labels: [Flip, No flip]
 
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
@@ -40,7 +50,7 @@ outputs:
 
 # summary of this blocks purpose that will appear in the documentation tab of its properties
 documentation: |-
-    This block calculates the # padding bytes needed for usrp to transmit and inserts them to the tail of the inputted pdu.
+    This block flips the seqnum, hwid, or crc16 bytes of a rf openlst packet if enabled so they can be read more intuitively.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.

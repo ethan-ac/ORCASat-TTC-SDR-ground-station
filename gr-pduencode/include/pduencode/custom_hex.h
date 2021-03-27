@@ -18,38 +18,38 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_ZPDU_SUB_PULL_TEST_H
-#define INCLUDED_ZPDU_SUB_PULL_TEST_H
+#ifndef INCLUDED_PDUENCODE_CUSTOM_HEX_H
+#define INCLUDED_PDUENCODE_CUSTOM_HEX_H
 
-#include <zpdu/api.h>
+#include <pduencode/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {
-  namespace zpdu {
+  namespace pduencode {
 
     /*!
      * \brief <+description of block+>
-     * \ingroup zpdu
+     * \ingroup pduencode
      *
      */
-    class ZPDU_API sub_pull_test : virtual public gr::block
+    class PDUENCODE_API custom_hex : virtual public gr::block
     {
      public:
-      typedef boost::shared_ptr<sub_pull_test> sptr;
+      typedef boost::shared_ptr<custom_hex> sptr;
 
       /*!
-       * \brief Return a shared_ptr to a new instance of zpdu::sub_pull_test.
+       * \brief Return a shared_ptr to a new instance of pduencode::custom_hex.
        *
-       * To avoid accidental use of raw pointers, zpdu::sub_pull_test's
+       * To avoid accidental use of raw pointers, pduencode::custom_hex's
        * constructor is in a private implementation
-       * class. zpdu::sub_pull_test::make is the public interface for
+       * class. pduencode::custom_hex::make is the public interface for
        * creating new instances.
        */
-      static sptr make(char* address, int socket, bool connection, int timeout);
+      static sptr make(bool head_tail, std::string hex_str);
     };
 
-  } // namespace zpdu
+  } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_ZPDU_SUB_PULL_TEST_H */
+#endif /* INCLUDED_PDUENCODE_CUSTOM_HEX_H */
 

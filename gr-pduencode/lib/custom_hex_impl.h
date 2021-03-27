@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2021 gr-pduencode author.
+ * Copyright 2021 ethan.
  *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,36 +18,29 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_PDUENCODE_USRP_PAD_IMPL_H
-#define INCLUDED_PDUENCODE_USRP_PAD_IMPL_H
+#ifndef INCLUDED_PDUENCODE_CUSTOM_HEX_IMPL_H
+#define INCLUDED_PDUENCODE_CUSTOM_HEX_IMPL_H
 
-#include <pduencode/usrp_pad.h>
+#include <pduencode/custom_hex.h>
 
 namespace gr {
   namespace pduencode {
 
-    class usrp_pad_impl : public usrp_pad
+    class custom_hex_impl : public custom_hex
     {
      private:
-      // parameters needed to calculate # necessary usrp padding bytes to transmit
-      int d_samples_per_symbol;
-      int d_bits_per_symbol;
-
-
+      // hex value to be inserted at pdu at head or tail
+      std::string d_hex_str;
+      
+      // determines if hex value will be inserted at pdu head or tail
+      bool d_head_tail;
+      
      public:
-      usrp_pad_impl(int samples_per_symbol, int bits_per_symbol);
-      ~usrp_pad_impl();
+      custom_hex_impl(bool head_tail, std::string hex_str);
+      ~custom_hex_impl();
 
-      // runs when called
-      // calculates lowest common multiple of a and b
-      int lcm(int a, int b);
-      
-      // runs when called
-      // calculates # necessary usrp padding bytes to transmit
-      int npadding_bytes(int pkt_byte_len, int samples_per_symbol, int bits_per_symbol);
-      
       // runs when pdu is received
-      // adds usrp padding to tail of pdu and outputs
+      // add hex values into pdu at head or tail and outputs
       void msg_handler(pmt::pmt_t pmt_msg);
 
     };
@@ -55,5 +48,5 @@ namespace gr {
   } // namespace pduencode
 } // namespace gr
 
-#endif /* INCLUDED_PDUENCODE_USRP_PAD_IMPL_H */
+#endif /* INCLUDED_PDUENCODE_CUSTOM_HEX_IMPL_H */
 

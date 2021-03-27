@@ -23,8 +23,14 @@
 ########################################################################
 install(FILES
     api.h
-    length.h
     crc16.h
     usrp_pad.h
-    bytes.h DESTINATION include/pduencode
+    selector_test.h
+    preamble.h
+    autoswitch.h
+    add_length.h
+    custom_hex.h
+    syncword.h
+    hwid_mover.h
+    byte_flip.h DESTINATION include/pduencode
 )

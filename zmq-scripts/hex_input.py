@@ -21,19 +21,10 @@ print("running...")
 
 while True:
     try:
-    	# send msg with .send_string()
-    	# .send_string() takes a string type as input
-    	msg = input()
-    	socket.send_string(msg)
-    	
-    	# send hex calues
-    	#msg = [0x0d, 0x40, 0xef, 0x6b, 0x01, 0x11, 0x66, 0x64, 0x73, 0x61, 0x02, 0x00, 0x0a, 0x83]
-    	#socket.send(bytearray(msg))
-    	
-    	# send msg with .send()
-    	# .send() takes a message_t type as input
-    	#msg = input().encode();
-    	#socket.send(msg)
+    	#msg = input()
+    	# send hex values
+    	msg = [0x09, 0x40, 0x39]
+    	socket.send(bytearray(msg))
     	
     	print(f"sending '{msg}'...")
     	time.sleep(1)

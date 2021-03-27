@@ -23,11 +23,16 @@
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 list(APPEND pduencode_sources
-    length_impl.cc
     crc16_impl.cc
     usrp_pad_impl.cc
-    bytes_impl.cc
-)
+    selector_test_impl.cc
+    preamble_impl.cc
+    autoswitch_impl.cc
+    add_length_impl.cc
+    custom_hex_impl.cc
+    syncword_impl.cc
+    hwid_mover_impl.cc
+    byte_flip_impl.cc )
 
 set(pduencode_sources "${pduencode_sources}" PARENT_SCOPE)
 if(NOT pduencode_sources)

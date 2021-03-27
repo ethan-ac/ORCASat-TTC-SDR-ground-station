@@ -1,26 +1,10 @@
-id: pduencode_usrp_pad
-label: USRP Padding
+id: pduencode_hwid_mover
+label: HWID Mover 
 category: '[pduencode]'
 
 templates:
   imports: import pduencode
-  make: pduencode.usrp_pad(${samples_per_symbol}, ${bits_per_symbol})
-
-
-#  Make one 'parameters' list entry for every parameter you want settable from the GUI.
-#     Keys include:
-#     * id (makes the value accessible as \$keyname, e.g. in the make entry)
-#     * label (label shown in the GUI)
-#     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
-parameters:
-- id: samples_per_symbol
-  label: Samples per symbol
-  dtype: int
-  default: 5
-- id: bits_per_symbol
-  label: Bits per symbol
-  dtype: int
-  default: 1
+  make: pduencode.hwid_mover()
 
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
@@ -40,7 +24,7 @@ outputs:
 
 # summary of this blocks purpose that will appear in the documentation tab of its properties
 documentation: |-
-    This block calculates the # padding bytes needed for usrp to transmit and inserts them to the tail of the inputted pdu.
+    This block moves the hwid of a command from a locally running radio_terminal to the correct location in the packet.
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.
