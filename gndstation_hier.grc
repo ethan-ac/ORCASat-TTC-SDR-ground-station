@@ -55,7 +55,7 @@ blocks:
     bus_structure: null
     coordinate: [1240, 12.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: freq
   id: variable
   parameters:
@@ -289,7 +289,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1432, 632.0]
+    coordinate: [1568, 776.0]
     rotation: 0
     state: enabled
 - name: blocks_mute_xx_0
@@ -322,7 +322,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [792, 720.0]
+    coordinate: [928, 856.0]
     rotation: 0
     state: enabled
 - name: demodulator_hier_1
@@ -340,7 +340,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 724.0]
+    coordinate: [672, 860.0]
     rotation: 0
     state: enabled
 - name: modulator_hier_0
@@ -397,9 +397,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1096, 228.0]
+    coordinate: [1304, 308.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -477,7 +477,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 528.0]
+    coordinate: [672, 664.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_1
@@ -557,7 +557,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1384, 336.0]
+    coordinate: [1664, 336.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2
@@ -654,7 +654,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1384, 436.0]
+    coordinate: [1664, 436.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2_0
@@ -751,7 +751,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 628.0]
+    coordinate: [672, 764.0]
     rotation: 0
     state: enabled
 - name: satellites_print_timestamp_0
@@ -768,7 +768,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1104, 684.0]
+    coordinate: [1248, 828.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_sink_0
@@ -881,7 +881,7 @@ blocks:
     clock_source5: ''
     clock_source6: ''
     clock_source7: ''
-    comment: ''
+    comment: '"serial=308F983"'
     dev_addr: '"serial=308F983"'
     dev_args: '""'
     gain0: tgain
@@ -1045,7 +1045,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1384, 180.0]
+    coordinate: [1664, 164.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1417,7 +1417,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 668.0]
+    coordinate: [384, 804.0]
     rotation: 0
     state: enabled
 - name: zmq_encode_hier_0
@@ -1454,7 +1454,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1104, 748.0]
+    coordinate: [1248, 892.0]
     rotation: 0
     state: enabled
 - name: zpdu_sub_pull_socket_0

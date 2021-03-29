@@ -371,10 +371,10 @@ class gndstation_hiers(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.decoder_hier_0, 'ok'), (self.satellites_print_timestamp_0, 'in'))
         self.msg_connect((self.decoder_hier_0, 'fail'), (self.satellites_print_timestamp_0, 'in'))
-        self.msg_connect((self.decoder_hier_0, 'ok'), (self.zpdu_pub_push_socket_0, 'in'))
+        self.msg_connect((self.decoder_hier_0, 'ok'), (self.satellites_print_timestamp_0, 'in'))
         self.msg_connect((self.decoder_hier_0, 'fail'), (self.zpdu_pub_push_socket_0, 'in'))
+        self.msg_connect((self.decoder_hier_0, 'ok'), (self.zpdu_pub_push_socket_0, 'in'))
         self.msg_connect((self.openlst_encode_hier_0, 'out'), (self.blocks_message_debug_0, 'print_pdu'))
         self.msg_connect((self.openlst_encode_hier_0, 'out'), (self.modulator_hier_0, 'in'))
         self.msg_connect((self.satellites_print_timestamp_0, 'out'), (self.blocks_message_debug_0_1, 'print_pdu'))
