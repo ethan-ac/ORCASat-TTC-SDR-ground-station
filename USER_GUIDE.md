@@ -5,12 +5,13 @@
 1. [Introduction](#introduction)
 1. [What You'll Need](#what-youll-need)
 1. [Install necessary parts](#install-necessary-parts)
+    * [OpenLST TT&C Board](#openlst-ttc-board)
     * [SmartRF Studio 7](#smartrf-studio-7)
-    * [Univerisal Software Radio Peripheral (USRP) B210](#usrp-b210)
+    * [USRP B210](#usrp-b210)
     * [GNU Radio](#gnu-radio)
-    * [Out-of-Tree (OOT) Modules](#oot-modules)
+    * [OOT Modules](#oot-modules)
     * [Hier Blocks](#hier-blocks)
-    * [Open-lst Python Tools](#open-lst-python-tools)
+    * [OpenLST Python Tools](#openlst-python-tools)
 1. [How to view and use](#how-to-view-and-use)
     * [Running ZeroMQ](#running-zeromq)
     * [Viewing running flowgraph](#viewing-running-flowgraph)
@@ -21,25 +22,60 @@
 
 ## Introduction
 
-This user guide aims to provide users with all of the information needed to run the GNU Radio ground station flowgraph. This guide assumes the user has some previous experience with GNU Radio Companion (GRC), GNU Radio, and SmartRF Studio 7. All of the install processes were tested using a fresh install of Ubuntu 20.04 LTS.
+This user guide aims to provide users with all of the information needed to run the GNU Radio ground station flowgraph. This guide assumes the user has some previous experience with GNU Radio Companion (GRC), the OpenLST Vagrant VM, and Linux command terminals. All of the install processes were tested using a fresh install of Ubuntu 20.04 LTS.
 
-Some basic tutorials for [GNU Radio](https://wiki.gnuradio.org/index.php/Tutorials) and for [SmartRF](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing), or on slides 14-15, 24-27 [here](https://docs.google.com/presentation/d/145syBke3wD0GXqM9OnpUmSf0r15e0uf7wZKPRpoonRI/edit?usp=sharing). A more detailed design document of the GNU Radio ground station flowgraph with explanations of any part of it can be found [here](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing).
+Some basic tutorials for [GNU Radio](https://wiki.gnuradio.org/index.php/Tutorials) and for [SmartRF](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing), or on slides 14-15, 24-27 [here](https://docs.google.com/presentation/d/145syBke3wD0GXqM9OnpUmSf0r15e0uf7wZKPRpoonRI/edit?usp=sharing). 
+
+Guide to setting up OpenLST Vagrant VM and TT&C board [here](#https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
+
+A more detailed design document of the GNU Radio ground station flowgraph with explanations of any part of it can be found [here](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing).
 
 ## What You'll Need
 
 These are the parts needed to run the GNU Radio ground station flowgraph.
 
 * Computer running Windows that can run SmartRF Studio 7
-* Computer running Linux that can run GNU Radio 3.8.2
-* USRP B210 with antenna
-* CC1110 on a functioning board (ie TT&C breakout board) with antenna
-* CC Debugger with ribbon cable that comes with it
-* USB A to USB B cable
-* USB A to USB mini-B cable
+* Computer running Linux (Ubuntu 20.04 recommended) that can run GNU Radio 3.8.2 and the OpenLST Vagrant VM
+* Univerisal Software Radio Peripheral (USRP) B210
+* USB B cable
+* CC1110 on a functioning board (ie TT&C breakout board)
+* FTDI TTL-232R-3v3 USB/serial cable
+* Antennas or cables to connect USRP and TT&C board
+* 2 20DB attenuators
+* Texas Instruments (TI) CC Debugger
+* USB mini-B cable
+* Patch cables
+* Power supply
 
 ## Install necessary parts
 
 These are links to all of the necessary programs and resources for the SDR ground station along with instructions on how to install them.
+
+### OpenLST TT&C Board
+
+Set up the TT&C board to be used with the GNU Radio flowgraph.
+
+Plug the USB/serial cable from your computer into Uart1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board as is pictured below.
+
+<div align="center">
+
+![](/images/cc_dubber_board_connect.png)
+
+Minimum pin connections for CC Debugger to build and load the bootloader onto a TT&C board
+
+<div align="left">
+
+With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C boards Rx port, and connect the TT&C boards Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Plug the power cables of the TT&C board into the power supply set to 5V/1.2A.
+
+Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and build and load the orcasat_fg radio onto a TT&C board with the aliases "fgbl1" and "fgfw1". This radio has its RF registers set to be identical to the RF resgisters of the CC1110 used when testing the GNU Radio flowgraph with SmartRF. These RF register settings can be seen in the image below.
+
+<div align="center">
+
+![](/images/smartrf_openlst.png)
+
+SmartRF RF registers used for CC1110 on TT&C board
+
+<div align="left">
 
 ### SmartRF Studio 7
 
@@ -47,7 +83,7 @@ Download link [here](https://www.ti.com/tool/SMARTRFTM-STUDIO).
 
 The xml file in the gitlab repo should be downloaded alongside SmartRF and opened in a SmartRF control panel so the exact setting used during development can be recreated later.
 
-### Univerisal Software Radio Peripheral (USRP) B210
+### USRP B210
 
 Install commands for the USRP B210s software. It is important to install this software before GNU Radio or else the USRP blocks will not be installed. If GNU Radio is installed first, rebuild GNU Radio.
 
@@ -126,7 +162,7 @@ make -j4
 sudo make install
 sudo ldconfig
 ```
-Set environmental variables for Python so OOT Modules can be installed.
+Set environmental variables for Python so Out-Of-Tree (OOT) Modules can be installed.
 
 Find \{your-prefix} which is output of the following command. This is the prefix of where GNU Radio installs OOT Modules.
 ```
@@ -153,13 +189,26 @@ https://wiki.gnuradio.org/index.php/InstallingGR
 
 https://wiki.gnuradio.org/index.php/ModuleNotFoundError#B._Finding_the_Python_library
 
-### Out-of-Tree (OOT) Modules
+### OOT Modules
 
-Install commands for all of the OOT modules used in the creation of the SDR ground station. If you make changes to the OOT modules in this repository, make sure you delete the ~/build directory from the OOT module before pushing to this repository. This is because this directory is specific to your computer and won't work on another persons computer.
+Install commands for all of the OOT modules used in the creation of the SDR ground station. OOT modules directories are denoted by the prefix "gr-". If you make changes to the OOT modules and push to this repository, make sure you delete the ~/build directory from the OOT module before doing so. This is because the ~/build directory is specific to your computer and won't work on another persons computer.
 
-Install SDR ground station resources.
+Install SDR ground station resources (gr-pduencode, gr-zpdu).
 ```
 git clone https://gitlab.com/ORCASat/ttc/sdr-ground-station.git
+```
+
+Each OOT module must be installed into GNU Radio. They must also be updated if any edits are made to them. These are both done from a terminal located at the desired OOT module's directory. After editing and updating an OOT module, GRC must be restarted to apply the changes made.
+
+Install/Update gr-pduencode for GNU Radio
+```
+cd sdr-ground-station/gr-pduencode
+./build.sh
+```
+Install/Update gr-zpdu for GNU Radio
+```
+cd sdr-ground-station/gr-zpdu
+./build.sh
 ```
 Install gr-satellites and dependencies.
 ```
@@ -167,12 +216,9 @@ sudo apt install python3-pip
 pip3 install --user --upgrade construct requests
 git clone https://github.com/daniestevez/gr-satellites.git --branch maint-3.8
 ```
-Then copy/paste "build.sh" from ~/sdr-ground-station/gr-pduencode or ~/sdr-ground-station/gr-pduzmq into ~/gr-satellites.
-
-Each OOT module must be installed into GNU Radio. They must also be updated if any edits are made to them. These are both done from a terminal located at the desired OOT module's directory. After editing and updating an OOT module, GRC must be restarted to apply the changes made.
-
-Both the installing and updating can be done with a custom shell script using the following commands in the desired OOT module's directoy.
+Copy/Paste "build.sh" from ~/sdr-ground-station/gr-pduencode or ~/sdr-ground-station/gr-pduzmq into ~/gr-satellites. Then install/update gr-satellites.
 ```
+cd gr-satellites
 ./build.sh
 ```
 Installing can also be done manually using the following commands from the desired OOT module's directory.
@@ -200,13 +246,13 @@ The hier blocks should be available in the "GRC Hier Blocks" tab on the right si
 
 To view the flowgraph of a hier block, right click on the hier block and go More > Open Hier.
 
-### Open-lst Python Tools
+### OpenLST Python Tools
 
 This is an OPTIONAL part of the SDR ground station currently as it is still being worked on.
 
-Open-lst's Python tools can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZMQ.
+OpenLST's Python tools can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZeroMQ.
 
-Open-lst's Python tools were written using Python 2.7 so pip must be installed.
+OpenLST's Python tools were written using Python 2.7 so pip must be installed.
 ```
 sudo apt install curl python
 curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
@@ -224,27 +270,6 @@ python -m pip install -e tools
 ```
 Restart your computer to apply the installations.
 
-To test if the installation was successful connect to open-lst's radio_terminal using Zero MQ as its tx-socket and rx-socket.
-```
-cd transceiver-poc-firmware/open-lst
-radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0102 --raw
-```
-Messages can be sent into radio_terminal and displayed as hexadecimal character by typing into the terminal of a running RX_Radio_terminal.py Python script in ~/sdr-ground-station/zmq-scripts.
-```
-python3 RX_Radio_terminal.py
-```
-Commands outputs from radio_terminal can be displayed in the terminal of a running TX_Radio_terminal.py Python script in the ~/sdr-ground-station/zmq-scripts directory.
-```
-$ python3 TX_radio_terminal
-```
-Messages can be sent from radio_terminal using any of its valid commands.
-```
-lst get_telem
-or
-lst ascii hello_there
-```
-ONCE gr-pduzmq WORKING WILL ADD/CHANGE THIS PART TO HOW TO USE CUSTOM ZMQ BLOCKS RATHER THAN PYTHON SCRIPTS.
-
 # How to view and use
 
 These are instructions on how to use ZeroMQ, how to view the running flowgraph's graphs effectively, and how to view GRC's terminal outputs.
@@ -259,23 +284,27 @@ Terminal commands and outputs for ZeroMQ.
 
 ![](/images/zmq_block.png)
 
-"ZMQ SUB Message Source" block in GRC.
+Two "ZMQ SUB/PULL Message Source" blocks in GRC.
 
 <div align="left">
 
-ZeroMQ is used to send strings from a python file running in a terminal to the "ZMQ SUB Message Source" block in the GNU Radio flowgraph. The address in the "ZMQ SUB Message Source" block must match the address in the python file. Multiple blocks or files can be set to the same address, so long as only one of them "binds" to the address and the rest "connect" to the address.
+ZeroMQ is used as an interface between Python scripts running in terminals and 
+to send ascii characters or OpenLST commands from a python script running in a terminal to the "ZMQ SUB Message Source" block in the GNU Radio flowgraph. The address in the "ZMQ SUB Message Source" block must match the address in the python file. Multiple blocks or files can be set to the same address, so long as only one of them "binds" to the address and the rest "connect" to the address.
 
-To start the python file, navigate to the directory it's located in from a terminal and run the following command.
+Start a ZeroMQ Python script.
 ```
-$ python3 {file_name}.py
+cd sdr-ground-station/zmq-scripts
+python3 {file_name}.py
 ```
-A running python file can be stopped by inputting Ctrl+C in the terminal it's running in. The python files used in the development of the ground station flowgraph are named packet_tx.py, packet_tx_repeat.py, and receive.py.
+A running python script can be stopped by inputting Ctrl+C in the terminal it's running in.
 
-packet_tx.py sends a user inputted string.
+The python scripts included with the SDR ground station are raw_hex_tx.py, raw_rx.py, and raw_tx.py.
 
-packet_tx_repeat.py sends a preset string once every second.
-
-receive.py converts received hexadecimal messages into alphabetical characters if possible.
+| Name | Socket Type | Link Type | Address | Description |
+| - | - | - | - | - |
+| raw_tx.py | PUB | Bind | tcp://127.0.0.1:66666 | Sends a preset set of hex values once every second. |
+| raw_hex_tx.py | PUB | Bind | tcp://127.0.0.1:77777 | Sends a user inputted ascii characters after pressing "Enter". |
+| raw_rx.py | SUB | Bind | tcp://127.0.0.1:66666 | Prints received packets as alphanumeric ascii characters if possible or otherwise as hex values. |
 
 ## Viewing running flowgraph
 
@@ -297,8 +326,8 @@ When the flowgraph is started GRC will open a new window which will contain GUI 
 
 1. The "QT GUI Frequency Sink" blocks generate 2 frequency graphs that display transmitted and received signals.
 
-The histograms and frequency graphs have control panels on the right to change their viewing settings, all of the settings are fairly intuitive so they will not be covered here. If packets on the "receive" histogram are not appearing centered, 
-try moving the delay of the trigger on it. The "send" histogram will only update once it has received enough samples to fill the entire graph, so a few packets may need to be sent before they appear on it. If new QT GUI sinks are added be sure to enable the control panels for the sink by entering properties>config>control panel>enable. To zoom in on the graphs and right click to undo a zoom in.
+The histograms and frequency graphs have control panels on the right to change their viewing settings. If packets on the "receive" histogram are not appearing centered, 
+try moving the delay of the trigger. The "send" histogram will only update once it has received enough samples to fill the entire graph, so a few packets may need to be sent before they appear on it. If new QT GUI sinks are added be sure to enable the control panels for the sink by right clicking on a block and clicking on Properties > Config > Control Panel > Yes. To zoom in on any graphs click and drag, and right click to undo a zoom in.
 
 ## Reading GRC terminal
 
@@ -310,17 +339,21 @@ Message output terminal in GRC, with some packets.
 
 <div align="left">
 
-Some blocks in the flowgraph will output to the GRC terminal directly below the flowgraph. The blocks in the ground station flowgraph that do so are the "UHD: USRP Sink/Source", "Decoder", "Message Debug", and "Print timestamp" blocks.
+Some blocks in the flowgraph will output to the GRC terminal directly below the flowgraph. The blocks in the ground station flowgraph that do so are the "ZMQ SUB/PULL Message Source", "ZMQ PUB/PUSH Message Sink", "UHD: USRP Sink/Source", "Decoder", "Message Debug", and "Print timestamp" blocks.
 
 1. The flowgraph prints messages when generating python/c++ flowgraph files and running those files.
 
-1. The "UHD: USRP Source/Sink" blocks prints informative initialization messages upon flowgraph startup which are denoted by "[INFO] [B200]".
+1. The "ZMQ SUB/PULL Message Source" and "ZMQ PUB/PUSH Message Sink" blocks print the socket type, link type, and address being used by the ZeroMQ socket.
 
-1. The "Decoder" hier block, or more specifically the "Correlate Access Code - Tag" block in the "Sync and create packed PDU" hier block in the "Decoder" hier block, prints the access code and bit mask being used in hexadecimal upon flowgraph startup. It also outputs the sample at which it is adding a tag to a data stream when a packet is sent.
+1. The "UHD: USRP Source/Sink" blocks prints initialization information upon flowgraph startup which are denoted by "[INFO] [B200]".
 
-1. The "Message Debug" block prints the number of bytes and bytes as hexadecimal of a received packet. In the ground station flowgraph this block does so with the fully encoded packet and the decoded packet after it has been transmitted and received. For the packet that has been transmitted and received it also outputs a message that details the operating frequency, sample rate, and reception time of the USRP used to receive it.
+1. The "Correlate Access Code - Tag" block in the "Sync and create packed PDU" hier block in the "Decoder" hier block prints the hex values of the sync word and bit mask being used upon flowgraph startup. It also outputs the sample at which a tag is located in the data stream when a packet is received.
 
-1. The "Decoder" hier block, or more specifically the "Check CC11xx CTC-16" in the "Decoder" hier block, prints whether or not the CRC16 check for the packet succeeds.
+1. The "Message Debug" block prints the length of a packet and the hex values in it. For the packet that has been received by the USRP, it also prints the operating frequency, sample rate, and reception time of the packet.
+
+1. The "Autoswitch" block in the "Decoder" hier block prints whether the packet is structured as a CC1110 packet or a OpenLST RF packet.
+
+1. The "Check CC11xx CTC-16" in the "Decoder" hier block prints whether or not the CRC16 check for the packet succeeds.
 
 1. The "Print timestamp" block prints the date and time of packets that pass through it and the number of packets that have been sent through it since startup.
 
@@ -484,3 +517,23 @@ These are the signal processing blocks used in the flowgraph along with their pa
 | - | - | - | - |
 | Format | String | Year-month-day hour:minute:second:millisecond | Time units to print |
 | Packet counter | Bool | # PDUs | Counts # of PDUs sent through this block |
+
+To test if the installation was successful connect to openLST's radio_terminal using Zero MQ as its tx-socket and rx-socket.
+```
+cd transceiver-poc-firmware/open-lst
+radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0102 --raw
+```
+Messages can be sent into radio_terminal and displayed as hexadecimal character by typing into the terminal of a running RX_Radio_terminal.py Python script in ~/sdr-ground-station/zmq-scripts.
+```
+python3 RX_Radio_terminal.py
+```
+Commands outputs from radio_terminal can be displayed in the terminal of a running TX_Radio_terminal.py Python script in the ~/sdr-ground-station/zmq-scripts directory.
+```
+$ python3 TX_radio_terminal
+```
+Messages can be sent from radio_terminal using any of its valid commands.
+```
+lst get_telem
+or
+lst ascii hello_there
+```
