@@ -33,8 +33,6 @@ This user guide aims to provide users with all of the information needed to run 
 
 Some basic tutorials for [GNU Radio](https://wiki.gnuradio.org/index.php/Tutorials) and for [SmartRF](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing), or on slides 14-15, 24-27 [here](https://docs.google.com/presentation/d/145syBke3wD0GXqM9OnpUmSf0r15e0uf7wZKPRpoonRI/edit?usp=sharing). 
 
-Guide to setting up OpenLST Vagrant VM and TT&C board [here](#https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
-
 A more detailed design document of the GNU Radio ground station flowgraph with explanations of any part of it can be found [here](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing).
 
 ## What You'll Need
@@ -64,9 +62,9 @@ Communicating with the GNU Radio flowgraph over RF can be done with either a TT&
 
 #### OpenLST TT&C Board
 
-Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph.
+Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph. Fully detailed user guide available [here](#https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
 
-Plug the USB/serial cable from your computer into UART1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board as is pictured below.
+Plug the USB/serial cable from your computer into UART1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board with patch cables as is pictured below.
 
 <div align="center">
 
@@ -76,7 +74,15 @@ Minimum pin connections for CC Debugger to build and load the bootloader onto a 
 
 <div align="left">
 
-With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C boards Rx port, and connect the TT&C boards Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Plug the power cables of the TT&C board into the power supply set to 5V/1.2A.
+With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C boards Rx port, and connect the TT&C boards Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Plug the power cables of the TT&C board into a power supply set to 5V/1.2A.
+
+Install [Vagrant](#https://www.vagrantup.com/) and [VirtualBox with the extension pack](#https://www.virtualbox.org/wiki/Downloads).
+
+On Ubuntu, allow USB devices to be passed to the VM.
+```
+sudo usermod -aG vboxusers $USER
+```
+Restart your computer to apply the changes made.
 
 Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and build and load the orcasat_fg radio onto a TT&C board with their aliases.
 ```
@@ -265,8 +271,6 @@ The hier blocks should be available in the "GRC Hier Blocks" tab on the right si
 To view the flowgraph of a hier block, right click on the hier block and go More > Open Hier.
 
 ### OpenLST Python Tools
-
-This is an OPTIONAL part of the SDR ground station currently as it is still being worked on.
 
 OpenLST's Python tools can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZeroMQ.
 
