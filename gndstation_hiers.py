@@ -43,7 +43,6 @@ from gnuradio.qtgui import Range, RangeWidget
 from modulator_hier import modulator_hier  # grc-generated hier_block
 from openlst_encode_hier import openlst_encode_hier  # grc-generated hier_block
 from ptt_hier import ptt_hier  # grc-generated hier_block
-from zmq_encode_hier import zmq_encode_hier  # grc-generated hier_block
 import satellites
 import zpdu
 
@@ -118,15 +117,8 @@ class gndstation_hiers(gr.top_block, Qt.QWidget):
         self._rgain_win = RangeWidget(self._rgain_range, self.set_rgain, 'rgain', "counter_slider", float)
         self.top_grid_layout.addWidget(self._rgain_win)
         self.zpdu_sub_pull_socket_0_0 = zpdu.sub_pull_socket('tcp://127.0.0.1:44444', 7, True, 100)
-        self.zpdu_sub_pull_socket_0 = zpdu.sub_pull_socket('tcp://127.0.0.1:66666', 2, False, 100)
-        self.zpdu_pub_push_socket_0 = zpdu.pub_push_socket('tcp://127.0.0.1:55555', 1, False, 100)
-        self.zmq_encode_hier_0 = zmq_encode_hier(
-            bit_per_sym=bit_per_sym,
-            crc16_in_len=False,
-            preamble_bytes=preamble_bytes,
-            samp_per_sym=samp_per_sym,
-            sync_word=sync_word,
-        )
+        self.zpdu_sub_pull_socket_0 = zpdu.sub_pull_socket('tcp://127.0.0.1:66666', 2, True, 100)
+        self.zpdu_pub_push_socket_0 = zpdu.pub_push_socket('tcp://127.0.0.1:55555', 1, True, 100)
         self.uhd_usrp_source_0 = uhd.usrp_source(
             ",".join(("serial=308F983", "")),
             uhd.stream_args(
@@ -378,9 +370,7 @@ class gndstation_hiers(gr.top_block, Qt.QWidget):
         self.msg_connect((self.openlst_encode_hier_0, 'out'), (self.blocks_message_debug_0, 'print_pdu'))
         self.msg_connect((self.openlst_encode_hier_0, 'out'), (self.modulator_hier_0, 'in'))
         self.msg_connect((self.satellites_print_timestamp_0, 'out'), (self.blocks_message_debug_0_1, 'print_pdu'))
-        self.msg_connect((self.zmq_encode_hier_0, 'out'), (self.blocks_message_debug_0, 'print_pdu'))
-        self.msg_connect((self.zmq_encode_hier_0, 'out'), (self.modulator_hier_0, 'in'))
-        self.msg_connect((self.zpdu_sub_pull_socket_0, 'out'), (self.zmq_encode_hier_0, 'in'))
+        self.msg_connect((self.zpdu_sub_pull_socket_0, 'out'), (self.openlst_encode_hier_0, 'in'))
         self.msg_connect((self.zpdu_sub_pull_socket_0_0, 'out'), (self.openlst_encode_hier_0, 'in'))
         self.connect((self.blocks_mute_xx_0, 0), (self.ptt_hier_0, 0))
         self.connect((self.demodulator_hier_1, 0), (self.decoder_hier_0, 0))
@@ -433,7 +423,6 @@ class gndstation_hiers(gr.top_block, Qt.QWidget):
         self.sync_word = sync_word
         self.decoder_hier_0.set_sync_word(self.sync_word)
         self.openlst_encode_hier_0.set_sync_word(self.sync_word)
-        self.zmq_encode_hier_0.set_sync_word(self.sync_word)
 
     def get_samp_rate_usrp(self):
         return self.samp_rate_usrp
@@ -458,7 +447,6 @@ class gndstation_hiers(gr.top_block, Qt.QWidget):
         self.samp_per_sym = samp_per_sym
         self.modulator_hier_0.set_samp_per_sym(self.samp_per_sym)
         self.openlst_encode_hier_0.set_samp_per_sym(self.samp_per_sym)
-        self.zmq_encode_hier_0.set_samp_per_sym(self.samp_per_sym)
 
     def get_rgain(self):
         return self.rgain
@@ -473,7 +461,6 @@ class gndstation_hiers(gr.top_block, Qt.QWidget):
     def set_preamble_bytes(self, preamble_bytes):
         self.preamble_bytes = preamble_bytes
         self.openlst_encode_hier_0.set_preamble_bytes(self.preamble_bytes)
-        self.zmq_encode_hier_0.set_preamble_bytes(self.preamble_bytes)
 
     def get_pre_tx(self):
         return self.pre_tx
@@ -517,7 +504,6 @@ class gndstation_hiers(gr.top_block, Qt.QWidget):
     def set_bit_per_sym(self, bit_per_sym):
         self.bit_per_sym = bit_per_sym
         self.openlst_encode_hier_0.set_bit_per_sym(self.bit_per_sym)
-        self.zmq_encode_hier_0.set_bit_per_sym(self.bit_per_sym)
 
 
 

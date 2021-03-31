@@ -13,11 +13,11 @@
  #!/usr/bin/env python
 import zmq
 import time
-address = "tcp://127.0.0.1:77777"
+address = "tcp://127.0.0.1:55555"
 context = zmq.Context()
-socket = context.socket(zmq.PULL)
-socket.bind(address)
-print("binded to", address)
+socket = context.socket(zmq.SUB)
+socket.connect(address)
+print("connected to", address)
 print("running...")
 while True:
     recv = socket.recv()		#print the data radio_terminal sent here

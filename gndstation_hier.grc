@@ -1439,7 +1439,7 @@ blocks:
     bus_structure: null
     coordinate: [536, 284.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: zpdu_pub_push_socket_0
   id: zpdu_pub_push_socket
   parameters:
@@ -1447,7 +1447,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: pub binds to radio_terminal
-    link: 'False'
+    link: 'True'
     socket: '1'
     timeout: '100'
   states:
@@ -1463,8 +1463,8 @@ blocks:
     address: tcp://127.0.0.1:66666
     affinity: ''
     alias: ''
-    comment: sub connects to RX_Radio_terminal
-    link: 'False'
+    comment: sub connects to raw_tx
+    link: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
     socket: '2'
@@ -1516,7 +1516,7 @@ connections:
 - [uhd_usrp_source_0, '0', qtgui_time_sink_x_2_0, '0']
 - [zmq_encode_hier_0, out, blocks_message_debug_0, print_pdu]
 - [zmq_encode_hier_0, out, modulator_hier_0, in]
-- [zpdu_sub_pull_socket_0, out, zmq_encode_hier_0, in]
+- [zpdu_sub_pull_socket_0, out, openlst_encode_hier_0, in]
 - [zpdu_sub_pull_socket_0_0, out, openlst_encode_hier_0, in]
 
 metadata:
