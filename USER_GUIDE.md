@@ -5,18 +5,22 @@
 1. [Introduction](#introduction)
 1. [What You'll Need](#what-youll-need)
 1. [Install necessary parts](#install-necessary-parts)
-    * [OpenLST TT&C Board](#openlst-ttc-board)
-    * [SmartRF Studio 7](#smartrf-studio-7)
+    * [RF Connections](#rf-connection)
+        * [OpenLST TT&C Board](#openlst-ttc-board)
+        * [SmartRF Studio 7](#smartrf-studio-7)
     * [USRP B210](#usrp-b210)
     * [GNU Radio](#gnu-radio)
     * [OOT Modules](#oot-modules)
     * [Hier Blocks](#hier-blocks)
     * [OpenLST Python Tools](#openlst-python-tools)
-1. [How to view and use](#how-to-view-and-use)
-    * [Running ZeroMQ](#running-zeromq)
-    * [Viewing running flowgraph](#viewing-running-flowgraph)
-    * [Reading GRC terminal](#reading-grc-terminal)
-1. [Transmission modes](#transmission-modes)
+1. [How To View And Use](#how-to-view-and-use)
+    * [OpenLST Vagrant VM](#openlst-vagrant-vm)
+    * [ZeroMQ](#zeromq)
+        * [Python Scripts](#python-scripts)
+        * [Local OpenLST radio_terminal](#local-openlst-radio_terminal)
+    * [Running flowgraph Window](#running-flowgraph-window)
+    * [GRC Terminal](#grc-terminal)
+1. [Transmission Modes](#transmission-modes)
 1. [Variables](#variables)
 1. [Blocks](#blocks)
 
@@ -51,11 +55,15 @@ These are the parts needed to run the GNU Radio ground station flowgraph.
 
 These are links to all of the necessary programs and resources for the SDR ground station along with instructions on how to install them.
 
-### OpenLST TT&C Board
+### RF Connections
 
-Set up the TT&C board to be used with the GNU Radio flowgraph.
+Communicating with the GNU Radio flowgraph over RF can be done with either a TT&C board running OpenLST firmware or a TT&C breakout board running SmartRF Studio 7 firmware.
 
-Plug the USB/serial cable from your computer into Uart1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board as is pictured below.
+#### OpenLST TT&C Board
+
+Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph.
+
+Plug the USB/serial cable from your computer into UART1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board as is pictured below.
 
 <div align="center">
 
@@ -67,7 +75,12 @@ Minimum pin connections for CC Debugger to build and load the bootloader onto a 
 
 With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C boards Rx port, and connect the TT&C boards Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Plug the power cables of the TT&C board into the power supply set to 5V/1.2A.
 
-Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and build and load the orcasat_fg radio onto a TT&C board with the aliases "fgbl1" and "fgfw1". This radio has its RF registers set to be identical to the RF resgisters of the CC1110 used when testing the GNU Radio flowgraph with SmartRF. These RF register settings can be seen in the image below.
+Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and build and load the orcasat_fg radio onto a TT&C board with their aliases.
+```
+fgbl1
+fgfw1
+```
+This radio has its RF registers set to be identical to the RF resgisters of the CC1110 used when testing the GNU Radio flowgraph with SmartRF Studio 7. These RF register settings can be seen in the image below.
 
 <div align="center">
 
@@ -77,7 +90,9 @@ SmartRF RF registers used for CC1110 on TT&C board
 
 <div align="left">
 
-### SmartRF Studio 7
+#### SmartRF Studio 7
+
+Set up the TT&C breakout board with SmartRF Studio 7 to be used with the GNU Radio flowgraph.
 
 Download link [here](https://www.ti.com/tool/SMARTRFTM-STUDIO).
 
@@ -238,7 +253,7 @@ sudo make install
 sudo ldconfig
 ```
 
-### Hier blocks
+### Hier Blocks
 
 To make the hier blocks of the SDR ground station available, in GRC open each of the .grc files in ~/sdr-ground-station/gr-pduencode/examples and click the "Generate the flow graph" button on the toolbar. Then open gndstation_hier.grc and the hier block should be present. If not try click the "Reload Blocks" button on the toolbar.
 
@@ -270,17 +285,27 @@ python -m pip install -e tools
 ```
 Restart your computer to apply the installations.
 
-# How to view and use
+## How To View And Use
 
 These are instructions on how to use ZeroMQ, how to view the running flowgraph's graphs effectively, and how to view GRC's terminal outputs.
 
-## Running ZeroMQ
+### OpenLST Vagrant VM
+
+The OpenLST Vagrant VM allows the sending and receiving of commands over UART1 of the TT&C board. These commands can orignated from the radio_terminal or from the Tx and Rx ports of the board.
+
+Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and open a radio_terminal with an alias
+```
+rt1
+or
+rt2
+```
+If a radio_terminal --hwid tag is the same hwid as the TT&C board it is on it will send commands to itself. If a radio_terminal --hwid tag is a different hwid from TT&C board it is on it will print any commands that pass the RF frontend.
+
+There is no need to have a radio_terminal open to issue commands to a TT&C board.
+
+### ZeroMQ
 
 <div align="center">
-
-![](/images/zmq_terminal.png)
-
-Terminal commands and outputs for ZeroMQ.
 
 ![](/images/zmq_block.png)
 
@@ -288,8 +313,13 @@ Two "ZMQ SUB/PULL Message Source" blocks in GRC.
 
 <div align="left">
 
-ZeroMQ is used as an interface between Python scripts running in terminals and 
-to send ascii characters or OpenLST commands from a python script running in a terminal to the "ZMQ SUB Message Source" block in the GNU Radio flowgraph. The address in the "ZMQ SUB Message Source" block must match the address in the python file. Multiple blocks or files can be set to the same address, so long as only one of them "binds" to the address and the rest "connect" to the address.
+ZeroMQ is used as an interface between the GNU Radio flowgraph and either Python scripts or a locally running OpenLST radio_terminal.
+
+#### Python Scripts
+
+Python scripts can be used to send ascii characters or hex values from a running terminal to a "ZMQ SUB/PULL Message Source" block in the GNU Radio flowgraph. They can also be used to receive ascii characters or hex values from a "ZMQ PUB/PUSH Message Sink" block in the GNU Radio flowgrpah.
+
+To connect any number of ZeroMQ blocks and any number of Python scripts to the same socket, they must use the same address. The type of socket must be the same, so PUB for senders with SUB for receivers, or PUSH for senders with PULL for receivers. The link type must be set up so only one of the ZeroMQ blocks or Python scripts "binds" to the socket and the rest "connect" to the socket.
 
 Start a ZeroMQ Python script.
 ```
@@ -302,11 +332,34 @@ The python scripts included with the SDR ground station are raw_hex_tx.py, raw_r
 
 | Name | Socket Type | Link Type | Address | Description |
 | - | - | - | - | - |
-| raw_tx.py | PUB | Bind | tcp://127.0.0.1:66666 | Sends a preset set of hex values once every second. |
-| raw_hex_tx.py | PUB | Bind | tcp://127.0.0.1:77777 | Sends a user inputted ascii characters after pressing "Enter". |
-| raw_rx.py | SUB | Bind | tcp://127.0.0.1:66666 | Prints received packets as alphanumeric ascii characters if possible or otherwise as hex values. |
+| raw_tx.py | PUB | Connect | tcp://127.0.0.1:66666 | Sends a preset set of hex values once every second. |
+| raw_hex_tx.py | PUB | Connect | tcp://127.0.0.1:66666 | Sends a user inputted ascii characters after pressing "Enter". |
+| raw_rx.py | SUB | Connect | tcp://127.0.0.1:55555 | Prints received packets as alphanumeric ascii characters if possible or otherwise as hex values. |
 
-## Viewing running flowgraph
+#### Local OpenLST radio_terminal
+
+A locally running OpenLST radio_terminal can be used to send its commands to a "ZMQ SUB/PULL Message Source" block in the GNU Radio flowgraph. It can also be used to receive OpenLST's radio_terminal commands from a "ZMQ PUB/PUSH Message Sink" block in the GNU Radio flowgrpah.
+
+Start a local OpenLST radio_terminal.
+```
+cd transceiver-poc-firmware/open-lst
+radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0001 --raw
+```
+The --rx-socket tag sets the input of the radio_terminal to connect to a ZeroMQ SUB socket with the specified address. The --tx-socket tag sets the output of the radio_terminal to connect to a ZeroMQ PUSH socket with the specified address. The --hwid tag is the hwid of the device (OpenLST TT&C board) the command is to be sent to. The --raw tag replaces all of the sent and received commands with their raw hex values which can be useful for debugging.
+
+If --hwid is set to the hwid of the TT&C board being used it should respond to commands sent to it. If --hwid is set to another value the commands will be printed in the OpenLST Vagrant VMs radio_terminal.
+
+Commands can be sent from radio_terminal using any of its valid commands.
+```
+lst ack
+or
+lst get_telem
+or
+lst ascii hello_there
+```
+Currently, commands sent from a locally running radio_terminal are received by the same radio_terminal due to the structure of the GNU Radio flowgraph. Responses from the TT&C board are also received, but they will be the second command received in the radio_terminal.
+
+### Running Flowgraph Window
 
 <div align="center">
 
@@ -329,7 +382,7 @@ When the flowgraph is started GRC will open a new window which will contain GUI 
 The histograms and frequency graphs have control panels on the right to change their viewing settings. If packets on the "receive" histogram are not appearing centered, 
 try moving the delay of the trigger. The "send" histogram will only update once it has received enough samples to fill the entire graph, so a few packets may need to be sent before they appear on it. If new QT GUI sinks are added be sure to enable the control panels for the sink by right clicking on a block and clicking on Properties > Config > Control Panel > Yes. To zoom in on any graphs click and drag, and right click to undo a zoom in.
 
-## Reading GRC terminal
+### GRC Terminal
 
 <div align="center">
 
@@ -357,7 +410,7 @@ Some blocks in the flowgraph will output to the GRC terminal directly below the 
 
 1. The "Print timestamp" block prints the date and time of packets that pass through it and the number of packets that have been sent through it since startup.
 
-## Transmission modes
+### Transmission modes
 
 These are decriptions of the SDR ground stations transmission modes and how to start each of them.
 
@@ -517,23 +570,3 @@ These are the signal processing blocks used in the flowgraph along with their pa
 | - | - | - | - |
 | Format | String | Year-month-day hour:minute:second:millisecond | Time units to print |
 | Packet counter | Bool | # PDUs | Counts # of PDUs sent through this block |
-
-To test if the installation was successful connect to openLST's radio_terminal using Zero MQ as its tx-socket and rx-socket.
-```
-cd transceiver-poc-firmware/open-lst
-radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0102 --raw
-```
-Messages can be sent into radio_terminal and displayed as hexadecimal character by typing into the terminal of a running RX_Radio_terminal.py Python script in ~/sdr-ground-station/zmq-scripts.
-```
-python3 RX_Radio_terminal.py
-```
-Commands outputs from radio_terminal can be displayed in the terminal of a running TX_Radio_terminal.py Python script in the ~/sdr-ground-station/zmq-scripts directory.
-```
-$ python3 TX_radio_terminal
-```
-Messages can be sent from radio_terminal using any of its valid commands.
-```
-lst get_telem
-or
-lst ascii hello_there
-```
