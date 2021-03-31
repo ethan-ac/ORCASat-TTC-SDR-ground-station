@@ -4,7 +4,7 @@
 
 1. [Introduction](#introduction)
 1. [What You'll Need](#what-youll-need)
-1. [Install necessary parts](#install-necessary-parts)
+1. [Setup](#setup)
     * [RF Connections](#rf-connection)
         * [OpenLST TT&C Board](#openlst-ttc-board)
         * [SmartRF Studio 7](#smartrf-studio-7)
@@ -21,6 +21,9 @@
     * [Running flowgraph Window](#running-flowgraph-window)
     * [GRC Terminal](#grc-terminal)
 1. [Transmission Modes](#transmission-modes)
+    * [Local to TT&C Board](#local-to-ttc-board)
+    * [TT&C Board to Local](#ttc-board-to-local)
+    * [Loopback](#loopback)
 1. [Variables](#variables)
 1. [Blocks](#blocks)
 
@@ -51,7 +54,7 @@ These are the parts needed to run the GNU Radio ground station flowgraph.
 * Patch cables
 * Power supply
 
-## Install necessary parts
+## Setup
 
 These are links to all of the necessary programs and resources for the SDR ground station along with instructions on how to install them.
 
@@ -412,15 +415,40 @@ Some blocks in the flowgraph will output to the GRC terminal directly below the 
 
 ### Transmission modes
 
-These are decriptions of the SDR ground stations transmission modes and how to start each of them.
+These are decriptions of the SDR ground stations transmission modes and how to start each of them. This section assumes you have done all of the setup steps.
 
-For CC1110 to USRP transmission, start SmartRF in "Packet TX" mode. Then in GRC make sure that the transmission section of the flowgraph is disabled and the reception section is enabled. Start the flowgraph and observe the packets in the GRC terminal as they arrive.
+#### Local to TT&C Board
 
-For USRP to CC1110 transmission, start SmartRF in "Packet RX" mode. Then in GRC make sure that the reception section of the flowgraph is disabled and the transmission section is enabled. Start the flowgraph and the packet_tx.py python file, enter characters into the packet_tx.py terminal, and observe the packets in the SmartRF terminal as they arrive.
+For sending commands from a local radio_terminal to a TT&C board radio_terminal. Start the gndstation_hier.grc flowgraph with all blocks enabled except the "Signal Source" block (used for transmitting umodulated carriers). Start a local OpenLST radio_terminal with the --hwid tag matching the hwid of the TT&C board being used.
+```
+cd transceiver-poc-firmware/open-lst
+radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0001
+```
+When OpenLST commands are typed into the local radio_terminal, in the local radio_terminal an echo of the same command is received by the Rx section of the flowgraph, then a response from the TT&C board is received. This echo can be eliminated by changing tgain=0 rgain=25, but longer commands such as lst get_telem will be corrupted by this fix.
 
-For loopback USRP to USRP transmission, in GRC make sure both the transmission and reception sections of the flowgraph are enabled. Start the flowgraph and the packet_tx.py python file, enter characters into the packet_tx.py terminal, and observe the packets in the GRC terminal as they arrive.
+#### TT&C Board to Local
 
-When transmitting with a USRP, the "ZMQ SUB Message Source", "Encoder", "Message Debug", and "Modulator" blocks can be swapped for a "Signal Source" block to transmit an unmodulated carrier wave.
+For sending commands from a TT&C board radio_terminal to a local radio_terminal. Follow the same procedure as sending commands from local to TT&C board radio_terminal, but start a radio_terminal in the OpenLST Vagrant VM with a --hwid tag that does not match the hwid of the TT&C board being used. The --hwid tag used does not matter since the local radio_terminal does not have a hwid.
+```
+rt2
+```
+When OpenLST commands are typed into the TT&C board radio termminal, they will be received by the local radio_terminal and translated into commands. The hex values of the commands will be visible in GRC's terminal and in the graphs of its running window.
+
+#### Loopback
+
+For loopback USRP to USRP transmission. Start the gndstation_hier.grc flowgraph with all blocks enabled except the "Signal Source" block (used for transmitting umodulated carriers). Start the raw_hex_tx.py or raw_tx.py Python scripts depending on if you want to send hex values or ascii character. 
+```
+python3 raw_hex_tx.py
+or
+python3 raw_tx.py
+```
+Start the raw_rx.py Python script in another terminal.
+```
+python3 raw_rx.py
+```
+Enter ascii characters into the terminal running raw_tx.py, or wait for hex values to be sent if using raw_hex_tx.py. The received data should be printed to the terminal running raw_rx.py. The received data should also be printed to GRC's terminal and in the graphs of its running window.
+
+When transmitting with a USRP, the "ZMQ SUB/PULL Message Source", "OpenLST Encoder", "CC1110 Encoder", "Message Debug", and "Modulator" blocks can be disabled and a "Signal Source" block can be enabled to transmit an unmodulated carrier wave. This should be viewable in the graphs of GRC's running window.
 
 <div align="center">
 
