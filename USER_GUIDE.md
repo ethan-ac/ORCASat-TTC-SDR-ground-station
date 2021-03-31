@@ -14,13 +14,13 @@
     * [Hier Blocks](#hier-blocks)
     * [OpenLST Python Tools](#openlst-python-tools)
 1. [How To View And Use](#how-to-view-and-use)
-    * [OpenLST Vagrant VM](#openlst-vagrant-vm)
+    * [OpenLST Vagrant VM and TT&C board](#openlst-vagrant-vm-and-ttc-board)
     * [ZeroMQ](#zeromq)
         * [Python Scripts](#python-scripts)
         * [Local OpenLST radio_terminal](#local-openlst-radio_terminal)
     * [Running flowgraph Window](#running-flowgraph-window)
     * [GRC Terminal](#grc-terminal)
-1. [Transmission Modes](#transmission-modes)
+1. [Command Transmission Modes](#command-transmission-modes)
     * [Local to TT&C Board](#local-to-ttc-board)
     * [TT&C Board to Local](#ttc-board-to-local)
     * [Loopback](#loopback)
@@ -84,7 +84,7 @@ sudo usermod -aG vboxusers $USER
 ```
 Restart your computer to apply the changes made.
 
-Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and build and load the orcasat_fg radio onto a TT&C board with their aliases.
+Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and build and load the orcasat_fg radio onto a TT&C board with their aliases (fgblN, fgfwN where N=1/2/3).
 ```
 fgbl1
 fgfw1
@@ -296,19 +296,17 @@ Restart your computer to apply the installations.
 
 These are instructions on how to use ZeroMQ, how to view the running flowgraph's graphs effectively, and how to view GRC's terminal outputs.
 
-### OpenLST Vagrant VM
+### OpenLST Vagrant VM and TT&C board
 
 The OpenLST Vagrant VM allows the sending and receiving of commands over UART1 of the TT&C board. These commands can orignated from the radio_terminal or from the Tx and Rx ports of the board.
 
-Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and open a radio_terminal with an alias
+Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and open a radio_terminal the alias (rtN where N=1/2/3).
 ```
-rt1
+radio_terminal --hwid 0001
 or
-rt2
+rt1
 ```
-If a radio_terminal --hwid tag is the same hwid as the TT&C board it is on it will send commands to itself. If a radio_terminal --hwid tag is a different hwid from TT&C board it is on it will print any commands that pass the RF frontend.
-
-There is no need to have a radio_terminal open to issue commands to a TT&C board.
+If a radio_terminal --hwid tag is the same hwid as the TT&C board it is on it will send commands to itself. If a radio_terminal --hwid tag is a different hwid from TT&C board it is on it will print any commands that pass the RF frontend. There is no need to have a radio_terminal open on a TT&C board to issue commands to it.
 
 ### ZeroMQ
 
@@ -326,7 +324,10 @@ ZeroMQ is used as an interface between the GNU Radio flowgraph and either Python
 
 Python scripts can be used to send ascii characters or hex values from a running terminal to a "ZMQ SUB/PULL Message Source" block in the GNU Radio flowgraph. They can also be used to receive ascii characters or hex values from a "ZMQ PUB/PUSH Message Sink" block in the GNU Radio flowgrpah.
 
-To connect any number of ZeroMQ blocks and any number of Python scripts to the same socket, they must use the same address. The type of socket must be the same, so PUB for senders with SUB for receivers, or PUSH for senders with PULL for receivers. The link type must be set up so only one of the ZeroMQ blocks or Python scripts "binds" to the socket and the rest "connect" to the socket.
+To connect any number of ZeroMQ blocks and any number of Python scripts (will be called nodes) to the same ZeroMQ socket, all nodes must follow this criteria:
+* The address must be the same. 
+* The socket type must be the same, so PUB for data senders with SUB for data receivers, or PUSH for data senders with PULL for data receivers. 
+* The link type must be set up so only one node "binds" to the socket and the rest "connect" to the socket.
 
 Start a ZeroMQ Python script.
 ```
@@ -352,11 +353,14 @@ Start a local OpenLST radio_terminal.
 cd transceiver-poc-firmware/open-lst
 radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:44444" --hwid 0001 --raw
 ```
-The --rx-socket tag sets the input of the radio_terminal to connect to a ZeroMQ SUB socket with the specified address. The --tx-socket tag sets the output of the radio_terminal to connect to a ZeroMQ PUSH socket with the specified address. The --hwid tag is the hwid of the device (OpenLST TT&C board) the command is to be sent to. The --raw tag replaces all of the sent and received commands with their raw hex values which can be useful for debugging.
+* The --rx-socket tag sets the input of the radio_terminal to connect to a ZeroMQ SUB socket with the specified address.
+* The --tx-socket tag sets the output of the radio_terminal to connect to a ZeroMQ PUSH socket with the specified address.
+* The --hwid tag is the hwid of the device (OpenLST TT&C board) the command is to be sent to.
+* The --raw tag replaces all of the sent and received commands with their raw hex values which can be useful for debugging. These are also the values that are sent over the ZeroMQ socket.
 
 If --hwid is set to the hwid of the TT&C board being used it should respond to commands sent to it. If --hwid is set to another value the commands will be printed in the OpenLST Vagrant VMs radio_terminal.
 
-Commands can be sent from radio_terminal using any of its valid commands.
+Any valid commands can be sent from radio_terminal.
 ```
 lst ack
 or
@@ -364,7 +368,7 @@ lst get_telem
 or
 lst ascii hello_there
 ```
-Currently, commands sent from a locally running radio_terminal are received by the same radio_terminal due to the structure of the GNU Radio flowgraph. Responses from the TT&C board are also received, but they will be the second command received in the radio_terminal.
+Currently when the GNU Radio flowgraph and TT&C board are setup to exchange commands, commands sent from a locally running radio_terminal are received by the same local radio_terminal due to the structure of the GNU Radio flowgraph. Responses from the TT&C board are also received, but they will be the second command received in the local radio_terminal.
 
 ### Running Flowgraph Window
 
@@ -417,11 +421,11 @@ Some blocks in the flowgraph will output to the GRC terminal directly below the 
 
 1. The "Print timestamp" block prints the date and time of packets that pass through it and the number of packets that have been sent through it since startup.
 
-### Transmission modes
+## Command Transmission Modes
 
 These are decriptions of the SDR ground stations transmission modes and how to start each of them. This section assumes you have done all of the setup steps.
 
-#### Local to TT&C Board
+### Local to TT&C Board
 
 For sending commands from a local radio_terminal to a TT&C board radio_terminal. Start the gndstation_hier.grc flowgraph with all blocks enabled except the "Signal Source" block (used for transmitting umodulated carriers). Start a local OpenLST radio_terminal with the --hwid tag matching the hwid of the TT&C board being used.
 ```
@@ -430,7 +434,7 @@ radio_terminal --rx-socket "tcp://127.0.0.1:55555" --tx-socket "tcp://127.0.0.1:
 ```
 When OpenLST commands are typed into the local radio_terminal, in the local radio_terminal an echo of the same command is received by the Rx section of the flowgraph, then a response from the TT&C board is received. This echo can be eliminated by changing tgain=0 rgain=25, but longer commands such as lst get_telem will be corrupted by this fix.
 
-#### TT&C Board to Local
+### TT&C Board to Local
 
 For sending commands from a TT&C board radio_terminal to a local radio_terminal. Follow the same procedure as sending commands from local to TT&C board radio_terminal, but start a radio_terminal in the OpenLST Vagrant VM with a --hwid tag that does not match the hwid of the TT&C board being used. The --hwid tag used does not matter since the local radio_terminal does not have a hwid.
 ```
@@ -438,7 +442,7 @@ rt2
 ```
 When OpenLST commands are typed into the TT&C board radio termminal, they will be received by the local radio_terminal and translated into commands. The hex values of the commands will be visible in GRC's terminal and in the graphs of its running window.
 
-#### Loopback
+### Loopback
 
 For loopback USRP to USRP transmission. Start the gndstation_hier.grc flowgraph with all blocks enabled except the "Signal Source" block (used for transmitting umodulated carriers). Start the raw_hex_tx.py or raw_tx.py Python scripts depending on if you want to send hex values or ascii character. 
 ```
@@ -482,10 +486,11 @@ These are the variable style blocks that control the parameters of the signal pr
 | samp_rate_usrp | Int | Samples/second | Sample rate for the USRPs and adjacent blocks |
 | samp_per_sym | Int | Samples/symbol | # samples per symbol for signals transmitted/received |
 | bit_per_sym | Int | Bits/symbol | # bits per symbol for signals transmitted/received |
-| preamble | String | N/A | 16 bit preamble of packet being encoded |
+| preamble | Int | N/A | Number of preamble bytes of packet being encoded |
 | access_code | String | N/A | 32 bit access code of packet being encoded |
 | pre_tx | Int | Milliseconds | Time to keep pin toggled after data is sent |
 | post_tx | Int | Milliseconds | Time to toggle pin before data is sent |
+| cable_file | String | N/A | USB/serial cable file location in Ubuntu |
 
 **QT GUI Range blocks --- Variable with an id that can be given to blocks to allow changing values used in multiple blocks when the flowgraph is running**
 | Block Name | Block Type | Block Unit | Block Description |
@@ -510,21 +515,32 @@ These are the signal processing blocks used in the flowgraph along with their pa
 | Output Language | Drop down menu | N/A | Language (Python/C++) the flowgraph will be generated in |
 | Generate Options | Drop down menu | N/A | Type of flowgraph that is generated (Graphical/Non-graphical/Hier) |
 
-**ZMQ SUB Message Source --- Gets PDU input from ZMQ socket**
+**ZMQ SUB/PULL Message Sink --- Outputs ZeroMQ socket data input as PDU
 | Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
 | - | - | - | - |
 | Address | String | N/A | ZeroMQ socket address the block will connect to |
+| Socket Type | Int | N/A | ZeroMQ socket type the block uses (2 is SUB, 7 is PULL) |
+| Link Type | Bool | N/A | ZeroMQ link type the socket uses (bind is true, connect is false) |
 | Timeout | Float | Milliseconds | Data receive timeout |
 
-**Encoder --- Encodes PDU into packet format**
+**OpenLST Encoder --- Encodes PDU data into OpenLST RF structured packet**
 | Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
 | - | - | - | - |
-| Access Code | String | N/A | 32 bit access code of packet being encoded |
-| Bits per Symbol | Int | Bits/symbol | # bits per symbol for signals transmitted/received |
-| Samples per Symbol | Int | Samples/symbol | # samples per symbol for signals transmitted/received |
-| Preamble | String | N/A | 16 bit preamble of packet being encoded |
+| Bits Per Symbol | Int | Bits/symbol | # bits per symbol for signals transmitted/received |
+| Number Of Preamble Bytes | Int | N/A | Length of preamble of packet being encoded in # bytes |
+| Samples Per Symbol | Int | Samples/symbol | # samples per symbol for signals transmitted/received |
+| Syncword | String | N/A | 32 bit syncword of packet being encoded |
+| System | Hex | N/A | Specifies what the OpenLST radio should do with the command in the packet |
 
-**Message Debug --- Prints PDU**
+**CC1110 Encoder --- Encodes PDU data into CC1110 structured packet**
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Bits Per Symbol | Int | Bits/symbol | # bits per symbol for signals transmitted/received |
+| Number Of Preamble Bytes | Int | N/A | Length of preamble of packet being encoded in # bytes |
+| Samples Per Symbol | Int | Samples/symbol | # samples per symbol for signals transmitted/received |
+| Syncword | String | N/A | 32 bit syncword of packet being encoded |
+
+**Message Debug --- Prints inputted PDU**
 
 **Modulator --- Converts PDU to tagged stream and GFSK modulates signal**
 | Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
@@ -541,6 +557,7 @@ These are the signal processing blocks used in the flowgraph along with their pa
 **Amp Key --- Toggles Parameter# pin of USB/serial converter**
 | Parameter Name | Variable Type | Parameter Unit | Parameter Description |
 | - | - | - | - |
+| USB/serial Cable File | String | N/A | USB/serial cable file location in Ubuntu |
 | Post Tx Delay | Int | Milliseconds | Time to keep pin toggled after data is sent |
 | Pre Tx Delay | Int | Milliseconds | Time to toggle pin before data is sent |
 | Sample Rate | Int | Samples/second | Sample rate of this hier block |
@@ -595,10 +612,18 @@ These are the signal processing blocks used in the flowgraph along with their pa
 **Decoder --- Converts tagged stream to PDU, decodes the packet and trims to only the length and data fields**
 | Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
 | - | - | - | - |
-| Access Code | String | N/A | 32 bit access code of packet being decoded |
+| Syncword | String | N/A | 32 bit syncword of packet being decoded |
 
 **Print Timestamp --- Prints year-month-day hour:minute:second:millisecond at GMT timezone**
 | Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
 | - | - | - | - |
 | Format | String | Year-month-day hour:minute:second:millisecond | Time units to print |
 | Packet counter | Bool | # PDUs | Counts # of PDUs sent through this block |
+
+**ZMQ PUB/PUSH Message Sink --- Outputs PDU input to ZeroMQ socket
+| Parameter Name | Parameter Type | Parameter Unit | Parameter Description |
+| - | - | - | - |
+| Address | String | N/A | ZeroMQ socket address the block will connect to |
+| Socket Type | Int | N/A | ZeroMQ socket type the block uses (1 is PUB, 8 is PUSH) |
+| Link Type | Bool | N/A | ZeroMQ link type the socket uses (bind is true, connect is false) |
+| Timeout | Float | Milliseconds | Data receive timeout |
