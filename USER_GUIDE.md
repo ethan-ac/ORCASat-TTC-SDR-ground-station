@@ -24,6 +24,8 @@
     * [Local to TT&C Board](#local-to-ttc-board)
     * [TT&C Board to Local](#ttc-board-to-local)
     * [Loopback](#loopback)
+    * [GNU Radio to SmartRF](#gnu-radio-to-smartrf)
+    * [SmartRF to GNU Radio](#smartrf-to-gnu-radio)
 1. [Variables](#variables)
 1. [Blocks](#blocks)
 
@@ -457,6 +459,14 @@ python3 raw_rx.py
 Enter ascii characters into the terminal running raw_tx.py, or wait for hex values to be sent if using raw_hex_tx.py. The received data should be printed to the terminal running raw_rx.py. The received data should also be printed to GRC's terminal and in the graphs of its running window.
 
 When transmitting with a USRP, the "ZMQ SUB/PULL Message Source", "OpenLST Encoder", "CC1110 Encoder", "Message Debug", and "Modulator" blocks can be disabled and a "Signal Source" block can be enabled to transmit an unmodulated carrier wave. This should be viewable in the graphs of GRC's running window.
+
+### GNU Radio to SmartRF
+
+For GNU Radio to SmartRF transmission, start SmartRF in "Packet RX" mode. Then in GRC make sure that the reception section of the flowgraph is disabled and the transmission section is enabled. Start the flowgraph and the hex_raw_tx.py or raw_tx.py Python scripts, wait if hex_raw_tx.py was started or enter characters into the raw_tx.py terminal, and observe the packets in the SmartRF terminal as they arrive.
+
+### SmartRF to GNU Radio
+
+For SmartRF to GNU Radio transmission, start SmartRF in "Packet TX" mode. Then in GRC make sure that the transmission section of the flowgraph is disabled and the reception section is enabled. Start the flowgraph and observe the packets in the GRC terminal as they arrive.
 
 <div align="center">
 
