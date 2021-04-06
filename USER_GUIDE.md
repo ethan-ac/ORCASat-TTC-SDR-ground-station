@@ -64,7 +64,7 @@ Communicating with the GNU Radio flowgraph over RF can be done with either a TT&
 
 #### OpenLST TT&C Board
 
-Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph. Fully detailed user guide available [here](#https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
+Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph. Fully detailed user guide available [here](https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
 
 Plug the USB/serial cable from your computer into UART1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board with patch cables as is pictured below.
 
@@ -78,7 +78,7 @@ Minimum pin connections for CC Debugger to build and load the bootloader onto a 
 
 With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C boards Rx port, and connect the TT&C boards Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Plug the power cables of the TT&C board into a power supply set to 5V/1.2A.
 
-Install [Vagrant](#https://www.vagrantup.com/) and [VirtualBox with the extension pack](#https://www.virtualbox.org/wiki/Downloads).
+Install [Vagrant](https://www.vagrantup.com/) and [VirtualBox with the extension pack](https://www.virtualbox.org/wiki/Downloads).
 
 On Ubuntu, allow USB devices to be passed to the VM.
 ```
