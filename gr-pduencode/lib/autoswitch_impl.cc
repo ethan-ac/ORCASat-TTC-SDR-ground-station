@@ -43,8 +43,8 @@ namespace gr {
               gr::io_signature::make(0, 0, 0))	// 0's so output can be of type pdu
     {
     	// sets up ports to be of type pdu
-    	message_port_register_out(pmt::mp("zmq"));
-    	message_port_register_out(pmt::mp("openlst"));
+    	message_port_register_out(pmt::mp("CC1110"));
+    	message_port_register_out(pmt::mp("OpenLST"));
     	message_port_register_in(pmt::mp("in"));
     	set_msg_handler(pmt::mp("in"), [this](pmt::pmt_t msg) { this->msg_handler(msg); });
     }
@@ -75,9 +75,9 @@ namespace gr {
     }
     
     // runs when pdu is received
-    // outputs to zmq port if message originated from zmq, outputs to openlst port if message originated from board running openlst
+    // outputs to CC1110 port if message originated from CC1110, outputs to openlst port if message originated from board running openlst
     // NOTE: to simplify, everythin between the length field and crc16 of a packet from openlst will be considered to be the data field
-    // packet from zmq: 
+    // packet from CC1110: 
     //     cut_msg:                     04 66 64 73 61
     //                                  length(04) data(66 64 73 61)
     //     crc16_cut_msg:               04 66 64 73 61 f1 62
@@ -91,9 +91,9 @@ namespace gr {
     //                                  length(0d) data(40 6b ef 01 11 66 64 73 61 00 02) actual crc16(83 0a) noise(99 33)
     //     cut msg w/ calculated crc16: 0d 40 6b ef 01 11 66 64 73 61 00 02 83 0a e3 2a
     //                                  length(0d) data(40 6b ef 01 11 66 64 73 61 00 02) actual crc16(83 0a) calculated crc16(e3 2a)
-    // when packet is sent from zmq crc16_cut_msg == cut_msg + calculated crc16
+    // when packet is sent from CC1110 crc16_cut_msg == cut_msg + calculated crc16
     // but when packet is sent from openlst crc16_cut_msg != cut_msg + calculated crc16
-    // this fact is used to automatically determine if a packet originated from zmq or openlst
+    // this fact is used to automatically determine if a packet originated from CC1110 or openlst
     void autoswitch_impl::msg_handler(pmt::pmt_t pmt_msg)
     {
     	// convert received pdu from pdu to std::vector<uint8_t>
@@ -133,7 +133,7 @@ namespace gr {
     		
 	    	// outputs new pdu
 	    	message_port_pub(
-			pmt::mp("zmq"),
+			pmt::mp("CC1110"),
 			pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(msg.size(), msg)));
         } else {
 	    	std::cout << "===================================" << std::endl;
@@ -142,7 +142,7 @@ namespace gr {
 	    	
 	    	// outputs new pdu
 	    	message_port_pub(
-			pmt::mp("openlst"),
+			pmt::mp("OpenLST"),
 			pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(cut_msg.size(), cut_msg)));
         }
     }

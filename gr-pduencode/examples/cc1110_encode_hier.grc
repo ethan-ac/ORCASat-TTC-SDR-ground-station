@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: hb
     hier_block_src_path: '.:'
-    id: zmq_encode_hier
+    id: cc1110_encode_hier
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: ZMQ Encoder
+    title: CC1110 Encoder
     window_size: ''
   states:
     bus_sink: false
@@ -39,7 +39,7 @@ blocks:
     alias: ''
     comment: ''
     hide: none
-    label: Bits per symbol
+    label: Bits Per Symbol
     short_id: ''
     type: intx
     value: '1'
@@ -47,26 +47,22 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [632, 12.0]
+    coordinate: [712, 12.0]
     rotation: 0
     state: true
-- name: crc16_in_len
-  id: parameter
+- name: blocks_message_debug_0
+  id: blocks_message_debug
   parameters:
+    affinity: ''
     alias: ''
     comment: ''
-    hide: none
-    label: CRC16 in length
-    short_id: ''
-    type: ''
-    value: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 12.0]
+    coordinate: [816, 200.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: pad_sink_0
   id: pad_sink
   parameters:
@@ -82,7 +78,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1672, 220.0]
+    coordinate: [1024, 372.0]
     rotation: 0
     state: true
 - name: pad_source_0
@@ -102,7 +98,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 220.0]
+    coordinate: [224, 260.0]
     rotation: 0
     state: true
 - name: pduencode_add_length_0
@@ -111,14 +107,14 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    crc16_present: crc16_in_len
+    crc16_present: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 220.0]
+    coordinate: [384, 260.0]
     rotation: 0
     state: true
 - name: pduencode_crc16_0
@@ -133,7 +129,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 224.0]
+    coordinate: [600, 264.0]
     rotation: 0
     state: true
 - name: pduencode_custom_hex_1
@@ -150,7 +146,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1248, 212.0]
+    coordinate: [816, 364.0]
     rotation: 0
     state: enabled
 - name: pduencode_preamble_0
@@ -166,7 +162,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [992, 220.0]
+    coordinate: [560, 372.0]
     rotation: 0
     state: true
 - name: pduencode_syncword_0
@@ -182,24 +178,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [776, 220.0]
-    rotation: 0
-    state: true
-- name: pduencode_usrp_pad_0
-  id: pduencode_usrp_pad
-  parameters:
-    affinity: ''
-    alias: ''
-    bits_per_symbol: bit_per_sym
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_symbol: samp_per_sym
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1456, 212.0]
+    coordinate: [288, 372.0]
     rotation: 0
     state: true
 - name: preamble_bytes
@@ -208,7 +187,7 @@ blocks:
     alias: ''
     comment: ''
     hide: none
-    label: Number of preamble bytes
+    label: Number Of Preamble Bytes
     short_id: ''
     type: intx
     value: '2'
@@ -225,7 +204,7 @@ blocks:
     alias: ''
     comment: ''
     hide: none
-    label: Samples per symbol
+    label: Samples Per Symbol
     short_id: ''
     type: intx
     value: '5'
@@ -233,7 +212,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 12.0]
+    coordinate: [552, 12.0]
     rotation: 0
     state: true
 - name: satellites_pn9_scrambler_0
@@ -248,7 +227,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 224.0]
+    coordinate: [104, 376.0]
     rotation: 0
     state: enabled
 - name: sync_word
@@ -260,7 +239,7 @@ blocks:
     label: Syncword
     short_id: ''
     type: str
-    value: d391d391
+    value: '11010011100100011101001110010001'
   states:
     bus_sink: false
     bus_source: false
@@ -272,11 +251,11 @@ blocks:
 connections:
 - [pad_source_0, out, pduencode_add_length_0, in]
 - [pduencode_add_length_0, out, pduencode_crc16_0, in]
+- [pduencode_crc16_0, out, blocks_message_debug_0, print_pdu]
 - [pduencode_crc16_0, out, satellites_pn9_scrambler_0, in]
-- [pduencode_custom_hex_1, out, pduencode_usrp_pad_0, in]
+- [pduencode_custom_hex_1, out, pad_sink_0, in]
 - [pduencode_preamble_0, out, pduencode_custom_hex_1, in]
 - [pduencode_syncword_0, out, pduencode_preamble_0, in]
-- [pduencode_usrp_pad_0, out, pad_sink_0, in]
 - [satellites_pn9_scrambler_0, out, pduencode_syncword_0, in]
 
 metadata:

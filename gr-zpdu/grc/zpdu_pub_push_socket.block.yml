@@ -17,13 +17,13 @@ parameters:
     label: Address
     dtype: string
 -   id: socket
-    label: Socket type
+    label: Socket Type
     dtype: int
     default: 1
     options: ['1', '8']
     option_labels: [PUB, PUSH]
 -   id: link
-    label: Link type
+    label: Link Type
     dtype: bool
     default: True
     options: ['True', 'False']

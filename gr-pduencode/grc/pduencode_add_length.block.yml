@@ -14,7 +14,7 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 parameters:
 - id: crc16_present
-  label: CRC16 included in length field
+  label: Include CRC16
   dtype: bool
   default: True
   options: ['True', 'False']

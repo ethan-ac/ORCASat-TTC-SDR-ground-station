@@ -289,7 +289,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1568, 776.0]
+    coordinate: [1552, 672.0]
     rotation: 0
     state: enabled
 - name: blocks_mute_xx_0
@@ -309,6 +309,25 @@ blocks:
     coordinate: [1144, 320.0]
     rotation: 0
     state: enabled
+- name: cc1110_encode_hier_0
+  id: cc1110_encode_hier
+  parameters:
+    affinity: ''
+    alias: ''
+    bit_per_sym: bit_per_sym
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    preamble_bytes: preamble_bytes
+    samp_per_sym: samp_per_sym
+    sync_word: sync_word
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 180.0]
+    rotation: 0
+    state: true
 - name: decoder_hier_0
   id: decoder_hier
   parameters:
@@ -322,7 +341,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [928, 856.0]
+    coordinate: [912, 752.0]
     rotation: 0
     state: enabled
 - name: demodulator_hier_1
@@ -340,7 +359,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 860.0]
+    coordinate: [656, 756.0]
     rotation: 0
     state: enabled
 - name: modulator_hier_0
@@ -378,7 +397,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 172.0]
+    coordinate: [552, 284.0]
     rotation: 0
     state: enabled
 - name: ptt_hier_0
@@ -477,7 +496,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 664.0]
+    coordinate: [656, 560.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_1
@@ -557,7 +576,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1664, 336.0]
+    coordinate: [1608, 336.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2
@@ -654,7 +673,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1664, 436.0]
+    coordinate: [1608, 436.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2_0
@@ -751,7 +770,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 764.0]
+    coordinate: [656, 660.0]
     rotation: 0
     state: enabled
 - name: satellites_print_timestamp_0
@@ -768,7 +787,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1248, 828.0]
+    coordinate: [1232, 724.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_sink_0
@@ -1045,7 +1064,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1664, 164.0]
+    coordinate: [1608, 164.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1417,29 +1436,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 804.0]
+    coordinate: [368, 696.0]
     rotation: 0
     state: enabled
-- name: zmq_encode_hier_0
-  id: zmq_encode_hier
-  parameters:
-    affinity: ''
-    alias: ''
-    bit_per_sym: bit_per_sym
-    comment: ''
-    crc16_in_len: 'False'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    preamble_bytes: preamble_bytes
-    samp_per_sym: samp_per_sym
-    sync_word: sync_word
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [536, 284.0]
-    rotation: 0
-    state: disabled
 - name: zpdu_pub_push_socket_0
   id: zpdu_pub_push_socket
   parameters:
@@ -1454,7 +1453,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1248, 892.0]
+    coordinate: [1232, 788.0]
     rotation: 0
     state: enabled
 - name: zpdu_sub_pull_socket_0
@@ -1473,7 +1472,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [264, 292.0]
+    coordinate: [264, 180.0]
     rotation: 0
     state: enabled
 - name: zpdu_sub_pull_socket_0_0
@@ -1492,13 +1491,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [264, 180.0]
+    coordinate: [264, 292.0]
     rotation: 0
     state: enabled
 
 connections:
 - [analog_sig_source_x_0, '0', blocks_mute_xx_0, '0']
 - [blocks_mute_xx_0, '0', ptt_hier_0, '0']
+- [cc1110_encode_hier_0, out, blocks_message_debug_0, print_pdu]
+- [cc1110_encode_hier_0, out, modulator_hier_0, in]
 - [decoder_hier_0, fail, satellites_print_timestamp_0, in]
 - [decoder_hier_0, fail, zpdu_pub_push_socket_0, in]
 - [decoder_hier_0, ok, satellites_print_timestamp_0, in]
@@ -1514,9 +1515,7 @@ connections:
 - [uhd_usrp_source_0, '0', demodulator_hier_1, '0']
 - [uhd_usrp_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [uhd_usrp_source_0, '0', qtgui_time_sink_x_2_0, '0']
-- [zmq_encode_hier_0, out, blocks_message_debug_0, print_pdu]
-- [zmq_encode_hier_0, out, modulator_hier_0, in]
-- [zpdu_sub_pull_socket_0, out, openlst_encode_hier_0, in]
+- [zpdu_sub_pull_socket_0, out, cc1110_encode_hier_0, in]
 - [zpdu_sub_pull_socket_0_0, out, openlst_encode_hier_0, in]
 
 metadata:

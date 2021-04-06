@@ -19,9 +19,9 @@ inputs:
     id: in
 outputs:
 -   domain: message
-    id: zmq
+    id: CC1110
 -   domain: message
-    id: openlst
+    id: OpenLST
 
 
 # summary of this blocks purpose that will appear in the documentation tab of its properties

@@ -5,8 +5,8 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: This block decodes a CC1110 structured packet to be only the length
-      field and data field, it also checks the crc16.
+    description: This block decodes a CC1110 and OpenLST RF structured packets. It
+      also checks the crc16 of packets.
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: hb
@@ -28,7 +28,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [8, 12.0]
     rotation: 0
     state: enabled
 
@@ -48,7 +48,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1276, 176]
+    coordinate: [1248, 372.0]
     rotation: 0
     state: true
 - name: pad_sink_0_0
@@ -66,9 +66,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1279, 295]
+    coordinate: [1248, 452.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: pad_source_0
   id: pad_source
   parameters:
@@ -86,7 +86,76 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [106, 233]
+    coordinate: [112, 236.0]
+    rotation: 0
+    state: true
+- name: pduencode_autoswitch_0
+  id: pduencode_autoswitch
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [752, 224.0]
+    rotation: 0
+    state: enabled
+- name: pduencode_byte_flip_0
+  id: pduencode_byte_flip
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    crc16: 'False'
+    hwid: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    seqnum: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 356.0]
+    rotation: 0
+    state: true
+- name: pduencode_byte_flip_0_0
+  id: pduencode_byte_flip
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    crc16: 'True'
+    hwid: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    seqnum: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [384, 396.0]
+    rotation: 0
+    state: true
+- name: pduencode_byte_flip_0_0_0
+  id: pduencode_byte_flip
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    crc16: 'False'
+    hwid: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    seqnum: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 436.0]
     rotation: 0
     state: true
 - name: satellites_cc11xx_packet_crop_0
@@ -102,9 +171,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [798, 233]
+    coordinate: [944, 220.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: satellites_cc11xx_packet_crop_0_0
+  id: satellites_cc11xx_packet_crop
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    use_crc16: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [168, 412.0]
+    rotation: 0
+    state: enabled
 - name: satellites_check_cc11xx_crc_0
   id: satellites_check_cc11xx_crc
   parameters:
@@ -118,7 +203,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1017, 221]
+    coordinate: [1160, 208.0]
+    rotation: 0
+    state: enabled
+- name: satellites_check_cc11xx_crc_0_0
+  id: satellites_check_cc11xx_crc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    verbose: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 400.0]
     rotation: 0
     state: true
 - name: satellites_pn9_scrambler_0
@@ -133,7 +234,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [589, 237]
+    coordinate: [560, 240.0]
     rotation: 0
     state: enabled
 - name: satellites_sync_to_pdu_packed_0
@@ -151,7 +252,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [296, 217]
+    coordinate: [280, 220.0]
     rotation: 0
     state: true
 - name: sync_word
@@ -162,22 +263,30 @@ blocks:
     hide: none
     label: Syncword
     short_id: ''
-    type: ''
-    value: '"11010011100100011101001110010001"'
+    type: str
+    value: '11010011100100011101001110010001'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 8]
+    coordinate: [192, 12.0]
     rotation: 0
     state: true
 
 connections:
 - [pad_source_0, '0', satellites_sync_to_pdu_packed_0, '0']
+- [pduencode_autoswitch_0, CC1110, satellites_cc11xx_packet_crop_0, in]
+- [pduencode_autoswitch_0, OpenLST, satellites_cc11xx_packet_crop_0_0, in]
+- [pduencode_byte_flip_0, out, pad_sink_0, in]
+- [pduencode_byte_flip_0_0, out, satellites_check_cc11xx_crc_0_0, in]
+- [pduencode_byte_flip_0_0_0, out, pad_sink_0_0, in]
 - [satellites_cc11xx_packet_crop_0, out, satellites_check_cc11xx_crc_0, in]
+- [satellites_cc11xx_packet_crop_0_0, out, pduencode_byte_flip_0_0, in]
 - [satellites_check_cc11xx_crc_0, fail, pad_sink_0_0, in]
 - [satellites_check_cc11xx_crc_0, ok, pad_sink_0, in]
-- [satellites_pn9_scrambler_0, out, satellites_cc11xx_packet_crop_0, in]
+- [satellites_check_cc11xx_crc_0_0, fail, pduencode_byte_flip_0_0_0, in]
+- [satellites_check_cc11xx_crc_0_0, ok, pduencode_byte_flip_0, in]
+- [satellites_pn9_scrambler_0, out, pduencode_autoswitch_0, in]
 - [satellites_sync_to_pdu_packed_0, out, satellites_pn9_scrambler_0, in]
 
 metadata:
