@@ -5,13 +5,13 @@
 1. [Introduction](#introduction)
 1. [What You'll Need](#what-youll-need)
 1. [Setup](#setup)
-    * [RF Connections](#rf-connection)
-        * [OpenLST TT&C Board](#openlst-ttc-board)
-        * [SmartRF Studio 7](#smartrf-studio-7)
     * [USRP B210](#usrp-b210)
     * [GNU Radio](#gnu-radio)
     * [OOT Modules](#oot-modules)
     * [Hier Blocks](#hier-blocks)
+    * [RF Connections](#rf-connection)
+        * [SmartRF Studio 7](#smartrf-studio-7)
+        * [OpenLST TT&C Board](#openlst-ttc-board)
     * [OpenLST Python Tools](#openlst-python-tools)
 1. [How To View And Use](#how-to-view-and-use)
     * [OpenLST Vagrant VM and TT&C board](#openlst-vagrant-vm-and-ttc-board)
@@ -31,7 +31,11 @@
 
 ## Introduction
 
-This user guide aims to provide users with all of the information needed to run the GNU Radio ground station flowgraph. This guide assumes the user has some previous experience with GNU Radio Companion (GRC), the OpenLST Vagrant VM, and Linux command terminals. All of the install processes were tested using a fresh install of Ubuntu 20.04 LTS.
+This user guide aims to provide users with all of the information needed to run the GNU Radio ground station flowgraph. This guide assumes the user has some previous experience with GNU Radio Companion (GRC), the OpenLST Vagrant VM, and Linux command terminals.
+
+All of the install processes were tested using a fresh install of Ubuntu 20.04 LTS.
+
+All commands assume the user is starting in an terminal located at the home directory, unless specified otherwise.
 
 Some basic tutorials for [GNU Radio](https://wiki.gnuradio.org/index.php/Tutorials) and for [SmartRF](https://docs.google.com/document/d/1G3ylXkDHwij8BFPAL0hM6Qb654eDDwRR_HyqPuTKsdM/edit?usp=sharing), or on slides 14-15, 24-27 [here](https://docs.google.com/presentation/d/145syBke3wD0GXqM9OnpUmSf0r15e0uf7wZKPRpoonRI/edit?usp=sharing). 
 
@@ -57,57 +61,6 @@ These are the parts needed to run the GNU Radio ground station flowgraph.
 ## Setup
 
 These are links to all of the necessary programs and resources for the SDR ground station along with instructions on how to install them.
-
-### RF Connections
-
-Communicating with the GNU Radio flowgraph over RF can be done with either a TT&C board running OpenLST firmware or a TT&C breakout board running SmartRF Studio 7 firmware.
-
-#### OpenLST TT&C Board
-
-Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph. Fully detailed user guide available [here](https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
-
-Plug the USB/serial cable from your computer into UART1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board with patch cables as is pictured below.
-
-<div align="center">
-
-![](/images/cc_dubber_board_connect.png)
-
-Minimum pin connections for CC Debugger to build and load the bootloader onto a TT&C board
-
-<div align="left">
-
-With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C boards Rx port, and connect the TT&C boards Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Plug the power cables of the TT&C board into a power supply set to 5V/1.2A.
-
-Install [Vagrant](https://www.vagrantup.com/) and [VirtualBox with the extension pack](https://www.virtualbox.org/wiki/Downloads).
-
-On Ubuntu, allow USB devices to be passed to the VM.
-```
-sudo usermod -aG vboxusers $USER
-```
-Restart your computer to apply the changes made.
-
-Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and build and load the orcasat_fg radio onto a TT&C board with their aliases (fgblN, fgfwN where N=1/2/3).
-```
-fgbl1
-fgfw1
-```
-This radio has its RF registers set to be identical to the RF resgisters of the CC1110 used when testing the GNU Radio flowgraph with SmartRF Studio 7. These RF register settings can be seen in the image below.
-
-<div align="center">
-
-![](/images/smartrf_openlst.png)
-
-SmartRF RF registers used for CC1110 on TT&C board
-
-<div align="left">
-
-#### SmartRF Studio 7
-
-Set up the TT&C breakout board with SmartRF Studio 7 to be used with the GNU Radio flowgraph.
-
-Download link [here](https://www.ti.com/tool/SMARTRFTM-STUDIO).
-
-The xml file in the gitlab repo should be downloaded alongside SmartRF and opened in a SmartRF control panel so the exact setting used during development can be recreated later.
 
 ### USRP B210
 
@@ -179,7 +132,7 @@ cd gnuradio
 git checkout maint-3.8
 git submodule update --init --recursive
 ```
-Build GNU Radio from source. May take upward of 20 minutes.
+Build GNU Radio from source. May take upward of 30 minutes.
 ```
 mkdir build
 cd build
@@ -188,6 +141,15 @@ make -j4
 sudo make install
 sudo ldconfig
 ```
+
+Additional resource on how to install GNU Radio and fix errors if it is needed:
+
+https://wiki.gnuradio.org/index.php/ModuleNotFoundError#B._Finding_the_Python_library
+
+### OOT Modules
+
+Install commands for all of the OOT modules used in the creation of the SDR ground station. OOT modules directories are denoted by the prefix "gr-". If you make changes to the OOT modules and push to this repository, make sure you delete the ~/build directory from the OOT module before doing so. This is because the ~/build directory is specific to your computer and won't work on another persons computer.
+
 Set environmental variables for Python so Out-Of-Tree (OOT) Modules can be installed.
 
 Find \{your-prefix} which is output of the following command. This is the prefix of where GNU Radio installs OOT Modules.
@@ -203,27 +165,19 @@ In ~/.basrc and ~/.profile at the home directory, add the following 2 lines at e
 export PYTHONPATH={your-prefix}/lib/{Py-version}/dist-packages:$PYTHONPATH
 export LD_LIBRARY_PATH={your-prefix}/lib:$LD_LIBRARY_PATH
 ```
-Open another terminal in the ~/gnuradio/build directory and refresh Linux libraries.
+Open a new terminal and refresh Linux libraries.
 ```
+cd gnuradio/build
 sudo ldconfig
 ```
-Restart your computer to apply the changes made.
-
-Some additional resources on how to install GNU Radio and fix errors if it is needed:
+Restart your computer to apply the changes made. Additional resource on how to set the Python environmental variables.
 
 https://wiki.gnuradio.org/index.php/InstallingGR
-
-https://wiki.gnuradio.org/index.php/ModuleNotFoundError#B._Finding_the_Python_library
-
-### OOT Modules
-
-Install commands for all of the OOT modules used in the creation of the SDR ground station. OOT modules directories are denoted by the prefix "gr-". If you make changes to the OOT modules and push to this repository, make sure you delete the ~/build directory from the OOT module before doing so. This is because the ~/build directory is specific to your computer and won't work on another persons computer.
 
 Install SDR ground station resources (gr-pduencode, gr-zpdu).
 ```
 git clone https://gitlab.com/ORCASat/ttc/sdr-ground-station.git
 ```
-
 Each OOT module must be installed into GNU Radio. They must also be updated if any edits are made to them. These are both done from a terminal located at the desired OOT module's directory. After editing and updating an OOT module, GRC must be restarted to apply the changes made.
 
 Install/Update gr-pduencode for GNU Radio
@@ -247,6 +201,10 @@ Copy/Paste "build.sh" from ~/sdr-ground-station/gr-pduencode or ~/sdr-ground-sta
 cd gr-satellites
 ./build.sh
 ```
+Additional resource on how to install gr-satellites from source.
+
+https://gr-satellites.readthedocs.io/en/latest/installation.html#installing-from-source
+
 Installing can also be done manually using the following commands from the desired OOT module's directory.
 ```
 mkdir build
@@ -272,9 +230,86 @@ The hier blocks should be available in the "GRC Hier Blocks" tab on the right si
 
 To view the flowgraph of a hier block, right click on the hier block and go More > Open Hier.
 
+### RF Connections
+
+Communicating with the GNU Radio flowgraph over RF can be done with either a TT&C board running OpenLST firmware or a TT&C breakout board running SmartRF Studio 7 firmware.
+
+#### SmartRF Studio 7
+
+Set up the TT&C breakout board with SmartRF Studio 7 to be used with the GNU Radio flowgraph.
+
+Download link [here](https://www.ti.com/tool/SMARTRFTM-STUDIO).
+
+The xml file in the gitlab repo should be downloaded alongside SmartRF and opened in a SmartRF control panel so the exact setting used during development can be recreated later.
+
+#### OpenLST TT&C Board
+
+Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph. Fully detailed user guide available [here](https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
+
+Install the TT&C adaption of OpenLST.
+```
+git clone https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware.git
+```
+Install Vagrant and VirtualBox.
+```
+sudo apt install virtualbox
+sudo apt install vagrant
+```
+Download the VirtualBox [extension pack](https://www.virtualbox.org/wiki/Downloads). In the VirtualBox application go Tool > Preferences > Extensions > Add new package (blue square with green +) > VirtualBox extension pack that was downloaded.
+
+On Ubuntu, allow USB devices to be passed to the VM.
+```
+sudo usermod -aG vboxusers $USER
+```
+Also on Ubuntu, allow user to use Vagrant commands without permissions.
+```
+cd transceiver-poc-firmware/open-lst
+sudo chown -R $USER $PWD
+```
+
+Restart your computer to apply the changes made.
+
+Plug the USB/serial cable from your computer into UART1 on the TT&C board. Plug the USB mini-B cable from your computer into the CC Debugger and connect the CC Debugger to the TT&C board with patch cables as is pictured below.
+
+<div align="center">
+
+![](/images/cc_dubber_board_connect.png)
+
+Minimum pin connections for CC Debugger to build and load the bootloader onto a TT&C board
+
+<div align="left">
+
+With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C board's Rx port, and connect the TT&C board's Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Connect the power leads of the TT&C board to a power supply set to 5V/1.3A.
+
+Enter the OpenLST Vagrant VM 
+```
+cd transceiver-poc-firmware/open-lst
+vagrant up
+vagrant ssh
+```
+In the OpenLST Vagrant VM build and load the orcasat_fg radio onto a TT&C board, with their aliases if possible (fgblN, fgfwN where N=1/2/3).
+```
+flash_bootloader --keys FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF --hwid 0001 orcasat_fg_bootloader.hex
+sign_radio --signing-key FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF orcasat_fg_radio.hex orcasat_fg_radio.sig && bootload_radio --signature-file orcasat_fg_radio.sig -i 0001 orcasat_fg_radio.hex
+
+or
+
+fgbl1
+fgfw1
+```
+This radio has its RF registers set to be identical to the RF resgisters of the CC1110 used when testing the GNU Radio flowgraph with SmartRF Studio 7. These RF register settings can be seen in the image below.
+
+<div align="center">
+
+![](/images/smartrf_openlst.png)
+
+SmartRF RF registers used for CC1110 on TT&C board
+
+<div align="left">
+
 ### OpenLST Python Tools
 
-OpenLST's Python tools can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZeroMQ.
+OpenLST's Python tools (ie radio_terminal) can be installed outside of the Vagrant VM which can allow them to interact with the GNU Radio flowgraph using ZeroMQ.
 
 OpenLST's Python tools were written using Python 2.7 so pip must be installed.
 ```
@@ -286,6 +321,10 @@ Install dependencies for later. The second command fixes an error where pycrypto
 ```
 python -m pip install --upgrade setuptools wheel
 sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+```
+Install the TT&C adaption of OpenLST if it is not already installed.
+```
+git clone https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware.git
 ```
 Install the Python tools package.
 ```
@@ -302,10 +341,19 @@ These are instructions on how to use ZeroMQ, how to view the running flowgraph's
 
 The OpenLST Vagrant VM allows the sending and receiving of commands over UART1 of the TT&C board. These commands can orignated from the radio_terminal or from the Tx and Rx ports of the board.
 
-Vagrant up and Vagrant ssh into a OpenLST Vagrant VM and open a radio_terminal the alias (rtN where N=1/2/3).
+Enter the OpenLST Vagrant VM.
 ```
+cd transceiver-poc-firmware/open-lst
+vagrant up
+vagrant ssh
+```
+In the OpenLST Vagrant VM open a radio_terminal, with an alias if possible (rtN where N=1/2/3).
+```
+cd project
 radio_terminal --hwid 0001
+
 or
+
 rt1
 ```
 If a radio_terminal --hwid tag is the same hwid as the TT&C board it is on it will send commands to itself. If a radio_terminal --hwid tag is a different hwid from TT&C board it is on it will print any commands that pass the RF frontend. There is no need to have a radio_terminal open on a TT&C board to issue commands to it.
@@ -448,12 +496,14 @@ When OpenLST commands are typed into the TT&C board radio termminal, they will b
 
 For loopback USRP to USRP transmission. Start the gndstation_hier.grc flowgraph with all blocks enabled except the "Signal Source" block (used for transmitting umodulated carriers). Start the raw_hex_tx.py or raw_tx.py Python scripts depending on if you want to send hex values or ascii character. 
 ```
+cd sdr-ground-station/zmq-scripts
 python3 raw_hex_tx.py
 or
 python3 raw_tx.py
 ```
 Start the raw_rx.py Python script in another terminal.
 ```
+cd sdr-ground-station/zmq-scripts
 python3 raw_rx.py
 ```
 Enter ascii characters into the terminal running raw_tx.py, or wait for hex values to be sent if using raw_hex_tx.py. The received data should be printed to the terminal running raw_rx.py. The received data should also be printed to GRC's terminal and in the graphs of its running window.
