@@ -246,25 +246,15 @@ The xml file in the gitlab repo should be downloaded alongside SmartRF and opene
 
 Set up the TT&C board with OpenLST firmware to be used with the GNU Radio flowgraph. Fully detailed user guide available [here](https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware/-/blob/master/open-lst/USERS_GUIDE.md).
 
-Install the TT&C adaption of OpenLST.
+Install Vagrant and VirtualBox (and git if it's not already installed).
 ```
-git clone https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware.git
-```
-Install Vagrant and VirtualBox.
-```
-sudo apt install virtualbox
-sudo apt install vagrant
+sudo apt install git virtualbox vagrant
 ```
 Download the VirtualBox [extension pack](https://www.virtualbox.org/wiki/Downloads). In the VirtualBox application go Tool > Preferences > Extensions > Add new package (blue square with green +) > VirtualBox extension pack that was downloaded.
 
 On Ubuntu, allow USB devices to be passed to the VM.
 ```
 sudo usermod -aG vboxusers $USER
-```
-Also on Ubuntu, allow user to use Vagrant commands without permissions.
-```
-cd transceiver-poc-firmware/open-lst
-sudo chown -R $USER $PWD
 ```
 
 Restart your computer to apply the changes made.
@@ -281,6 +271,10 @@ Minimum pin connections for CC Debugger to build and load the bootloader onto a 
 
 With either antennas or direct cables, connect the USRPs RFA:Tx/Rx port to the TT&C board's Rx port, and connect the TT&C board's Tx port with 2 20DB attenuators to the USRPs RFA:Rx2 port. Connect the power leads of the TT&C board to a power supply set to 5V/1.3A.
 
+Install the TT&C adaption of OpenLST.
+```
+git clone https://gitlab.com/ORCASat/ttc/transceiver-poc-firmware.git
+```
 Enter the OpenLST Vagrant VM 
 ```
 cd transceiver-poc-firmware/open-lst
