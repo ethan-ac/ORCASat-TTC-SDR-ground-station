@@ -61,6 +61,13 @@ namespace gr {
     	// convert received pdu from pdu to std::vector<uint8_t>
     	std::vector<uint8_t> msg = pmt::u8vector_elements(pmt::cdr(pmt_msg));
     	
+    	// error check if pdu is long enough to have hwid moved
+    	if (msg.size() < 2) {
+    		std::cout << "===================================" << std::endl;
+    		std::cout << "ERROR HWID Mover: hwid could not be moved due to insufficient packet length" << std::endl;
+    		std::cout << "===================================" << std::endl;
+    	}
+    	
     	// moves 1st 2 bytes from head of pdu to tail
     	for (int i = 0; i < 2; i++) {
     		msg.push_back(msg[0]);

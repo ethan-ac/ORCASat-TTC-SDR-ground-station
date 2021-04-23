@@ -52,11 +52,11 @@ namespace gr {
     	// error check if syncword bits given are a valid length
     	if (d_syncword_str.size() > 32) {
     		std::cout << "===================================" << std::endl;
-    		std::cout << "ERROR syncword: syncword input is larger than expected, the hex value must be 32 bits in length" << std::endl;
+    		std::cout << "ERROR Add Syncword: syncword input is larger than expected, the hex value must be 32 bits in length" << std::endl;
     		std::cout << "===================================" << std::endl;
     	} else if (d_syncword_str.size() < 32) {
     		std::cout << "===================================" << std::endl;
-    		std::cout << "ERROR syncword: syncword input is smaller than expected, the hex value must be 32 bits in length" << std::endl;
+    		std::cout << "ERROR Add Syncword: syncword input is smaller than expected, the hex value must be 32 bits in length" << std::endl;
     		std::cout << "===================================" << std::endl;
     	}
     	

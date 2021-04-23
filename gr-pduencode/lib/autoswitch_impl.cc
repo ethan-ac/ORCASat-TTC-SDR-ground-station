@@ -137,7 +137,7 @@ namespace gr {
 			pmt::cons(pmt::car(pmt_msg), pmt::init_u8vector(msg.size(), msg)));
         } else {
 	    	std::cout << "===================================" << std::endl;
-	    	std::cout << "OPENLST structured rf packet" << std::endl;
+	    	std::cout << "OPENLST structured RF packet" << std::endl;
 	    	std::cout << "===================================" << std::endl;
 	    	
 	    	// outputs new pdu

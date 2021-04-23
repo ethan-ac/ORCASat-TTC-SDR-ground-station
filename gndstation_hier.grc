@@ -80,6 +80,23 @@ blocks:
     coordinate: [704, 12.0]
     rotation: 0
     state: enabled
+- name: mute
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: ''
+    label: Mute
+    'true': 'True'
+    type: bool
+    value: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 476.0]
+    rotation: 0
+    state: enabled
 - name: post_tx
   id: variable
   parameters:
@@ -227,23 +244,6 @@ blocks:
     coordinate: [8, 252.0]
     rotation: 0
     state: true
-- name: toggle
-  id: variable_qtgui_check_box
-  parameters:
-    comment: ''
-    'false': 'False'
-    gui_hint: ''
-    label: Mute
-    'true': 'True'
-    type: bool
-    value: 'False'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 476.0]
-    rotation: 0
-    state: enabled
 - name: analog_sig_source_x_0
   id: analog_sig_source_x
   parameters:
@@ -292,21 +292,27 @@ blocks:
     coordinate: [1552, 672.0]
     rotation: 0
     state: enabled
-- name: blocks_mute_xx_0
-  id: blocks_mute_xx
+- name: blocks_selector_0
+  id: blocks_selector
   parameters:
     affinity: ''
     alias: ''
     comment: ''
+    enabled: mute
+    input_index: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
-    mute: toggle
+    num_inputs: '1'
+    num_outputs: '1'
+    output_index: '0'
+    showports: 'True'
     type: complex
+    vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1144, 320.0]
+    coordinate: [1112, 300.0]
     rotation: 0
     state: enabled
 - name: cc1110_encode_hier_0
@@ -327,7 +333,7 @@ blocks:
     bus_structure: null
     coordinate: [552, 180.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: decoder_hier_0
   id: decoder_hier
   parameters:
@@ -416,9 +422,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1304, 308.0]
+    coordinate: [1328, 308.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -576,7 +582,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1608, 336.0]
+    coordinate: [1616, 336.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2
@@ -673,7 +679,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1608, 436.0]
+    coordinate: [1616, 436.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_2_0
@@ -1064,7 +1070,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1608, 164.0]
+    coordinate: [1616, 164.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1436,7 +1442,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 696.0]
+    coordinate: [376, 700.0]
     rotation: 0
     state: enabled
 - name: zpdu_pub_push_socket_0
@@ -1496,8 +1502,8 @@ blocks:
     state: enabled
 
 connections:
-- [analog_sig_source_x_0, '0', blocks_mute_xx_0, '0']
-- [blocks_mute_xx_0, '0', ptt_hier_0, '0']
+- [analog_sig_source_x_0, '0', blocks_selector_0, '0']
+- [blocks_selector_0, '0', ptt_hier_0, '0']
 - [cc1110_encode_hier_0, out, blocks_message_debug_0, print_pdu]
 - [cc1110_encode_hier_0, out, modulator_hier_0, in]
 - [decoder_hier_0, fail, satellites_print_timestamp_0, in]
@@ -1505,7 +1511,7 @@ connections:
 - [decoder_hier_0, ok, satellites_print_timestamp_0, in]
 - [decoder_hier_0, ok, zpdu_pub_push_socket_0, in]
 - [demodulator_hier_1, '0', decoder_hier_0, '0']
-- [modulator_hier_0, '0', blocks_mute_xx_0, '0']
+- [modulator_hier_0, '0', blocks_selector_0, '0']
 - [openlst_encode_hier_0, out, blocks_message_debug_0, print_pdu]
 - [openlst_encode_hier_0, out, modulator_hier_0, in]
 - [ptt_hier_0, '0', qtgui_freq_sink_x_1, '0']

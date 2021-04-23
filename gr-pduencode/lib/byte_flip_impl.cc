@@ -73,7 +73,7 @@ namespace gr {
     		// error check if packet is large enough that seqnum is present to be flipped
     		if (4 > msg.size()) {
 	    		std::cout << "===================================" << std::endl;
-	    		std::cout << "ERROR byte_flip: seqnum could not be flipped due to insufficient packet length" << std::endl;
+	    		std::cout << "ERROR Byte Flip: seqnum could not be flipped due to insufficient packet length" << std::endl;
 	    		std::cout << "===================================" << std::endl;
     		}
     		
@@ -87,7 +87,7 @@ namespace gr {
     		// error check if packet is large enough that hwid is present to be flipped
     		if (msg[0]-1 > msg.size()) {
 	    		std::cout << "===================================" << std::endl;
-	    		std::cout << "ERROR byte_flip: hwid could not be flipped due to insufficient packet length" << std::endl;
+	    		std::cout << "ERROR Byte Flip: hwid could not be flipped due to insufficient packet length" << std::endl;
 	    		std::cout << "===================================" << std::endl;
     		}
     		
@@ -101,7 +101,7 @@ namespace gr {
     		// error check if packet is large enough that crc16 is present to be flipped
 		if (msg[0]+1 > msg.size()) {
 	    		std::cout << "===================================" << std::endl;
-	    		std::cout << "ERROR byte_flip: crc16 could not be flipped due to insufficient packet length" << std::endl;
+	    		std::cout << "ERROR Byte Flip: crc16 could not be flipped due to insufficient packet length" << std::endl;
 	    		std::cout << "===================================" << std::endl;
     		}
     		

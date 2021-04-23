@@ -53,15 +53,15 @@ namespace gr {
     	// error check if hex value given is an invalid length
     	if (d_hex_str.size() > 4) {
     		std::cout << "===================================" << std::endl;
-    		std::cout << "ERROR custom_hex: hex input is larger than expected, the hex value must be 2/4 hex values or 1/2 bytes in length" << std::endl;
+    		std::cout << "ERROR Add Hex Values: hex input is larger than expected, the hex value must be 2/4 hex values or 1/2 bytes in length" << std::endl;
     		std::cout << "===================================" << std::endl;
     	} else if (d_hex_str.size() == 3) {
     		std::cout << "===================================" << std::endl;
-    		std::cout << "ERROR custom_hex: hex input is between expected sizes, the hex value must be 2/4 hex values or 1/2 bytes in length" << std::endl;
+    		std::cout << "ERROR Add Hex Values: hex input is between expected sizes, the hex value must be 2/4 hex values or 1/2 bytes in length" << std::endl;
     		std::cout << "===================================" << std::endl;
     	} else if (d_hex_str.size() < 2) {
     		std::cout << "===================================" << std::endl;
-    		std::cout << "ERROR custom_hex: hex input is smaller than expected, the hex value must be 2/4 hex values or 1/2 bytes in length" << std::endl;
+    		std::cout << "ERROR Add Hex Values: hex input is smaller than expected, the hex value must be 2/4 hex values or 1/2 bytes in length" << std::endl;
     		std::cout << "===================================" << std::endl;
     	}
     	
