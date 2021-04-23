@@ -26,6 +26,7 @@
     * [Loopback](#loopback)
     * [GNU Radio to SmartRF](#gnu-radio-to-smartrf)
     * [SmartRF to GNU Radio](#smartrf-to-gnu-radio)
+1. [radio_terminal echo](#radio_terminal-echo)
 1. [Variables](#variables)
 1. [Blocks](#blocks)
 
@@ -527,6 +528,34 @@ Clearly separated transmission section and reception section of the GRC flowgrap
 "Packet RX" tab of SmartRF Studio 7.
 
 <div align="left">
+
+## radio_terminal echo
+
+Since both the Tx and Rx ports of the USRP are being used, there is some cross talk between them. This results in commands sent from a locally running OpenLST radio_terminal and Python scripts on the Tx side of the ground station flowgraph being echoed back into a locally running radio_terminal on the Rx side of the ground station flowgraph.
+
+For example, an "lst ascii hello" is sent out by a locally running radio_terminal. The first response it receives is the local radio_terminal echoing the ascii command, where the ascii characters are sorrounded by quotation marks. The second response it receives is the response from a TT&C ground segment board which the command was addressed to, and as expected, it responds with a "lst nack".
+```
+> lst ascii hello
+< lst ascii "hello"
+< lst nack
+```
+This effect can be somewhat negated by lowering the gain of the USRPs Tx and Rx ports. However, this comes at the cost of longer commands, such as "lst telem", being corrupted. This effect was roughly tested by going through Tx gain and Rx gain at 10 db increments. The general trend was that less long commands were corrupted at higher gains, and the optimal gains seemed to be tgain=40 and rgain=60.
+
+| tgain | rgain | local commands echo | long cmds corrupted | cmds blocked |
+| - | - | - | - | - |
+| 0 | 0 | no | yes | no |
+| 0 | 10/20 | no | yes | no |
+| 0 | 30 | no | most | no |
+| 0 | 40-100 | yes | less as rgain increases (~40% @ 100) | no |
+| 10 | 0-20 | no | yes | no |
+| 10 | 30-100 | yes | less as rgain increases (~40% @ 100) | no |
+| 20 | 0 | no | yes | no |
+| 20 | 10 | unreliably | yes | no |
+| 20 | 20-100 | yes | less around rgain 60 (~40%) | rarely | no |
+| 30 | 0-100 | yes | less around rgain 60 (~50%) | rarely |
+| 40 | 0-100 | yes | less around rgain 60 (~50%) | rarely |
+| 50 | 0-100 | yes | less around rgain 60 (~50%) | rarely |
+| 60-100 | 0-100 | yes | N/A | yes |
 
 ## Variables
 
